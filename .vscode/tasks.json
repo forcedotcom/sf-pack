@@ -1,0 +1,76 @@
+{
+  "version": "2.0.0",
+  "problemMatcher": "$tsc",
+  "tasks": [
+    {
+      "label": "Compile tests",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "yarn",
+      "type": "shell",
+      "presentation": {
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "args": [
+        "run",
+        "test:compile"
+      ],
+      "isBackground": false
+    },
+    {
+      "label": "Run Current Test",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "yarn",
+      "type": "shell",
+      "presentation": {
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "args": [
+        "run",
+        "nyc",
+        "--reporter=html",
+        "--reporter=text",
+        "mocha",
+        "'${file}'"
+      ],
+      "isBackground": false
+    },
+    {
+      "label": "Run All Tests",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "yarn",
+      "type": "shell",
+      "presentation": {
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "args": [
+        "run",
+        "nyc",
+        "--reporter=html",
+        "--reporter=text",
+        "mocha",
+        "'test/**/*.test.ts'"
+      ],
+      "isBackground": false
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build",
+      "detail": "sf-build"
+    }
+  ]
+}
