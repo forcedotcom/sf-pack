@@ -1,0 +1,34 @@
+export default class Constants {
+    static readonly DEFAULT_XML_NAMESPACE = "http://soap.sforce.com/2006/04/metadata";
+    static readonly METADATA_COVERAGE_REPORT_URL = "https://dx-extended-coverage.my.salesforce-sites.com/services/apexrest/report";
+    static readonly DEFAULT_PACKAGE_NAME = "package.xml";
+    static readonly DEFAULT_PACKAGE_PATH: string;
+    static readonly SF_CONFIG_DEFAULT_USERNAME = "target-org";
+    static readonly SF_CONFIG_MAX_QUERY_LIMIT = "org-max-query-limit";
+    static readonly SF_PERMISSION_APEX_CLASS = "ApexClass";
+    static readonly SF_PERMISSION_APEX_PAGE = "PageAccesses";
+    static readonly SF_PERMISSION_CUSTOM_APP = "CustomApplication";
+    static readonly SF_PERMISSION_CUSTOM_OBJ = "CustomObject";
+    static readonly SF_PERMISSION_CUSTOM_FIELD = "CustomField";
+    static readonly SF_PERMISSION_CUSTOM_TAB = "CustomTab";
+    static readonly SF_PERMISSION_SET = "PermissionSet";
+    static readonly SF_PERMISSION_PROFILE = "Profile";
+    static readonly SF_PERMISSION_RECORD_TYPE = "RecordType";
+    static readonly SF_PERMISSION_LAYOUT = "Layout";
+    static readonly DEFAULT_PROJECT_FILE_NAME = "sf-project.json";
+    static readonly DEFAULT_SFDC_LOGIN_URL = "https://login.salesforce.com";
+    static readonly DEFAULT_PACKAGE_VERSION = "49.0";
+    static readonly ENOENT = "ENOENT";
+    static readonly CONTENT_TYPE_APPLICATION = "application/octetstream";
+    static readonly HEADERS_CONTENT_TYPE = "content-type";
+    static readonly METADATA_FILE_SUFFIX = "-meta.xml";
+    static readonly HTTP_STATUS_REDIRECT: number[];
+    static readonly EOL: string;
+    static readonly CR = "\r";
+    static readonly LF = "\n";
+    static readonly CONENTVERSION_MAX_SIZE = 37000000;
+    static readonly MIME_JSON = "application/json";
+    static readonly DEFAULT_CSV_TEXT_WRAPPERS: string[];
+    static readonly MAX_EXCEL_LENGTH = 32767;
+    static readonly CUSTOM_SUFFIX = "__c";
+}
