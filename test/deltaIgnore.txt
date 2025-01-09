@@ -1,0 +1,2 @@
+./ignore/package-a.xml
+./ignore/package-b.xml
