@@ -1,0 +1,39 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    "**/lib": true,
+    "**/bin": true
+  },
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "rewrap.wrappingColumn": 80,
+  "cSpell.words": [
+    "anytype",
+    "combobox",
+    "copyfulldir",
+    "createable",
+    "datetime",
+    "Defaultable",
+    "deletereport",
+    "jsforce",
+    "MDAPI",
+    "Metadatas",
+    "multipicklist",
+    "nillable",
+    "oclif",
+    "picklist",
+    "Rethrown",
+    "sobjects",
+    "SOQL",
+    "testkit",
+    "wireit",
+    "Xlxs"
+  ],
+  "salesforcedx-vscode-core.show-cli-success-msg": false
+}
