@@ -1,10 +1,10 @@
-import path = require('path');
-import { expect } from '@oclif/test';
-import Utils from '../../../src/helpers/utils';
-import xmlMerge from '../../../src/helpers/xml-merge'
+import path from 'node:path';
+import { expect } from 'chai';
+import Utils from '../../../src/helpers/utils.js';
+import xmlMerge from '../../../src/helpers/xml-merge.js';
 
 describe('Xml-Merge Tests', function () {
-  const testPath = './test/merge'
+  const testPath = './test/merge';
   const source = path.join(testPath, 'package-a.xml');
   const destination = path.join(testPath, 'package-b.xml');
 
@@ -33,8 +33,8 @@ describe('Xml-Merge Tests', function () {
     it('Can Handle Empty package', async function () {
       const testSource = {
         Package: {
-          version: '49.0'
-        }
+          version: '49.0',
+        },
       };
       const parsed = await Utils.readObjectFromXmlFile(destination);
       const merged = xmlMerge.mergeObjects(testSource, parsed);
@@ -77,7 +77,7 @@ describe('Xml-Merge Tests', function () {
       expect(packType).not.null;
       expect(packType.members).not.null;
       expect(packType.members.length).equals(3);
-      
+
       // Tabs
       packType = xmlMerge.getType(merged.Package, 'Tabs');
       expect(packType).not.null;
@@ -89,8 +89,8 @@ describe('Xml-Merge Tests', function () {
     it('Can Handle Empty package', async function () {
       const testSource = {
         Package: {
-          version: '49.0'
-        }
+          version: '49.0',
+        },
       };
       const parsed = await Utils.readObjectFromXmlFile(destination);
       const merged = xmlMerge.mergeObjects(testSource, parsed, true);

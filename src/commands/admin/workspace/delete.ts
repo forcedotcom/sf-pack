@@ -1,9 +1,9 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import { RestAction } from '../../../helpers/utils';
-import { SfTasks } from '../../../helpers/sf-tasks';
-import { SfClient, ApiKind, NO_CONTENT_CODE } from '../../../helpers/sf-client';
-import { SfQuery } from '../../../helpers/sf-query';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { RestAction } from '../../../helpers/utils.js';
+import { SfTasks } from '../../../helpers/sf-tasks.js';
+import { SfClient, ApiKind, NO_CONTENT_CODE } from '../../../helpers/sf-client.js';
+import { SfQuery } from '../../../helpers/sf-query.js';
 
 export default class Delete extends CommandBase {
   public static description = CommandBase.messages.getMessage('admin.workspace.delete.commandDescription');
@@ -21,6 +21,7 @@ export default class Delete extends CommandBase {
       description: CommandBase.messages.getMessage('admin.workspace.delete.userListFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {
@@ -28,7 +29,7 @@ export default class Delete extends CommandBase {
     const usernames: string[] = [];
     if (flags.userList) {
       for (const username of flags.userList.split(',')) {
-        usernames.push((username).trim());
+        usernames.push((username as string).trim());
       }
     } else {
       const orgInfo = await SfTasks.getOrgInfo(this.org);

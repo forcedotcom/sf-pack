@@ -1,16 +1,16 @@
-import Utils from './utils';
-import { DeltaCommandBase } from './delta-command';
-import { OptionsBase } from './options';
+import Utils from './utils.js';
+import { DeltaCommandBase } from './delta-command.js';
+import { OptionsBase } from './options.js';
 
 export class DeltaOptions extends OptionsBase {
   private static CURRENT_VERSION = 1.0;
 
-  public deltaFilePath: string = null;
-  public source: string = null;
-  public destination: string = null;
-  public deleteReportFile: string = null;
-  public forceFile: string = null;
-  public ignoreFile: string = null;
+  public deltaFilePath: string = null as any;
+  public source: string = null as any;
+  public destination: string = null as any;
+  public deleteReportFile: string = null as any;
+  public forceFile: string = null as any;
+  public ignoreFile: string = null as any;
   public isDryRun = false;
   public fullCopyDirNames: string[] = DeltaCommandBase.defaultCopyDirList;
   public logAllMessagesToConsole = false;

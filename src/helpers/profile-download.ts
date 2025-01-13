@@ -1,8 +1,8 @@
-import path = require('path');
+import path from 'node:path';
 import { Org } from '@salesforce/core';
-import Utils from './utils';
-import { SfQuery } from './sf-query';
-import Constants from './constants';
+import Utils from './utils.js';
+import { SfQuery } from './sf-query.js';
+import Constants from './constants.js';
 
 export class ObjPermissionStructure {
   public SObjectType: string;

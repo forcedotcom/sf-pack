@@ -1,7 +1,8 @@
-import Utils from './utils';
-import SfProject from './sf-project';
-import Constants from './constants';
-import XmlMerge from './xml-merge';
+import { BuilderOptions } from 'xml2js';
+import Utils from './utils.js';
+import SfProject from './sf-project.js';
+import Constants from './constants.js';
+import XmlMerge from './xml-merge.js';
 
 export class SfCore {
   public static ASTERIX = '*';
@@ -10,7 +11,6 @@ export class SfCore {
   public static EMAIL_TEMPLATE_XML_NAME = 'EmailTemplate';
 
   public static jsonSpaces = 2;
-
 
   public static async getPackageBase(version = null): Promise<any> {
     return {
@@ -70,7 +70,12 @@ export class SfCore {
     return packageObj;
   }
 
-  public static async writePackageFile( metadataMap: Map<string, string[]>, packageFilePath: string, append?: boolean, xmlOptions?: any): Promise<void> {
+  public static async writePackageFile(
+    metadataMap: Map<string, string[]>,
+    packageFilePath: string,
+    append?: boolean,
+    xmlOptions?: BuilderOptions
+  ): Promise<void> {
     // Convert into Package format
     const sfPackage = await SfCore.createPackage(metadataMap);
     if (append) {

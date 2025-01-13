@@ -1,4 +1,4 @@
-import { OptionsBase } from './options';
+import { OptionsBase } from './options.js';
 export declare class PackageOptions extends OptionsBase {
     private static CURRENT_VERSION;
     excludeMetadataTypes: string[];

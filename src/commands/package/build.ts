@@ -1,17 +1,16 @@
-import path = require('path');
-import { OutputFlags } from '@oclif/core/lib/interfaces/parser';
+import path from 'node:path';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import { SfCore } from '../../helpers/sf-core';
-import Utils, { IOItem } from '../../helpers/utils';
-import { PackageOptions } from '../../helpers/package-options';
-import { SfTasks } from '../../helpers/sf-tasks';
-import { OptionsFactory } from '../../helpers/options-factory';
-import Constants from '../../helpers/constants';
-import { DeltaProvider } from '../../helpers/delta-provider';
-import { DeltaCommandBase } from '../../helpers/delta-command';
-import SchemaUtils from '../../helpers/schema-utils';
-import { SfUI } from '../../helpers/sf-ui';
+import { CommandBase } from '../../helpers/command-base.js';
+import { SfCore } from '../../helpers/sf-core.js';
+import Utils, { IOItem } from '../../helpers/utils.js';
+import { PackageOptions } from '../../helpers/package-options.js';
+import { SfTasks } from '../../helpers/sf-tasks.js';
+import { OptionsFactory } from '../../helpers/options-factory.js';
+import Constants from '../../helpers/constants.js';
+import { DeltaProvider } from '../../helpers/delta-provider.js';
+import { DeltaCommandBase } from '../../helpers/delta-command.js';
+import SchemaUtils from '../../helpers/schema-utils.js';
+import { SfUI } from '../../helpers/sf-ui.js';
 
 export default class Build extends CommandBase {
   public static description = CommandBase.messages.getMessage('package.build.commandDescription');
@@ -52,6 +51,7 @@ export default class Build extends CommandBase {
       description: CommandBase.messages.getMessage('package.build.appendFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   // Comment this out if your command does not require an org username
@@ -61,10 +61,7 @@ export default class Build extends CommandBase {
   // protected static requiresProject = false;
 
   // eslint-disable-next-line complexity
-  protected async getMetadataMapFromOrg(
-    options: PackageOptions,
-    flags: OutputFlags<any>
-  ): Promise<Map<string, string[]>> {
+  protected async getMetadataMapFromOrg(options: PackageOptions, flags: any): Promise<Map<string, string[]>> {
     const metadataMap = new Map<string, string[]>();
     const excluded = new Set<string>(options.excludeMetadataTypes);
 
@@ -80,44 +77,6 @@ export default class Build extends CommandBase {
       this.warn('Source Tracking packages are not longer supported with sf commands');
       this.warn('USE: project retrieve start');
       return;
-      /*
-      const statuses = await SfTasks.getSourceTrackingStatus(this.orgAlias);
-      if (!statuses || statuses.length === 0) {
-        this.log('No Source Tracking changes found.');
-        return;
-      }
-      const results = SfTasks.getMapFromSourceTrackingStatus(statuses);
-      if (results.conflicts.size > 0) {
-        this.log('WARNING: The following conflicts were found:');
-        for (const [conflictType, members] of results.conflicts) {
-          this.log(`\t${conflictType as string}`);
-          for (const member of members) {
-            this.log(`\t\t${member as string}`);
-          }
-        }
-        throw new Error('All Conflicts must be resolved.');
-      }
-      if (results.deletes.size > 0) {
-        this.log('WARNING: The following deleted items need to be handled manually:');
-        for (const [deleteType, members] of results.deletes) {
-          this.log(`\t${deleteType as string}`);
-          for (const member of members) {
-            this.log(`\t\t${member as string}`);
-          }
-        }
-      }
-      if (!results.map?.size) {
-        this.log('No Deployable Source Tracking changes found.');
-        return;
-      }
-      for (const [name, members] of results.map) {
-        const typeName: string = name;
-        if ((filterMetadataTypes && !filterMetadataTypes.has(typeName)) || excluded.has(typeName)) {
-          continue;
-        }
-        metadataMap.set(typeName, members as string[]);
-      }
-      */
     } else {
       const describeMetadata = await SfTasks.describeMetadata(this.org);
       const describeMetadatas = new Set<any>();
@@ -131,7 +90,7 @@ export default class Build extends CommandBase {
 
       // Are we including namespaces?
       const namespaces = flags.namespace ? new Set<string>((flags.namespace as string).split(',')) : new Set<string>();
-      
+
       let counter = 0;
       SfUI.writeMessageCallback = (message: string): void => {
         this.log(`Processing (${++counter}/${describeMetadatas.size}): ${message}`);
@@ -146,9 +105,6 @@ export default class Build extends CommandBase {
     }
     return metadataMap;
   }
-
-  
-
 
   protected async getMetadataMapFromFolder(folder: string, options: PackageOptions): Promise<Map<string, string[]>> {
     const metadataMap = new Map<string, string[]>();
@@ -185,7 +141,7 @@ export default class Build extends CommandBase {
         continue;
       }
       const itemName = path.basename(filePath);
-      const isDir = await Utils.getPathKind(filePath) === IOItem.Folder;
+      const isDir = (await Utils.getPathKind(filePath)) === IOItem.Folder;
       if (itemName !== 'unfiled$public') {
         if (isDocument) {
           yield itemName;
@@ -212,8 +168,9 @@ export default class Build extends CommandBase {
     const { flags } = await this.parse(Build);
     // Validate the package path
     const packageFileName: string = flags.package || Constants.DEFAULT_PACKAGE_PATH;
+    const folder: string = flags.folder as string;
 
-    const packageDir: string = path.dirname(flags.folder ? flags.folder : packageFileName);
+    const packageDir: string = path.dirname(folder ? folder : packageFileName);
 
     if (packageDir && !(await Utils.pathExists(packageDir))) {
       this.raiseError(`The specified package folder does not exist: '${packageDir}'`);
@@ -234,9 +191,9 @@ export default class Build extends CommandBase {
 
     let metadataMap = null;
     try {
-      if (flags.folder) {
-        this.info(`Gathering metadata from folder: ${flags.folder})`);
-        metadataMap = await this.getMetadataMapFromFolder(flags.folder, options);
+      if (folder) {
+        this.info(`Gathering metadata from folder: ${folder})`);
+        metadataMap = await this.getMetadataMapFromFolder(folder, options);
       } else {
         this.info(`Gathering metadata from Org: ${this.orgAlias}(${this.orgId})`);
         metadataMap = await this.getMetadataMapFromOrg(options, flags);
@@ -260,7 +217,7 @@ export default class Build extends CommandBase {
 
     this.info(`Generating: ${packageFileName}`);
     // Write the final package
-    await SfCore.writePackageFile(packageMap, packageFileName, flags.append);
+    await SfCore.writePackageFile(packageMap, packageFileName, flags.append as boolean);
     return;
   }
 }

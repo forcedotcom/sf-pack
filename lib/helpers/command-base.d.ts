@@ -1,4 +1,3 @@
-import { FlagOutput, ArgOutput, Input, ParserOutput } from '@oclif/core/lib/interfaces/parser';
 import { Ux, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, Org, Connection } from '@salesforce/core';
 export declare class ConditionalError extends Error {
@@ -9,18 +8,18 @@ export declare abstract class CommandBase extends SfCommand<void> {
     static messages: Messages<string>;
     static targetOrgFlagName: string;
     protected static commonFlags: {
-        [x: string]: import("@oclif/core/lib/interfaces/parser").OptionFlag<Org, import("@oclif/core/lib/interfaces/parser").CustomOptions>;
+        [x: string]: import("@oclif/core/interfaces").OptionFlag<Org, import("@oclif/core/interfaces").CustomOptions>;
     };
     private static uxInst;
-    org: Org;
+    org: Org | undefined;
     protected gotError: boolean;
-    protected get orgAlias(): string;
-    protected get orgId(): string;
-    protected get connection(): Connection;
+    protected get orgAlias(): string | undefined;
+    protected get orgId(): string | undefined;
+    protected get connection(): Connection | undefined;
     protected get UX(): Ux;
     run(): Promise<void>;
-    protected errorHandler(err: Error | unknown, throwErr?: boolean): void;
-    protected raiseError(message?: string): void;
-    protected parse<F extends FlagOutput, B extends FlagOutput, A extends ArgOutput>(options?: Input<F, B, A>, argv?: string[]): Promise<ParserOutput<F, B, A>>;
+    protected errorHandler(err: Error, throwErr?: boolean): void;
+    protected raiseError(message: string): void;
+    protected parse(options?: any, argv?: string[]): Promise<any>;
     protected abstract runInternal(): Promise<void>;
 }

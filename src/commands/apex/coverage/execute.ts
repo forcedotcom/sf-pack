@@ -1,7 +1,7 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import { SfQuery } from '../../../helpers/sf-query';
-import { SfTasks } from '../../../helpers/sf-tasks';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { SfQuery } from '../../../helpers/sf-query.js';
+import { SfTasks } from '../../../helpers/sf-tasks.js';
 
 export default class Execute extends CommandBase {
   public static defaultJobStatusWaitMax = -1;
@@ -23,6 +23,7 @@ export default class Execute extends CommandBase {
       ]),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {
@@ -41,9 +42,9 @@ export default class Execute extends CommandBase {
 
     // Execute tests (with CodeCoverage) ?
     const results = await SfTasks.enqueueApexTests(this.org, [], true);
-    if(results.isError) {
+    if (results.isError) {
       // The DailyAsyncApexTests limit might have been reached
-      if(results.code === 500) {
+      if (results.code === 500) {
         this.raiseError('Unable to queue Apex Test(s) - check DailyAsyncApexTests limit.');
       } else {
         results.throw();

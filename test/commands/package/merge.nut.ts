@@ -1,11 +1,11 @@
-import path = require('path');
+import path from 'node:path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import Utils from '../../../src/helpers/utils';
+import Utils from '../../../src/helpers/utils.js';
 
 describe.skip('package merge NUTs', () => {
   let session: TestSession;
-  const testPath = './test/merge'
+  const testPath = './test/merge';
   const source = path.join(testPath, 'package-a.xml');
   const destination = path.join(testPath, 'package-b.xml');
 
@@ -45,7 +45,6 @@ describe.skip('package merge NUTs', () => {
     // eslint-disable-next-line no-console
     console.log(output);
     expect(output).to.contain('Merged package written:');
-
   });
 
   it('Compares Packages', async () => {
@@ -54,6 +53,5 @@ describe.skip('package merge NUTs', () => {
     // eslint-disable-next-line no-console
     console.log(output);
     expect(output).to.contain('Packages written');
-
   });
 });

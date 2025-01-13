@@ -1,10 +1,10 @@
 import * as fs from 'node:fs';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { Org } from '@salesforce/core';
-import Utils from './utils';
-import { SfTasks } from './sf-tasks';
-import { RestAction, RestResult } from './utils';
-import Constants from './constants';
+import Utils from './utils.js';
+import { SfTasks } from './sf-tasks.js';
+import { RestAction, RestResult } from './utils.js';
+import Constants from './constants.js';
 
 export const NO_CONTENT_CODE = 204;
 
@@ -14,7 +14,7 @@ export enum ApiKind {
   COMPOSITE = 'composite/',
   BULK_QUERY = 'jobs/query/',
   BULK_INJECT = 'jobs/injest/',
-  LIMITS = 'limits/'
+  LIMITS = 'limits/',
 }
 
 export class SfClient {
@@ -135,7 +135,12 @@ export class SfClient {
     }
   }
 
-  public async *getByRecords(metaDataType: string, records: any[], recordIdField: string = SfClient.defaultIdField, apiKind: ApiKind = ApiKind.DEFAULT): AsyncGenerator<RestResult, void, void> {
+  public async *getByRecords(
+    metaDataType: string,
+    records: any[],
+    recordIdField: string = SfClient.defaultIdField,
+    apiKind: ApiKind = ApiKind.DEFAULT
+  ): AsyncGenerator<RestResult, void, void> {
     if (!metaDataType) {
       throw new Error('metadataType parameter is required.');
     }
@@ -196,17 +201,22 @@ export class SfClient {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  public async postObjectMultipart( objectName: string, objectRecord: any, fileName: string, filePath: string): Promise<any> {
-    if(!objectName) {
+  public async postObjectMultipart(
+    objectName: string,
+    objectRecord: any,
+    fileName: string,
+    filePath: string
+  ): Promise<any> {
+    if (!objectName) {
       throw new Error('objectName parameter is required.');
     }
-    if(!objectRecord) {
+    if (!objectRecord) {
       throw new Error('objectRecord parameter is required.');
     }
-    if(!fileName) {
+    if (!fileName) {
       throw new Error('fileName parameter is required.');
     }
-    if(!filePath) {
+    if (!filePath) {
       throw new Error('filePath parameter is required.');
     }
     const form = new FormData();
@@ -248,7 +258,7 @@ export class SfClient {
     apiKind: ApiKind = ApiKind.DEFAULT,
     validStatusCodes = [200]
   ): AsyncGenerator<RestResult, void, void> {
-    if(!action) {
+    if (!action) {
       throw new Error('action parameter is required.');
     }
     if (!metaDataType) {
@@ -284,7 +294,14 @@ export class SfClient {
     if (!uri) {
       throw new Error('uri parameter is required.');
     }
-    const result = await Utils.getRestResult(action, uri, data, headers ?? this.headers, validStatusCodes, isFollowRedirects);
+    const result = await Utils.getRestResult(
+      action,
+      uri,
+      data,
+      headers ?? this.headers,
+      validStatusCodes,
+      isFollowRedirects
+    );
     return result;
   }
 
@@ -311,9 +328,7 @@ export class SfClient {
     return result.body[result.body.length - 1].version as string;
   }
 
-  public async getBaseUri(
-    apiKind: ApiKind = ApiKind.DEFAULT
-  ): Promise<string> {
+  public async getBaseUri(apiKind: ApiKind = ApiKind.DEFAULT): Promise<string> {
     await this.initialize(false);
     if (!this.apiVersion) {
       this.apiVersion = await this.getMaxApiVersion();
