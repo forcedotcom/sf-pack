@@ -1,5 +1,5 @@
 import { SfProject as SfCoreProject } from '@salesforce/core';
-import Constants from './constants';
+import Constants from './constants.js';
 export class PackageDirectory {
   public path: string = null;
   public default = false;

@@ -1,10 +1,10 @@
-import { OptionsBase } from './options';
-import { SfCore } from './sf-core';
+import { OptionsBase } from './options.js';
+import { SfCore } from './sf-core.js';
 
 export class XPathRule {
-  public name: string;
-  public xPath: string;
-  public values: string[];
+  public name: string | undefined;
+  public xPath: string | undefined;
+  public values: string[] | undefined;
 }
 export class XPathOptions extends OptionsBase {
   public rules: Map<string, XPathRule[]>;

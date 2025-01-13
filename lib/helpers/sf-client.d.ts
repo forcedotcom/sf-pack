@@ -1,5 +1,5 @@
 import { Org } from '@salesforce/core';
-import { RestAction, RestResult } from './utils';
+import { RestAction, RestResult } from './utils.js';
 export declare const NO_CONTENT_CODE = 204;
 export declare enum ApiKind {
     DEFAULT = "",

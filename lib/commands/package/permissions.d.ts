@@ -1,12 +1,12 @@
-import { CommandBase } from '../../helpers/command-base';
+import { CommandBase } from '../../helpers/command-base.js';
 export default class Permissions extends CommandBase {
     static packageFileName: string;
     static description: string;
     static examples: string[];
     static readonly flags: {
-        package: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
-        metadata: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
-        namespaces: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
+        package: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        metadata: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        namespaces: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
     };
     protected metaNames: Set<string>;
     protected namespaces: Set<string>;

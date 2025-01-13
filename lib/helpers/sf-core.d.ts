@@ -1,3 +1,4 @@
+import { BuilderOptions } from 'xml2js';
 export declare class SfCore {
     static ASTERIX: string;
     static MAIN: string;
@@ -7,5 +8,5 @@ export declare class SfCore {
     static getPackageBase(version?: any): Promise<any>;
     static createPackage(packageTypes: Map<string, string[]>, version?: string): Promise<any>;
     static minifyPackage(packageObj: any): any;
-    static writePackageFile(metadataMap: Map<string, string[]>, packageFilePath: string, append?: boolean, xmlOptions?: any): Promise<void>;
+    static writePackageFile(metadataMap: Map<string, string[]>, packageFilePath: string, append?: boolean, xmlOptions?: BuilderOptions): Promise<void>;
 }

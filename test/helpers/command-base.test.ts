@@ -1,10 +1,9 @@
-import { expect } from '@oclif/test';
+import { expect } from 'chai';
 import { Config } from '@oclif/core';
 import { Org, Connection } from '@salesforce/core';
 import { Ux } from '@salesforce/sf-plugins-core';
-import { ConditionalError, CommandBase } from '../../src/helpers/command-base';
-import Setup from './setup';
-
+import { ConditionalError, CommandBase } from '../../src/helpers/command-base.js';
+import Setup from './setup.js';
 
 export class TestError extends Error {}
 export class TestCommand extends CommandBase {
@@ -186,11 +185,11 @@ describe('CommandBase', () => {
       // ex was re-thrown
     }
   });
-  
+
   it('Can run', async function () {
     if (!command) {
       this.skip();
     }
     await command.run();
-  })
+  });
 });

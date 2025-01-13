@@ -1,4 +1,4 @@
-import { OptionsBase } from './options';
+import { OptionsBase } from './options.js';
 export declare class ScaffoldOptions extends OptionsBase {
     sObjectTypes: string[];
     includeOptionalFields: boolean;

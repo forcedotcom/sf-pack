@@ -1,11 +1,11 @@
-import { DescribeSObjectResult } from 'jsforce';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import { SfTasks as SfTasks } from '../../helpers/sf-tasks';
-import Utils from '../../helpers/utils';
-import { OptionsFactory } from '../../helpers/options-factory';
-import { ScaffoldOptions } from '../../helpers/scaffold-options';
-import SfProject from '../../helpers/sf-project';
+import { CommandBase } from '../../helpers/command-base.js';
+import { SfTasks as SfTasks } from '../../helpers/sf-tasks.js';
+import Utils from '../../helpers/utils.js';
+import { OptionsFactory } from '../../helpers/options-factory.js';
+import { ScaffoldOptions } from '../../helpers/scaffold-options.js';
+import SfProject from '../../helpers/sf-project.js';
 
 export default class Scaffold extends CommandBase {
   public static description = CommandBase.messages.getMessage('apex.scaffold.commandDescription');
@@ -27,6 +27,7 @@ export default class Scaffold extends CommandBase {
       description: CommandBase.messages.getMessage('apex.scaffold.optionsFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   private static META_XML =
@@ -45,7 +46,7 @@ export default class Scaffold extends CommandBase {
     let options: ScaffoldOptions;
     // Read/Write the options file if it does not exist already
     if (flags.options) {
-      const optionsFilePath = flags.options;
+      const optionsFilePath: string = flags.options;
       options = await OptionsFactory.get(ScaffoldOptions, optionsFilePath);
       if (!options) {
         this.raiseError(`Unable to read options file: ${optionsFilePath}.`);
@@ -56,7 +57,7 @@ export default class Scaffold extends CommandBase {
     }
 
     if (flags.sobjects) {
-      const objList = flags.sobjects;
+      const objList: string = flags.sobjects;
       options.sObjectTypes.push(...objList.split(','));
     }
 

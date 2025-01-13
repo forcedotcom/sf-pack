@@ -1,5 +1,5 @@
-import { OptionsBase } from './options';
-import { SfCore } from './sf-core';
+import { OptionsBase } from './options.js';
+import { SfCore } from './sf-core.js';
 
 export class UnmaskOptions extends OptionsBase {
   public static defaultUserQuery = 'SELECT Id, username, IsActive, Email FROM User';

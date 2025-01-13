@@ -1,4 +1,4 @@
-import os = require('os');
+import os from 'node:os';
 
 export default class Constants {
   public static readonly DEFAULT_XML_NAMESPACE = 'http://soap.sforce.com/2006/04/metadata';
@@ -29,9 +29,11 @@ export default class Constants {
   public static readonly EOL = os.EOL;
   public static readonly CR = '\r';
   public static readonly LF = '\n';
-  public static readonly CONENTVERSION_MAX_SIZE = 37000000;
+  public static readonly CONENTVERSION_MAX_SIZE = 37_000_000;
   public static readonly MIME_JSON = 'application/json';
   public static readonly DEFAULT_CSV_TEXT_WRAPPERS = ['"'];
-  public static readonly MAX_EXCEL_LENGTH = 32767;
+  public static readonly MAX_EXCEL_LENGTH = 32_767;
   public static readonly CUSTOM_SUFFIX = '__c';
+  public static readonly DEFAULT_XML_EOF = '\n';
+  public static readonly DEFAULT_XML_ENCODING = 'utf-8';
 }

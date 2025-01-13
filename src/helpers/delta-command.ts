@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from './command-base';
-import { DeltaOptions } from './delta-options';
-import { OptionsFactory } from './options-factory';
+import { CommandBase } from './command-base.js';
+import { DeltaOptions } from './delta-options.js';
+import { OptionsFactory } from './options-factory.js';
 
 export abstract class DeltaCommandBase extends CommandBase {
   public static defaultCopyDirList: string[] = ['aura', 'lwc', 'experiences', 'territory2Models', 'waveTemplates'];

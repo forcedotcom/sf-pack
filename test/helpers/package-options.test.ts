@@ -1,8 +1,8 @@
-import { expect } from '@oclif/test';
-import { PackageOptions } from '../../src/helpers/package-options';
-import { SfTasks } from '../../src/helpers/sf-tasks';
-import Utils from '../../src/helpers/utils';
-import { OptionsFactory } from '../../src/helpers/options-factory';
+import { expect } from 'chai';
+import { PackageOptions } from '../../src/helpers/package-options.js';
+import { SfTasks } from '../../src/helpers/sf-tasks.js';
+import Utils from '../../src/helpers/utils.js';
+import { OptionsFactory } from '../../src/helpers/options-factory.js';
 
 const optionsPath = './options.json';
 let types: string[] = null;

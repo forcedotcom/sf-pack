@@ -1,11 +1,11 @@
 import { promises as fs } from 'node:fs';
-import path = require('path');
+import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { expect } from '@oclif/test';
-import Utils from '../../../src/helpers/utils';
-import { XPathOptions } from '../../../src/helpers/xpath-options';
-import { OptionsFactory } from '../../../src/helpers/options-factory';
-import Constants from '../../../src/helpers/constants';
+import { expect } from 'chai';
+import Utils from '../../../src/helpers/utils.js';
+import { XPathOptions } from '../../../src/helpers/xpath-options.js';
+import { OptionsFactory } from '../../../src/helpers/options-factory.js';
+import Constants from '../../../src/helpers/constants.js';
 
 const optionsPath = 'test-options.json';
 const xmlPath = 'test.profile-meta.xml';
@@ -30,7 +30,7 @@ describe('XPath Tests', function () {
     await Utils.deleteFile(xmlPath);
   });
 
-  this.timeout(50000); // Times out due to blocking spawnSync otherwise
+  this.timeout(50_000); // Times out due to blocking spawnSync otherwise
 
   it('Returns Exit Code 0', async () => {
     await fs.writeFile(
