@@ -1,7 +1,7 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import { SfQuery } from '../../../helpers/sf-query';
-import { Office } from '../../../helpers/office';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { SfQuery } from '../../../helpers/sf-query.js';
+import { Office } from '../../../helpers/office.js';
 
 export default class Report extends CommandBase {
   public static defaultJobStatusWaitMax = -1;
@@ -27,6 +27,7 @@ export default class Report extends CommandBase {
       ]),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {

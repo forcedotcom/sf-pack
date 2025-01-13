@@ -1,7 +1,7 @@
-import path = require('path');
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
-import Utils from './utils';
-import { SfCore } from './sf-core';
+import Utils from './utils.js';
+import { SfCore } from './sf-core.js';
 
 export class OptionsSettings {
   public ignoreVersion = false;

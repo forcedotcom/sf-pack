@@ -1,6 +1,6 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import xmlMerge from '../../helpers/xml-merge';
+import { CommandBase } from '../../helpers/command-base.js';
+import xmlMerge from '../../helpers/xml-merge.js';
 
 export default class Merge extends CommandBase {
   public static description = CommandBase.messages.getMessage('package.merge.commandDescription');
@@ -12,7 +12,7 @@ export default class Merge extends CommandBase {
     Compares package-a.xml to package-b.xml and removes common elements from BOTH packages - leaving only the differences.`,
   ];
 
-  public static readonly flags =  {
+  public static readonly flags = {
     source: Flags.file({
       char: 's',
       required: true,
@@ -27,11 +27,12 @@ export default class Merge extends CommandBase {
       char: 'c',
       description: CommandBase.messages.getMessage('package.merge.isPackageCompareFlagDescription'),
     }),
+    ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
-  
 
   protected async runInternal(): Promise<void> {
     const { flags } = await this.parse(Merge);
-    await xmlMerge.mergeXmlFiles(flags.source, flags.destination, flags.compare, this.UX);
+    await xmlMerge.mergeXmlFiles(flags.source as string, flags.destination as string, flags.compare as boolean, this.UX);
   }
 }

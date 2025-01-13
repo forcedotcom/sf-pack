@@ -1,10 +1,10 @@
-import path = require('path');
+import path from 'node:path';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import { SfTasks } from '../../helpers/sf-tasks';
-import { SfPermission } from '../../helpers/sf-permission';
-import { SfCore } from '../../helpers/sf-core';
-import Utils from '../../helpers/utils';
+import { CommandBase } from '../../helpers/command-base.js';
+import { SfTasks } from '../../helpers/sf-tasks.js';
+import { SfPermission } from '../../helpers/sf-permission.js';
+import { SfCore } from '../../helpers/sf-core.js';
+import Utils from '../../helpers/utils.js';
 
 export default class Permissions extends CommandBase {
   public static packageFileName = 'package-permissions.xml';
@@ -37,6 +37,7 @@ export default class Permissions extends CommandBase {
       description: CommandBase.messages.getMessage('namespacesFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected metaNames: Set<string>;
@@ -48,12 +49,12 @@ export default class Permissions extends CommandBase {
 
     // Gather metadata names to include
     const metaNames = Utils.sortArray(
-      flags.metadata ? flags.metadata.split(',') : SfPermission.defaultPermissionMetaTypes
+      flags.metadata ? (flags.metadata as string).split(',') : SfPermission.defaultPermissionMetaTypes
     );
     this.metaNames = new Set(metaNames);
 
     // Are we including namespaces?
-    this.namespaces = flags.namespaces ? new Set<string>(flags.namespaces.split(',')) : new Set<string>();
+    this.namespaces = flags.namespaces ? new Set<string>((flags.namespaces as string).split(',')) : new Set<string>();
 
     this.packageFileName = flags.package || Permissions.packageFileName;
 

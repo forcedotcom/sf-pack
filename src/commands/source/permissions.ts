@@ -1,8 +1,8 @@
-import path = require('path');
+import path from 'node:path';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import Utils from '../../helpers/utils';
-import { Office } from '../../helpers/office';
+import { CommandBase } from '../../helpers/command-base.js';
+import Utils from '../../helpers/utils.js';
+import { Office } from '../../helpers/office.js';
 import {
   SfPermission,
   ObjectDetail,
@@ -10,8 +10,8 @@ import {
   PermissionSet,
   MetadataDetail,
   MetaDataPermission,
-} from '../../helpers/sf-permission';
-import SfProject from '../../helpers/sf-project';
+} from '../../helpers/sf-permission.js';
+import SfProject from '../../helpers/sf-project.js';
 
 export default class Permissions extends CommandBase {
   public static defaultReportPath = 'PermissionsReport.xlsx';
@@ -51,6 +51,8 @@ export default class Permissions extends CommandBase {
       ]),
       required: false,
     }),
+    ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected defaultReportHeaderName = '_HEADERS_';
@@ -69,7 +71,7 @@ export default class Permissions extends CommandBase {
     // Are we including namespaces?
     const folders: string[] = flags.folders ? flags.folders.split(',') : Permissions.defaultMetadataFolders;
 
-    const originalCwd = Utils.setCwd(flags.source);
+    const originalCwd = Utils.setCwd(flags.source as string);
     const workbookMap = new Map<string, string[][]>();
     try {
       this.objectMetadata = new Map<string, ObjectDetail>();
@@ -106,7 +108,7 @@ export default class Permissions extends CommandBase {
       }
     }
 
-    const reportPath = path.resolve(flags.report || Permissions.defaultReportPath);
+    const reportPath = path.resolve((flags.report as string) || Permissions.defaultReportPath);
     this.UX.log(`Writing Report: ${reportPath}`);
 
     Office.writeXlxsWorkbook(workbookMap, reportPath);

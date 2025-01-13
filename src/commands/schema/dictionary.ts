@@ -1,16 +1,16 @@
 import { createWriteStream } from 'node:fs';
-import path = require('path');
-import { DescribeSObjectResult } from 'jsforce';
+import path from 'node:path';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import { SfTasks } from '../../helpers/sf-tasks';
-import Utils from '../../helpers/utils';
-import { OptionsFactory } from '../../helpers/options-factory';
-import { Office } from '../../helpers/office';
-import SchemaUtils from '../../helpers/schema-utils';
-import SchemaOptions from '../../helpers/schema-options';
-import { SfQuery } from '../../helpers/sf-query';
-import Constants from '../../helpers/constants';
+import { CommandBase } from '../../helpers/command-base.js';
+import { SfTasks } from '../../helpers/sf-tasks.js';
+import Utils from '../../helpers/utils.js';
+import { OptionsFactory } from '../../helpers/options-factory.js';
+import { Office } from '../../helpers/office.js';
+import SchemaUtils from '../../helpers/schema-utils.js';
+import SchemaOptions from '../../helpers/schema-options.js';
+import { SfQuery } from '../../helpers/sf-query.js';
+import Constants from '../../helpers/constants.js';
 
 export default class Dictionary extends CommandBase {
   public static description = CommandBase.messages.getMessage('schema.dictionary.commandDescription');
@@ -45,6 +45,7 @@ export default class Dictionary extends CommandBase {
       description: CommandBase.messages.getMessage('schema.dictionary.tmpFileFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected options: SchemaOptions;
@@ -52,17 +53,17 @@ export default class Dictionary extends CommandBase {
   protected async runInternal(): Promise<void> {
     const { flags } = await this.parse(Dictionary);
     // Read/Write the options file if it does not exist already
-    this.options = await OptionsFactory.get(SchemaOptions, flags.options);
+    this.options = await OptionsFactory.get(SchemaOptions, flags.options as string);
 
-    if(flags.tmpFile) {
+    if (flags.tmpFile) {
       this.UX.log(`Writing Xlsx file from tmp file ${flags.tmpFile}...`);
-      await this.writeDictionary(flags.tmpFile, flags.report );
+      await this.writeDictionary(flags.tmpFile as string, flags.report as string);
       return;
     }
 
     const schemaTmpFile = `schema-${this.orgAlias}.tmp`;
 
-    const sortedTypeNames = await this.getSortedTypeNames(flags.namespaces);
+    const sortedTypeNames = await this.getSortedTypeNames(flags.namespaces as string);
     // sortedTypeNames = ['Account', 'Case', 'Lead'];
 
     // Create for writing - truncates if exists
@@ -81,7 +82,7 @@ export default class Dictionary extends CommandBase {
         }
         for (const name of this.options.outputDefMap.keys()) {
           // These are addressed later
-          if(name === validationRuleName) {
+          if (name === validationRuleName) {
             continue;
           }
           fileStream.write(`*${name}${Constants.EOL}`);
@@ -110,7 +111,7 @@ export default class Dictionary extends CommandBase {
 
           const fieldDefinitionMap = await this.entityDefinitionValues(metaDataType, entityDefinitionFields);
           const dynamicCode = this.options.getDynamicCode(name);
-          
+
           const schemaRows = new Map<string, any[]>();
           for await (const row of SchemaUtils.getDynamicSchemaData(schema, dynamicCode, collection)) {
             if (row.length === 0) {
@@ -119,7 +120,7 @@ export default class Dictionary extends CommandBase {
             schemaRows.set(row[nameFieldIndex] as string, row as any[]);
           }
 
-          for(const fieldName of fieldDefinitionMap.keys()) {
+          for (const fieldName of fieldDefinitionMap.keys()) {
             const row = schemaRows.get(fieldName);
             if (!row || row.length === 0) {
               continue;
@@ -143,18 +144,18 @@ export default class Dictionary extends CommandBase {
         this.UX.log(`FAILED: ${err.message as string}.`);
       }
     }
-    if(this.options.includeValidationRules) {
+    if (this.options.includeValidationRules) {
       this.UX.log(`Gathering ValidationRules...`);
       fileStream.write(`*${validationRuleName}${Constants.EOL}`);
-      
+
       const defMap = this.options.getDefinitionMap(validationRuleName);
       const headerRow: string[] = Array.from(defMap.keys());
-      
+
       // fileStream.write(`${JSON.stringify(headerRow)}${Constants.EOL}`);
 
-      const vrs = await SfQuery.getValidationRules(this.org,true);
+      const vrs = await SfQuery.getValidationRules(this.org, true);
       let vrIndex = 1;
-      for(const vr of vrs) {
+      for (const vr of vrs) {
         this.UX.log(`Gathering (${vrIndex++}/${vrs.length}) ValidationRules...`);
         const vrRow: string[] = [];
         for (const header of headerRow) {
@@ -166,22 +167,20 @@ export default class Dictionary extends CommandBase {
 
     fileStream.end();
 
-    await this.writeDictionary(schemaTmpFile, flags.report );
+    await this.writeDictionary(schemaTmpFile, flags.report as string);
 
     // Clean up file at end
     await Utils.deleteFile(schemaTmpFile);
 
     // Write options JSON incase there have been structure changes since it was last saved.
     if (flags.options) {
-      await this.options.save(flags.options);
+      await this.options.save(flags.options as string);
     }
   }
 
-  private async writeDictionary(schemaTmpFile: string, reportPathFlag: string ): Promise<void> {
+  private async writeDictionary(schemaTmpFile: string, reportPathFlag: string): Promise<void> {
     const workbookMap = new Map<string, string[][]>();
-    const reportPath = path
-      .resolve(reportPathFlag || Dictionary.defaultReportPath)
-      .replace(/\{ORG\}/, this.orgAlias);
+    const reportPath = path.resolve(reportPathFlag || Dictionary.defaultReportPath).replace(/\{ORG\}/, this.orgAlias);
 
     const invalidLines: string[] = [];
     this.UX.log('Preparing Data Dictionary');
@@ -199,7 +198,7 @@ export default class Dictionary extends CommandBase {
           }
           continue;
         }
-        if(line.length > Constants.MAX_EXCEL_LENGTH) {
+        if (line.length > Constants.MAX_EXCEL_LENGTH) {
           invalidLines.push(line);
           continue;
         }
@@ -210,13 +209,13 @@ export default class Dictionary extends CommandBase {
       throw err;
     }
 
-    if(invalidLines.length > 0) {
+    if (invalidLines.length > 0) {
       this.UX.warn('Dictionary lines exceed max length for Excel: ');
       for await (const line of invalidLines) {
         this.UX.warn(line);
       }
     }
-    
+
     this.UX.log(`Writing Data Dictionary: ${reportPath}`);
     try {
       Office.writeXlxsWorkbook(workbookMap, reportPath);
@@ -258,7 +257,9 @@ export default class Dictionary extends CommandBase {
     let records = await SfQuery.queryOrg(this.org, query);
     const durableId: string = records[0].DurableId;
 
-    query = `SELECT QualifiedApiName,${fieldNames.join(',')} FROM FieldDefinition where EntityDefinition.DurableID='${durableId}' ORDER BY QualifiedApiName`;
+    query = `SELECT QualifiedApiName,${fieldNames.join(
+      ','
+    )} FROM FieldDefinition where EntityDefinition.DurableID='${durableId}' ORDER BY QualifiedApiName`;
     records = await SfQuery.queryOrg(this.org, query);
 
     for (const record of records) {

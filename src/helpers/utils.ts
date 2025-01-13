@@ -1,14 +1,17 @@
-import { exec } from 'node:child_process';
-import path = require('path');
+import { exec, ExecOptions } from 'node:child_process';
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import { createReadStream } from 'node:fs';
 import { createInterface } from 'node:readline';
-import mime = require('mime-types');
-import xpath = require('xpath');
-import { DOMParser as dom } from '@xmldom/xmldom';
+// import reqUtils from'node:util';
+import mime from 'mime-types';
+import { DOMParser, MIME_TYPE } from '@xmldom/xmldom';
+import * as xpath from 'xpath';
 import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
-import Constants from './constants';
+import { glob } from 'glob';
+import bent  from'bent';
+import Constants from './constants.js';
 
 export const NO_CONTENT_CODE = 204;
 
@@ -37,11 +40,11 @@ export enum IOItem {
 }
 
 export class RestResult {
-  public id: string;
-  public code: number;
+  public id: string | undefined;
+  public code: number | undefined;
   public body: any;
   public isError = false;
-  public contentType: string;
+  public contentType: string | undefined;
   public isBinary = false;
   public headers: any;
 
@@ -54,15 +57,13 @@ export class RestResult {
     return false;
   }
 
-  public get redirectUrl(): string {
-    return this.isRedirect ? (this.headers?.location as string) : null;
+  public get redirectUrl(): string | undefined {
+    return this.isRedirect ? (this.headers?.location as string) : undefined;
   }
 
-  public throw(): Error {
+  public throw(): Error | void {
     if (this.isError) {
       throw this.getError();
-    } else {
-      return null;
     }
   }
 
@@ -70,13 +71,13 @@ export class RestResult {
     return this.getError() || this.body || this.id;
   }
 
-  private getError(): Error {
-    return this.isError ? new Error(`(${this.code}) ${JSON.stringify(this.body)}`) : null;
+  private getError(): Error | undefined {
+    return this.isError ? new Error(`(${this.code}) ${JSON.stringify(this.body)}`) : undefined;
   }
 }
 
 export class CmdResponse {
-  public status: number;
+  public status: number | undefined;
   public result: any;
 }
 
@@ -86,23 +87,16 @@ export default class Utils {
   public static ReadFileBase64EncodingOption = { encoding: 'base64' };
 
   public static tempFilesPath = 'Processing_AcuPack_Temp_DoNotUse';
-  public static defaultXmlOptions = {
+  public static defaultXmlOptions: xml2js.BuilderOptions = {
     renderOpts: { pretty: true, indent: '    ', newline: '\n' },
     xmldec: { version: '1.0', encoding: 'UTF-8' },
-    eofChar: '\n',
-    encoding: 'utf-8',
   };
 
-  public static execOptions = { env: process.env, maxBuffer: 10 * 1024 * 1024 };
-
-  private static reqUtils = require('node:util');
-  private static reqGlob = require('glob');
-  private static glob = Utils.reqUtils.promisify(Utils.reqGlob);
-  private static bent = require('bent');
-
+  public static execOptions: ExecOptions = { env: process.env, maxBuffer: 10 * 1024 * 1024};
+  
   public static async *getFiles(folderPath: string, isRecursive = true): AsyncGenerator<string, void, void> {
     if (!folderPath) {
-      return null;
+      return;
     }
     for await (const item of Utils.getItems(folderPath, IOItem.File, isRecursive)) {
       yield item;
@@ -113,6 +107,10 @@ export default class Utils {
     for await (const item of Utils.getItems(folderPath, IOItem.Folder, isRecursive)) {
       yield item;
     }
+  }
+
+  public static replaceBackslashes(pathWithBackslashes: string): string {
+    return pathWithBackslashes.replace(/\\/g, '/');
   }
 
   public static async *getItems(
@@ -126,10 +124,11 @@ export default class Utils {
     }
     let fileItems;
     // If we have a wildcarded path - lets use glob
-    const isGlob = await this.glob.hasMagic(rootPath);
+    const isGlob = glob.hasMagic(rootPath);
     if (isGlob) {
       // Globs should be specific so just return
-      fileItems = await this.glob(rootPath);
+      // glob ONLY works with forward slashes...sigh
+      fileItems = await glob(Utils.replaceBackslashes(rootPath));
       for (const filePath of fileItems) {
         yield Utils.normalizePath(filePath as string);
       }
@@ -201,7 +200,7 @@ export default class Utils {
     }
   }
 
-  public static async readFile(filePath: string, options?: any): Promise<string> {
+  public static async readFile(filePath: string, options?: any): Promise<string|null> {
     if (!filePath || !(await Utils.pathExists(filePath))) {
       return null;
     }
@@ -256,7 +255,7 @@ export default class Utils {
 
   public static async copyFile(source: string, destination: string): Promise<void> {
     if (!source || !destination) {
-      return null;
+      return;
     }
     try {
       await Utils.mkDirPath(destination, true);
@@ -284,32 +283,32 @@ export default class Utils {
     return array;
   }
 
-  public static selectXPath(xml: string, xPaths: string[]): Map<string, string[]> {
-    if (!xml || !xPaths || xPaths.length === 0) {
-      return null;
+  
+  public static selectXPath(xml: string, xPaths: string[]): Map<string, string[]> | undefined {
+    if (xml && xPaths && xPaths.length !== 0) {
+      const results = new Map<string, string[]>();
+      const doc = new DOMParser().parseFromString(xml, MIME_TYPE.XML_TEXT);
+  
+      for (const xp of xPaths) {
+        if (!xp) {
+          results.set(xp, null);
+          continue;
+        }
+        // @ts-expect-error missing Node properties are not needed
+        const nodes: SelectReturnType = xpath.select(xp, doc);
+  
+        if (!nodes || nodes.length === 0) {
+          results.set(xp, null);
+          continue;
+        }
+        const values: string[] = [];
+        for (const node of nodes) {
+          values.push(node.toLocaleString() as string);
+        }
+        results.set(xp, values);
+      }
+      return results;  
     }
-
-    const results = new Map<string, string[]>();
-    const doc = new dom().parseFromString(xml);
-
-    for (const xp of xPaths) {
-      if (!xp) {
-        results.set(xp, null);
-        continue;
-      }
-      const nodes = xpath.select(xp, doc);
-
-      if (!nodes || nodes.length === 0) {
-        results.set(xp, null);
-        continue;
-      }
-      const values: string[] = [];
-      for (const node of nodes) {
-        values.push(node.toLocaleString());
-      }
-      results.set(xp, values);
-    }
-    return results;
   }
 
   public static async deleteFile(filePath: string): Promise<boolean> {
@@ -328,18 +327,16 @@ export default class Utils {
     await new Promise((resolve) => setTimeout(resolve, sleepMilliseconds));
   }
 
-  public static getFieldValues(records: any[], fieldName = 'id', mustHaveValue = false): string[] {
-    if (!records) {
-      return null;
-    }
-    const values: string[] = [];
-    for (const record of records) {
-      values.push(Utils.getFieldValue(record, fieldName, mustHaveValue));
-    }
-    return values;
+  public static getFieldValues(records: any[], fieldName = 'id', mustHaveValue = false): string[] | undefined{
+    if (records) {
+      const values: string[] = [];
+      for (const record of records) {
+        values.push(Utils.getFieldValue(record, fieldName, mustHaveValue));
+      }
+      return values;}
   }
 
-  public static getFieldValue(record: any, fieldName = 'id', mustHaveValue = false): string {
+  public static getFieldValue(record: any, fieldName = 'id', mustHaveValue = false): string | null{
     if (!record) {
       return null;
     }
@@ -350,9 +347,9 @@ export default class Utils {
     return !value ? null : value;
   }
 
-  public static unmaskEmail(email: string, mask = '.invalid'): string {
+  public static unmaskEmail(email: string, mask = '.invalid'): string | undefined {
     if (!email) {
-      return null;
+      return;
     }
     if (!email.includes(mask)) {
       return email;
@@ -360,22 +357,20 @@ export default class Utils {
     return email.split(mask).join('');
   }
 
-  public static writeObjectToXml(metadata: any, xmlOptions?: any): string {
+  public static writeObjectToXml(metadata: any, xmlOptions?: xml2js.BuilderOptions): string | undefined {
     if (!metadata) {
-      return null;
+      return;
     }
     const options = xmlOptions ?? Utils.defaultXmlOptions;
     let xml: string = new xml2js.Builder(options).buildObject(metadata);
 
-    if (options.eofChar) {
-      xml += options.eofChar;
-    }
+    xml += Constants.DEFAULT_XML_EOF;
     return xml;
   }
 
-  public static async writeObjectToXmlFile(filePath: string, metadata: any, xmlOptions?: any): Promise<string> {
+  public static async writeObjectToXmlFile(filePath: string, metadata: any, xmlOptions?: xml2js.BuilderOptions): Promise<string | undefined> {
     if (!filePath || !metadata) {
-      return null;
+      return;
     }
     await Utils.mkDirPath(filePath, true);
     const xml = Utils.writeObjectToXml(metadata, xmlOptions);
@@ -384,21 +379,27 @@ export default class Utils {
     return filePath;
   }
 
-  public static async readObjectFromXmlFile(filePath: string, xmlOptions?: any): Promise<any> {
+  public static async readObjectFromXmlFile(filePath: string, xmlOptions?: xml2js.ParserOptions): Promise<any> {
     if (!filePath) {
       return null;
     }
+    const xmlString = await fs.readFile(filePath, { encoding: Constants.DEFAULT_XML_ENCODING });
+    const obj = await this.parseObjectFromXml(xmlString, xmlOptions);
+    return obj;
+  }
+
+  public static async parseObjectFromXml(xml: string, xmlOptions?: xml2js.ParserOptions): Promise<any> {
+    if (!xml) {
+      return null;
+    }
     const options = xmlOptions ?? Utils.defaultXmlOptions;
-    const xmlString = await fs.readFile(filePath, { encoding: options.encoding });
-
-    const result: object = await new xml2js.Parser(options).parseStringPromise(xmlString);
-
+    const result: object = await new xml2js.Parser(options).parseStringPromise(xml);
     return result;
   }
 
-  public static setCwd(newCwdPath: string): string {
+  public static setCwd(newCwdPath: string): string | undefined{
     if (!newCwdPath) {
-      return null;
+      return;
     }
     const currentCwd = path.resolve(process.cwd());
     const newCwd = path.resolve(newCwdPath);
@@ -436,12 +437,12 @@ export default class Utils {
     headers?: any,
     validStatusCodes?: number[],
     isFollowRedirects = true
-  ): Promise<RestResult> {
+  ): Promise<RestResult | undefined> {
     if (!action || !url) {
-      return null;
+      return;
     }
-    let result: RestResult = null;
-    const apiPromise = Utils.bent(action.toString(), headers || {}, validStatusCodes || [200]);
+    let result = null;
+    const apiPromise = bent(action.toString(), headers || {}, validStatusCodes || [200]);
     let tempUrl = url;
     do {
       result = new RestResult();
@@ -469,10 +470,11 @@ export default class Utils {
         }
       } catch (err) {
         result.isError = true;
-        result.code = err.statusCode;
-        result.body = err.message;
-        result.headers = err.headers;
-        tempUrl = result.redirectUrl;
+        const statusError: any = err;
+        result.code = statusError.statusCode;
+        result.body = statusError.message;
+        result.headers = statusError.headers;
+        tempUrl = result.redirectUrl as string;
       }
     } while (isFollowRedirects && result.isRedirect);
     return result;
@@ -495,18 +497,18 @@ export default class Utils {
     delimiter = ',',
     wrapperChars = Constants.DEFAULT_CSV_TEXT_WRAPPERS,
     skipChars = [Constants.EOL, Constants.CR, Constants.LF]
-  ): string[] {
+  ): string[] | undefined {
     if (delimitedLine === null) {
-      return null;
+      return;
     }
     const parts: string[] = [];
-    let part: string = null;
+    let part: string = null as any;
     let inWrapper = false;
     const addPart = function (ch: string): string {
       part = part ? part + ch : ch;
       return part;
     };
-    let lastChar: string = null;
+    let lastChar: string = null as any;
     for (const ch of delimitedLine) {
       lastChar = ch;
       if (skipChars.includes(lastChar)) {
@@ -518,11 +520,11 @@ export default class Utils {
         } else {
           // insert a blank string if part is null
           parts.push(part);
-          part = null;
+          part = null as any;
         }
         continue;
       }
-      // is this part wrapped? (i.e. "this is wrapped, becuase it has the delimiter")
+      // is this part wrapped? (i.e. "this is wrapped, because it has the delimiter")
       if (wrapperChars.includes(lastChar)) {
         inWrapper = !inWrapper;
         if (part === null) {
@@ -545,10 +547,10 @@ export default class Utils {
     wrapperChars = Constants.DEFAULT_CSV_TEXT_WRAPPERS
   ): AsyncGenerator<any, void, void> {
     if (csvFilePath === null) {
-      return null;
+      return;
     }
 
-    let headers: string[] = null;
+    let headers: string[] = null as any;
 
     for await (const line of this.readFileLines(csvFilePath)) {
       const parts = this.parseDelimitedLine(line, delimiter, wrapperChars);
@@ -585,12 +587,8 @@ export default class Utils {
       return null;
     }
     return new Promise((resolve, reject) => {
-      const opt = Utils.execOptions;
-      if(hideWarnings) {
-        opt['stdio'] = 'pipe';
-      }
-      exec(cmd, opt, (error: any, stdout: string) => {
-        let response: CmdResponse;
+      exec(cmd, Utils.execOptions, (error: any, stdout: string) => {
+        let response: CmdResponse = null as any;
         try {
           if (stdout && String(stdout) !== '') {
             response = JSON.parse(Utils.stripANSI(stdout)) as CmdResponse;

@@ -1,6 +1,6 @@
-import { OptionsBase } from './options';
-import { SfCore } from './sf-core';
-import SchemaUtils from './schema-utils';
+import { OptionsBase } from './options.js';
+import { SfCore } from './sf-core.js';
+import SchemaUtils from './schema-utils.js';
 
 export default class SchemaOptions extends OptionsBase {
   private static CURRENT_VERSION = 1.0;
@@ -64,8 +64,8 @@ export default class SchemaOptions extends OptionsBase {
     return headers ? Array.from(headers.keys()) : null;
   }
 
-  public getDefinitionMap(sheetName: string = null): Map<string,string> {
-    const defMap = new Map<string,string>();
+  public getDefinitionMap(sheetName: string = null): Map<string, string> {
+    const defMap = new Map<string, string>();
     const outputDefs = sheetName
       ? this.outputDefMap.get(sheetName)
       : this.outputDefMap.get(this.outputDefMap.keys[0] as string);
@@ -73,7 +73,7 @@ export default class SchemaOptions extends OptionsBase {
     if (outputDefs) {
       for (const outputDef of outputDefs) {
         const parts = outputDef.split('|');
-        defMap.set(parts[0],parts[1]);
+        defMap.set(parts[0], parts[1]);
       }
     }
     return defMap;

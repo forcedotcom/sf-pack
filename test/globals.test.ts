@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
-import Utils from '../src/helpers/utils';
-import Setup from './helpers/setup'
+import Utils from '../src/helpers/utils.js';
+import Setup from './helpers/setup.js';
 
 const clientId = '3MVG9ux34Ig8G5epxHFM0XYGUONe0UR3bJqoigGoSlLXIOIDXomyAVt2HN.Yl7UekI5MsA0n7UK.3Xyk8fcB1';
-const certFilePath = './JWT/server.key'
-
+const certFilePath = './JWT/server.key';
 
 before(async function () {
   this.timeout(0);

@@ -1,7 +1,7 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import Utils from '../../helpers/utils';
-import { SfClient, ApiKind } from '../../helpers/sf-client';
+import { CommandBase } from '../../helpers/command-base.js';
+import Utils from '../../helpers/utils.js';
+import { SfClient, ApiKind } from '../../helpers/sf-client.js';
 
 export default class Get extends CommandBase {
   public static description = CommandBase.messages.getMessage('api.get.commandDescription');
@@ -36,6 +36,7 @@ export default class Get extends CommandBase {
       description: CommandBase.messages.getMessage('api.get.toolingAPIFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {
@@ -45,7 +46,7 @@ export default class Get extends CommandBase {
     const sfClient = new SfClient(this.org);
 
     const ids: string[] = flags.ids.split(',');
-    for await (const response of sfClient.getByIds(flags.metadata, ids, apiKind)) {
+    for await (const response of sfClient.getByIds(flags.metadata as string, ids, apiKind)) {
       const outFilePath: string = flags.output || '{Id}.json';
       const content = response.getContent();
       if (response.isBinary) {

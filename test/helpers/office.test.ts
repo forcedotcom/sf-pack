@@ -1,6 +1,6 @@
-import { expect } from '@oclif/test';
-import { Office } from '../../src/helpers/office';
-import Utils from '../../src/helpers/utils';
+import { expect } from 'chai';
+import { Office } from '../../src/helpers/office.js';
+import Utils from '../../src/helpers/utils.js';
 
 const testFilePath = './output.test.xlsx';
 const data = new Map<string, string[][]>();

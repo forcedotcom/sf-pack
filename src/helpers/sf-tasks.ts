@@ -1,21 +1,21 @@
-import path = require('path');
+import path from 'node:path';
 import {
   DescribeMetadataResult,
   DescribeMetadataObject,
   ListMetadataQuery,
   FileProperties,
-} from 'jsforce/lib/api/metadata';
-import { DescribeSObjectResult } from 'jsforce';
+} from '@jsforce/jsforce-node/lib/api/metadata.js';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node/lib/types';
 import { ensureArray } from '@salesforce/ts-types';
 import { AuthInfo, Connection, Org, AuthFields } from '@salesforce/core';
 import { ConfigAggregator, ConfigInfo } from '@salesforce/core';
-import Utils, { RestResult } from './utils';
-import { RestAction } from './utils';
-import Constants from './constants';
-import { SfCore } from './sf-core';
-import { SfFolder, SfQuery, SfEntity } from './sf-query';
-import { ApiKind, SfClient } from './sf-client';
-import { SfUI } from './sf-ui';
+import Utils, { RestResult } from './utils.js';
+import { RestAction } from './utils.js';
+import Constants from './constants.js';
+import { SfCore } from './sf-core.js';
+import { SfFolder, SfQuery, SfEntity } from './sf-query.js';
+import { ApiKind, SfClient } from './sf-client.js';
+import { SfUI } from './sf-ui.js';
 
 export class SfJobInfo {
   public id: string;
@@ -31,13 +31,13 @@ export class SfJobInfo {
     this.maxStatusCount = 0;
   }
 
-  public static fromRestResult(result: RestResult ): SfJobInfo {
-    if(!result) {
+  public static fromRestResult(result: RestResult): SfJobInfo {
+    if (!result) {
       return null;
     }
     const jobInfo = new SfJobInfo();
     jobInfo.createdDate = Date.now.toString();
-    if(result.isError) {
+    if (result.isError) {
       jobInfo.state = 'Failed';
     } else {
       jobInfo.state = 'Queued';
@@ -48,11 +48,11 @@ export class SfJobInfo {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public static fromResults(results: any): SfJobInfo {
-    if(!results) {
+    if (!results) {
       return null;
     }
     const jobInfo = new SfJobInfo();
-    if(results) {
+    if (results) {
       if (results?.[0]) {
         // If there is a jobId then we have a batch job
         // If not its is a single job
@@ -64,7 +64,7 @@ export class SfJobInfo {
         }
         jobInfo.state = results[0].state;
         jobInfo.createdDate = results[0].createdDate;
-      }  
+      }
     }
     return jobInfo;
   }
@@ -76,8 +76,6 @@ export class SfJobInfo {
 }
 
 export class SfTasks {
-  
-
   public static defaultMetaTypes = [
     'ApexClass',
     'ApexPage',
@@ -98,14 +96,18 @@ export class SfTasks {
     return !response?.metadataObjects ? [] : ensureArray(response.metadataObjects);
   }
 
-  public static async *getTypesForPackage( org: Org, describeMetadatas: Set<any>, namespaces: Set<string> = null ): AsyncGenerator<any, void, void> {
-    if(!org || !describeMetadatas) {
+  public static async *getTypesForPackage(
+    org: Org,
+    describeMetadatas: Set<any>,
+    namespaces: Set<string> = null
+  ): AsyncGenerator<any, void, void> {
+    if (!org || !describeMetadatas) {
       return null;
     }
     let folderPathMap: Map<string, string>;
     for (const describeMetadata of describeMetadatas) {
       const members = [];
-      try{
+      try {
         SfUI.writeMessageCallback(describeMetadata.xmlName as string);
         if (!describeMetadata.inFolder) {
           for await (const result of this.listMetadata(org, describeMetadata.xmlName as string, null, namespaces)) {
@@ -144,15 +146,20 @@ export class SfTasks {
             }
           }
         }
-      } catch(err) {
+      } catch (err) {
         SfUI.writeMessageCallback(`ERROR: ${JSON.stringify(err)}`);
       }
-      
+
       yield { name: describeMetadata.xmlName, members };
     }
   }
 
-  public static async *listMetadata(org: Org, metadataType: string, folder: string = null, namespaces: Set<string> = null): AsyncGenerator<FileProperties, void, void> {
+  public static async *listMetadata(
+    org: Org,
+    metadataType: string,
+    folder: string = null,
+    namespaces: Set<string> = null
+  ): AsyncGenerator<FileProperties, void, void> {
     if (!org || !metadataType) {
       return;
     }
@@ -167,7 +174,7 @@ export class SfTasks {
         //  We are excluding namespaces OR
         //  The list of allowed namespaces does not include the metadata namespace
         // Continue.
-        if (result.namespacePrefix && (!namespaces?.has(result.namespacePrefix))) {
+        if (result.namespacePrefix && !namespaces?.has(result.namespacePrefix)) {
           continue;
         }
         yield result;
@@ -175,8 +182,13 @@ export class SfTasks {
     }
   }
 
-  public static async listMetadatas(org: Org, metadataTypes: Iterable<string>, folder: string = null, namespaces: Set<string> = null): Promise<Map<string, FileProperties[]>> {
-    if(!org || !metadataTypes) {
+  public static async listMetadatas(
+    org: Org,
+    metadataTypes: Iterable<string>,
+    folder: string = null,
+    namespaces: Set<string> = null
+  ): Promise<Map<string, FileProperties[]>> {
+    if (!org || !metadataTypes) {
       return null;
     }
     const response = new Map<string, FileProperties[]>();
@@ -191,35 +203,39 @@ export class SfTasks {
   }
 
   public static async describeObject(org: Org, objectName: string): Promise<DescribeSObjectResult> {
-    if(!org || !objectName) {
+    if (!org || !objectName) {
       return null;
     }
     const results = await org.getConnection().describe(objectName);
     return results;
   }
 
-  public static async enqueueApexTests(org: Org, sfEntities?: SfEntity[], shouldSkipCodeCoverage = false): Promise<RestResult> {
+  public static async enqueueApexTests(
+    org: Org,
+    sfEntities?: SfEntity[],
+    shouldSkipCodeCoverage = false
+  ): Promise<RestResult> {
     if (!org) {
       return null;
     }
 
     // Create request body: https://developer.salesforce.com/docs/atlas.en-us.api_tooling.meta/api_tooling/intro_rest_resources.htm
     const classIds = [];
-    for(const record of sfEntities ?? []) {
+    for (const record of sfEntities ?? []) {
       classIds.push(record.id);
     }
     const body = {
       classids: classIds.length > 0 ? classIds.toString() : null,
       maxFailedTests: -1,
       testLevel: classIds.length > 0 ? 'RunSpecifiedTests' : 'RunLocalTests',
-      skipCodeCoverage: shouldSkipCodeCoverage
+      skipCodeCoverage: shouldSkipCodeCoverage,
     };
     const client = new SfClient(org);
     const uri = `${await client.getBaseUri(ApiKind.TOOLING)}runTestsAsynchronous/`;
-    
+
     // NOTE: If this returns 500 the daily limit may have been reached
     const result = await client.doAction(RestAction.POST, uri, body);
-    if(!result.id) {
+    if (!result.id) {
       result.id = result.body;
     }
     return result;
@@ -234,11 +250,11 @@ export class SfTasks {
     const client = new SfClient(org);
     const uri = `${await client.getBaseUri(jobInfo.jobKind)}${jobInfo.id}`;
     const result = await client.doAction(RestAction.GET, uri);
-    
+
     const newJobInfo = new SfJobInfo();
     newJobInfo.id = jobInfo.id;
     newJobInfo.state = result.body.state;
-    newJobInfo.createdDate = result.body.createdDate
+    newJobInfo.createdDate = result.body.createdDate;
     newJobInfo.statusCount++;
     switch (result.body.state) {
       case 'JobComplete':
@@ -251,7 +267,12 @@ export class SfTasks {
     return newJobInfo;
   }
 
-  public static async *waitForJob(org: Org, jobInfo: SfJobInfo, maxWaitSeconds = -1, sleepMilliseconds = 5000): AsyncGenerator<SfJobInfo, SfJobInfo, void> {
+  public static async *waitForJob(
+    org: Org,
+    jobInfo: SfJobInfo,
+    maxWaitSeconds = -1,
+    sleepMilliseconds = 5000
+  ): AsyncGenerator<SfJobInfo, SfJobInfo, void> {
     if (!org || !jobInfo) {
       return null;
     }
@@ -271,7 +292,7 @@ export class SfTasks {
   }
 
   public static async getOrgInfo(org: Org): Promise<AuthFields> {
-    if(!org) {
+    if (!org) {
       return null;
     }
     const authInfo = await AuthInfo.create({ username: org.getUsername() });
@@ -395,17 +416,16 @@ export class SfTasks {
     // req.setMethod('GET');
     const client = new SfClient(org);
     const uri = `${await client.getBaseUri(ApiKind.TOOLING)}executeAnonymous/?anonymousBody=${encodeURI(apex)}`;
-    
+
     // NOTE: If this returns 500 the daily limit may have been reached
     const result = await client.doAction(RestAction.GET, uri);
-    if(!result.isError) {
+    if (!result.isError) {
       // Count a compiler or execution error as a failure
       result.isError = !result.body.compiled || !result.body.success;
     }
-    
+
     return result;
   }
-
 
   public static async getOrgLimits(org: Org): Promise<RestResult> {
     if (!org) {
@@ -415,11 +435,10 @@ export class SfTasks {
     // https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_limits.htm
     const client = new SfClient(org);
     const uri = `${await client.getBaseUri(ApiKind.LIMITS)}`;
-    
+
     const result = await client.doAction(RestAction.GET, uri);
     return result;
   }
-
 
   private static async getFolderSOQLData(org: Org): Promise<Map<string, string>> {
     if (!this.proFolderPaths) {

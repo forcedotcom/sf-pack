@@ -1,6 +1,6 @@
-import { CommandBase } from '../../../helpers/command-base';
-import { Delta } from '../../../helpers/delta-provider';
-import { DeltaOptions } from '../../../helpers/delta-options';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { Delta } from '../../../helpers/delta-provider.js';
+import { DeltaOptions } from '../../../helpers/delta-options.js';
 export default class Git extends CommandBase {
     static description: string;
     static examples: string[];
