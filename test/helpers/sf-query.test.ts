@@ -1,7 +1,14 @@
-import { expect } from '@oclif/test';
+import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-import { SfQuery, SfCodeCoverage, SfEntity, SfPermissionSet, SfCodeCoverageItem, SfValidationRule } from '../../src/helpers/sf-query';
-import Setup from './setup';
+import {
+  SfQuery,
+  SfCodeCoverage,
+  SfEntity,
+  SfPermissionSet,
+  SfCodeCoverageItem,
+  SfValidationRule,
+} from '../../src/helpers/sf-query.js';
+import Setup from './setup.js';
 
 let org: Org = null;
 describe('sf-query Tests', function () {
@@ -37,7 +44,7 @@ describe('sf-query Tests', function () {
   describe('getCodeCoverage Tests', function () {
     it('Can Handle Null', async function () {
       expect(await SfQuery.getCodeCoverage(null)).to.be.null;
-    })
+    });
     it('Can get Code Coverage', async function () {
       if (!org) {
         this.skip();
@@ -62,8 +69,8 @@ describe('sf-query Tests', function () {
 
     it('Can get Code Coverage Percent From Item', async function () {
       const codeCoverageItem = new SfCodeCoverageItem();
-      codeCoverageItem.coveredLines = [1,2,3,4,5];
-      codeCoverageItem.uncoveredLines = [6,7,8,9];
+      codeCoverageItem.coveredLines = [1, 2, 3, 4, 5];
+      codeCoverageItem.uncoveredLines = [6, 7, 8, 9];
 
       expect(codeCoverageItem.getCodeCoveragePercent()).to.not.equal(0);
     }).timeout(0);
@@ -73,7 +80,6 @@ describe('sf-query Tests', function () {
     const customObjectType = 'Account';
     let testName = 'getCustomApplications';
     describe(testName + ' Tests', function () {
-      
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getCustomApplications(null)).to.be.null;
       });
@@ -83,10 +89,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getCustomApplications(org);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<SfEntity>)
+        expect(results).to.be.instanceOf(Array<SfEntity>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
     testName = 'getSetupEntityTypes';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -98,10 +104,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getSetupEntityTypes(org);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<SfEntity>)
+        expect(results).to.be.instanceOf(Array<SfEntity>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
     testName = 'getFolders';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -113,10 +119,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getFolders(org);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<string>)
+        expect(results).to.be.instanceOf(Array<string>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
 
     testName = 'getPermissions';
     describe(testName + ' Tests', function () {
@@ -129,10 +135,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getPermissions(org);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Map<string, SfPermissionSet>)
+        expect(results).to.be.instanceOf(Map<string, SfPermissionSet>);
         expect(results.size).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
     testName = 'getObjectPermissions';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -144,10 +150,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getObjectPermissions(org, customObjectType);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<string>)
+        expect(results).to.be.instanceOf(Array<string>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
     testName = 'getFieldPermissions';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -159,10 +165,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getFieldPermissions(org, customObjectType);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<string>)
+        expect(results).to.be.instanceOf(Array<string>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
     testName = 'getSetupEntityAccessForTypes';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -174,15 +180,15 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getSetupEntityAccessForTypes(org, ['ApexClass']);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<string>)
+        expect(results).to.be.instanceOf(Array<string>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
-    })
+    });
     testName = 'waitForApexTests';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
-        for await( const results of SfQuery.waitForApexTests(null,null,null)) {
-          if(results) {
+        for await (const results of SfQuery.waitForApexTests(null, null, null)) {
+          if (results) {
             expect.fail();
           }
         }
@@ -191,12 +197,12 @@ describe('sf-query Tests', function () {
         if (!org) {
           this.skip();
         }
-        for await( const results of SfQuery.waitForApexTests(org, null, 1)) {
+        for await (const results of SfQuery.waitForApexTests(org, null, 1)) {
           expect(results).to.not.be.null;
           expect(results).to.be.a('number');
         }
       }).timeout(0);
-    })
+    });
     testName = 'getInClause';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -208,7 +214,7 @@ describe('sf-query Tests', function () {
         }
         const results = SfQuery.getInClause(['one', 'two', 'three'], false);
         expect(results).to.not.be.null;
-        expect(results).to.equal('IN (\'one\',\'two\',\'three\')');
+        expect(results).to.equal("IN ('one','two','three')");
       }).timeout(0);
       it('Can ' + testName + ' with numbers', async function () {
         if (!org) {
@@ -218,7 +224,7 @@ describe('sf-query Tests', function () {
         expect(results).to.not.be.null;
         expect(results).to.equal('IN (1,2,3)');
       }).timeout(0);
-    })
+    });
     testName = 'getValidationRules';
     describe(testName + ' Tests', function () {
       it('Can ' + testName + ' Handle Null', async function () {
@@ -230,7 +236,7 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getValidationRules(org);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<SfValidationRule>)
+        expect(results).to.be.instanceOf(Array<SfValidationRule>);
         expect(results.length).to.be.greaterThan(0);
       }).timeout(0);
       it('Can ' + testName + ' and logic', async function () {
@@ -239,10 +245,10 @@ describe('sf-query Tests', function () {
         }
         const results = await SfQuery.getValidationRules(org, true);
         expect(results).to.not.be.null;
-        expect(results).to.be.instanceOf(Array<SfValidationRule>)
+        expect(results).to.be.instanceOf(Array<SfValidationRule>);
         expect(results.length).to.be.greaterThan(0);
         expect(results[0].errorConditionFormula).to.not.be.null;
       }).timeout(0);
-    })
+    });
   });
 });

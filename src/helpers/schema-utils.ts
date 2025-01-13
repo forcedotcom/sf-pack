@@ -1,5 +1,5 @@
 import * as vm from 'node:vm';
-import path = require('path');
+import path from 'node:path';
 
 export default class SchemaUtils {
   public static ENTITY_DEFINITION = 'EntityDefinition';
@@ -10,7 +10,7 @@ export default class SchemaUtils {
   private static dynamicContext = {
     getPicklistValues(fld: any): string[] {
       const values: string[] = [];
-      if(fld.picklistValues) {
+      if (fld.picklistValues) {
         for (const picklistValue of fld.picklistValues) {
           // Show inactive values
           values.push(`${picklistValue.active ? '' : '(-)'}${picklistValue.value as string}`);
@@ -20,7 +20,7 @@ export default class SchemaUtils {
     },
 
     getPicklistDefaultValue(fld: any): string {
-      if(fld.picklistValues) {
+      if (fld.picklistValues) {
         for (const picklistValue of fld.picklistValues) {
           if (picklistValue.active && picklistValue.defaultValue) {
             return picklistValue.value as string;

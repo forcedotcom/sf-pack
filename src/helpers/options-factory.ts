@@ -1,11 +1,11 @@
-import { OptionsBase, OptionsSettings } from './options';
+import { OptionsBase, OptionsSettings } from './options.js';
 
 export class OptionsFactory {
   public static async get<T extends OptionsBase>(
     type: new () => T,
     optionsFilePath?: string,
     settings?: OptionsSettings
-  ): Promise<T> {
+  ): Promise<T | null> {
     if (!type) {
       return null;
     }

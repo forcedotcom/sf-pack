@@ -1,4 +1,4 @@
-import { OptionsBase } from './options';
+import { OptionsBase } from './options.js';
 
 export class ScaffoldOptions extends OptionsBase {
   public sObjectTypes: string[] = [];

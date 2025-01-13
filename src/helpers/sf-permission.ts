@@ -1,5 +1,5 @@
-import path = require('path');
-import Constants from './constants';
+import path from 'node:path';
+import Constants from './constants.js';
 
 export abstract class XmlPermission {
   protected static getValue(json: any): any {
@@ -533,11 +533,10 @@ export class SfPermission {
     SfPermission.layout,
   ];
 
-
   public static defaultPermissionMetaTypes = [
     SfPermission.permissionSet,
     SfPermission.profile,
-    ...SfPermission.permissionSetMetaTypes
+    ...SfPermission.permissionSetMetaTypes,
   ];
 
   public static getPermissionString(permissionSet: Named): string {

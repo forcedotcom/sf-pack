@@ -1,10 +1,9 @@
-import { FlagOutput, ArgOutput, Input, ParserOutput } from '@oclif/core/lib/interfaces/parser';
 import { Ux, SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, Org, Connection } from '@salesforce/core';
 
 
 // Initialize Messages with the current plugin directory
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(process.cwd());
 
 export class ConditionalError extends Error {
   public isRethrown = false;
@@ -30,21 +29,21 @@ export abstract class CommandBase extends SfCommand<void> {
 
   private static uxInst: Ux;
 
-  public org: Org;
+  public org: Org | undefined;
 
   protected gotError = false;
 
-  protected get orgAlias(): string {
+  protected get orgAlias(): string | undefined {
     this.debug('Start orgAlias');
     return this.org?.getUsername();
   }
 
-  protected get orgId(): string {
+  protected get orgId(): string | undefined {
     this.debug('Start orgId');
     return this.org?.getOrgId();
   }
 
-  protected get connection(): Connection {
+  protected get connection(): Connection | undefined {
     this.debug('Start connection');
     return this.org?.getConnection();
   }
@@ -64,18 +63,18 @@ export abstract class CommandBase extends SfCommand<void> {
       await this.runInternal();
       this.debug('End runInternal');
     } catch (err) {
-      this.errorHandler(err);
+      this.errorHandler(err as Error);
     } finally {
       this.log('Done.');
       process.exitCode = this.gotError ? 1 : 0;
     }
   }
 
-  protected errorHandler(err: Error | unknown, throwErr = false): void {
+  protected errorHandler(err: Error, throwErr = false): void {
     this.debug('Start errorHandler');
     this.gotError = true;
-    let message: string = null;
-    let error: Error = null;
+    let message: string = null as any;
+    let error: Error | ConditionalError | null = null as any;
     
     if (err instanceof ConditionalError) {
       this.debug(err.stack);
@@ -97,11 +96,12 @@ export abstract class CommandBase extends SfCommand<void> {
     }
   }
 
-  protected raiseError(message?: string): void {
+  protected raiseError(message: string): void {
     throw new ConditionalError(message, false);
   }
 
-  protected async parse<F extends FlagOutput, B extends FlagOutput, A extends ArgOutput>(options?: Input<F, B, A>, argv?: string[]): Promise<ParserOutput<F, B, A>> {
+  protected async parse(options?: any, argv?: string[]): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const flags = await super.parse(options,argv);
     this.org = flags.flags[CommandBase.targetOrgFlagName];
     return flags;

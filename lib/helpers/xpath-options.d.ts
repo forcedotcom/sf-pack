@@ -1,8 +1,8 @@
-import { OptionsBase } from './options';
+import { OptionsBase } from './options.js';
 export declare class XPathRule {
-    name: string;
-    xPath: string;
-    values: string[];
+    name: string | undefined;
+    xPath: string | undefined;
+    values: string[] | undefined;
 }
 export declare class XPathOptions extends OptionsBase {
     rules: Map<string, XPathRule[]>;

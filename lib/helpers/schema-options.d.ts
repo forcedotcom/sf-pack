@@ -1,4 +1,4 @@
-import { OptionsBase } from './options';
+import { OptionsBase } from './options.js';
 export default class SchemaOptions extends OptionsBase {
     private static CURRENT_VERSION;
     excludeCustomObjectNames: string[];

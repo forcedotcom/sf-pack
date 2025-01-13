@@ -1,5 +1,5 @@
-import { expect } from '@oclif/test';
-import SfProject, { PackageDirectory } from '../../src/helpers/sf-project';
+import { expect } from 'chai';
+import SfProject, { PackageDirectory } from '../../src/helpers/sf-project.js';
 
 describe('PackageDirectory Tests', () => {
   it('Can Create instance', async () => {
@@ -23,4 +23,3 @@ describe('SfProject Tests', () => {
     expect(results.getDefaultDirectory()).to.not.be.null;
   });
 });
-

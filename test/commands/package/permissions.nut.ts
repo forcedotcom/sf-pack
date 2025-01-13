@@ -1,7 +1,7 @@
-import path = require('path');
+import path from 'node:path';
 import { expect } from 'chai';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import Setup from '../../helpers/setup';
+import Setup from '../../helpers/setup.js';
 
 describe.skip('Test Exception handler', () => {
   let session: TestSession;

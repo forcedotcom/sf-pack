@@ -1,9 +1,9 @@
-import path = require('path');
-import { Record } from 'jsforce';
+import path from 'node:path';
+import { Record } from '@jsforce/jsforce-node';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import { SfQuery } from '../../../helpers/sf-query';
-import { Office } from '../../../helpers/office';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { SfQuery } from '../../../helpers/sf-query.js';
+import { Office } from '../../../helpers/office.js';
 
 export default class Access extends CommandBase {
   public static description = CommandBase.messages.getMessage('admin.user.access.commandDescription');
@@ -35,6 +35,7 @@ export default class Access extends CommandBase {
       ]),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   public static async getAppAccess(
@@ -131,9 +132,7 @@ export default class Access extends CommandBase {
     // create a workbook with a Tab for each App
     const workbookMap = new Map<string, string[][]>();
     try {
-      const reportPath = path
-        .resolve((flags.report) || Access.defaultReportPath)
-        .replace(/\{ORG\}/, this.orgAlias);
+      const reportPath = path.resolve(flags.report as string || Access.defaultReportPath).replace(/\{ORG\}/, this.orgAlias);
       this.UX.log(`Writing Report: ${reportPath}`);
       for (const appLabel of appAccessByAppLabel.keys()) {
         const sheet: string[][] = [

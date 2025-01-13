@@ -1,11 +1,11 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import { SfQuery } from '../../../helpers/sf-query';
-import { OptionsFactory } from '../../../helpers/options-factory';
-import { SfClient } from '../../../helpers/sf-client';
-import Utils from '../../../helpers/utils';
-import { RestAction } from '../../../helpers/utils';
-import { UnmaskOptions } from '../../../helpers/unmask-options';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { SfQuery } from '../../../helpers/sf-query.js';
+import { OptionsFactory } from '../../../helpers/options-factory.js';
+import { SfClient } from '../../../helpers/sf-client.js';
+import Utils from '../../../helpers/utils.js';
+import { RestAction } from '../../../helpers/utils.js';
+import { UnmaskOptions } from '../../../helpers/unmask-options.js';
 
 export default class Unmask extends CommandBase {
   public static description = CommandBase.messages.getMessage('admin.user.unmask.commandDescription');
@@ -27,6 +27,7 @@ export default class Unmask extends CommandBase {
       description: CommandBase.messages.getMessage('admin.user.unmask.userFileFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {
@@ -39,6 +40,7 @@ export default class Unmask extends CommandBase {
     if (flags.userList) {
       usernames = flags.userList.split(',');
     } else if (flags.userFile) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       options = await OptionsFactory.get(UnmaskOptions, flags.userFile);
       if (!options) {
         this.raiseError(`Unable to read user file: ${flags.userFile}.`);

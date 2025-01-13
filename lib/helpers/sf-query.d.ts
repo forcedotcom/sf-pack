@@ -1,5 +1,5 @@
 import { Org } from '@salesforce/core';
-import { Record } from 'jsforce';
+import { Record } from '@jsforce/jsforce-node';
 export declare class SfEntity {
     id: string;
     parentId: string;

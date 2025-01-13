@@ -1,8 +1,8 @@
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
-import path = require('path');
 import { Org } from '@salesforce/core';
-import Utils from '../../src/helpers/utils';
-import Constants from '../../src/helpers/constants';
+import Utils from '../../src/helpers/utils.js';
+import Constants from '../../src/helpers/constants.js';
 
 export default class Setup {
   public static sourceRoot = 'test/source_folder';
@@ -22,7 +22,7 @@ export default class Setup {
   public static get username(): string {
     return Setup.orgUsername;
   }
-  
+
   public static get usernameFlag(): string {
     return Setup.username ? `-u ${Setup.username}` : '';
   }
