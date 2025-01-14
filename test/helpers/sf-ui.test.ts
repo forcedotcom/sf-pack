@@ -1,5 +1,5 @@
-import { expect } from '@oclif/test';
-import { SfUI } from '../../src/helpers/sf-ui';
+import { expect } from 'chai';
+import { SfUI } from '../../src/helpers/sf-ui.js';
 
 describe('SfUI Tests', () => {
   it('Is Not Null', () => {
@@ -21,4 +21,3 @@ describe('SfUI Tests', () => {
     expect(expected).to.equal(actual);
   });
 });
-

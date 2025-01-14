@@ -1,12 +1,12 @@
 import { promises as fs } from 'node:fs';
-import path = require('path');
-import md5File = require('md5-file');
+import path from 'node:path';
+import md5File from 'md5-file';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import Utils from '../../../helpers/utils';
-import { DeltaCommandBase } from '../../../helpers/delta-command';
-import { DeltaProvider, Delta } from '../../../helpers/delta-provider';
-import Constants from '../../../helpers/constants';
+import { CommandBase } from '../../../helpers/command-base.js';
+import Utils from '../../../helpers/utils.js';
+import { DeltaCommandBase } from '../../../helpers/delta-command.js';
+import { DeltaProvider, Delta } from '../../../helpers/delta-provider.js';
+import Constants from '../../../helpers/constants.js';
 
 export default class Md5 extends CommandBase {
   public static description = CommandBase.messages.getMessage('source.delta.md5.commandDescription');

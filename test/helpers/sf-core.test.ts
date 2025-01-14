@@ -1,6 +1,6 @@
-import { expect } from '@oclif/test';
-import { SfCore } from '../../src/helpers/sf-core';
-import Utils from '../../src/helpers/utils';
+import { expect } from 'chai';
+import { SfCore } from '../../src/helpers/sf-core.js';
+import Utils from '../../src/helpers/utils.js';
 
 describe('Sf Core Tests', () => {
   describe('getPackageBase Tests', () => {

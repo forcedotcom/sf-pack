@@ -31,4 +31,6 @@ export default class Constants {
     static readonly DEFAULT_CSV_TEXT_WRAPPERS: string[];
     static readonly MAX_EXCEL_LENGTH = 32767;
     static readonly CUSTOM_SUFFIX = "__c";
+    static readonly DEFAULT_XML_EOF = "\n";
+    static readonly DEFAULT_XML_ENCODING = "utf-8";
 }

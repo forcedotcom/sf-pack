@@ -1,13 +1,13 @@
-import { CommandBase } from '../../helpers/command-base';
+import { CommandBase } from '../../helpers/command-base.js';
 export default class File extends CommandBase {
     static fileSObjectType: string;
     static readonly: any;
     static description: string;
     static examples: string[];
     static readonly flags: {
-        records: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
-        columns: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
-        allornothing: import("@oclif/core/lib/interfaces").BooleanFlag<boolean>;
+        records: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        columns: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        allornothing: import("@oclif/core/interfaces").BooleanFlag<boolean>;
     };
     protected metadataInfo: any;
     protected runInternal(): Promise<void>;

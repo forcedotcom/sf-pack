@@ -1,5 +1,5 @@
-import { expect } from '@oclif/test';
-import { DeltaCommandBase } from '../../src/helpers/delta-command';
+import { expect } from 'chai';
+import { DeltaCommandBase } from '../../src/helpers/delta-command.js';
 
 const config = {
   source: 'source',
@@ -8,7 +8,7 @@ const config = {
   ignoreFile: 'ignore',
   deltaFilePath: 'deltaFilePath',
   options: null,
-  copyfulldir: null
+  copyfulldir: null,
 };
 
 describe('DeltaCommand Tests', () => {
@@ -32,7 +32,6 @@ describe('DeltaCommand Tests', () => {
     });
 
     it('Can Parse Config', async () => {
-      
       const deltaOptions = await DeltaCommandBase.getDeltaOptions(config);
       expect(deltaOptions.deltaFilePath).equals(config.deltaFilePath);
       expect(deltaOptions.source).equals(config.source);

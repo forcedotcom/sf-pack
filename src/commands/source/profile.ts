@@ -1,8 +1,8 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import { SfTasks } from '../../helpers/sf-tasks';
-import Utils from '../../helpers/utils';
-import { SfPermission, PermissionSet } from '../../helpers/sf-permission';
+import { CommandBase } from '../../helpers/command-base.js';
+import { SfTasks } from '../../helpers/sf-tasks.js';
+import Utils from '../../helpers/utils.js';
+import { SfPermission, PermissionSet } from '../../helpers/sf-permission.js';
 
 export default class Profile extends CommandBase {
   public static defaultSourceFolder: string = null;
@@ -41,6 +41,8 @@ export default class Profile extends CommandBase {
       description: CommandBase.messages.getMessage('source.profile.outputFoldersFlagDescription'),
       required: false,
     }),
+    ...CommandBase.commonFlags,
+      ...CommandBase.flags,
   };
 
   protected permissions: Map<string, PermissionSet>;

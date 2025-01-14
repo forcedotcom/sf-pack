@@ -1,8 +1,8 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import { SfQuery } from '../../../helpers/sf-query';
-import { SfClient, NO_CONTENT_CODE, ApiKind } from '../../../helpers/sf-client';
-import { RestAction } from '../../../helpers/utils';
+import { CommandBase } from '../../../helpers/command-base.js';
+import { SfQuery } from '../../../helpers/sf-query.js';
+import { SfClient, NO_CONTENT_CODE, ApiKind } from '../../../helpers/sf-client.js';
+import { RestAction } from '../../../helpers/utils.js';
 
 export default class Clear extends CommandBase {
   public static defaultJobStatusWaitMax = -1;
@@ -26,6 +26,7 @@ export default class Clear extends CommandBase {
       description: CommandBase.messages.getMessage('apex.coverage.clear.classOrTriggerNamesFlagDescription'),
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {

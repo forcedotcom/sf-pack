@@ -1,6 +1,6 @@
 import { Org } from '@salesforce/core';
-import { QueryResult, Record } from 'jsforce';
-import Utils from './utils';
+import { QueryResult, Record } from '@jsforce/jsforce-node';
+import Utils from './utils.js';
 
 // SoqlQueryResult
 
@@ -67,13 +67,12 @@ export class SfCodeCoverage {
         if (item.uncoveredLines) {
           this.totalUncoveredLines += item.uncoveredLines.length;
         }
-        totalLines += item.coveredLines.length + item.uncoveredLines.length;  
+        totalLines += item.coveredLines.length + item.uncoveredLines.length;
       }
     }
-    if(totalLines > 0) {
+    if (totalLines > 0) {
       this.codeCoveragePercent = (this.totalCoveredLines / totalLines) * 100;
     }
-    
   }
 }
 
@@ -101,12 +100,10 @@ export class SfValidationRule extends SfEntity {
   public errorDisplayField: string;
 }
 
-
-
 export class SfQuery {
   // Query Custom Application info - they are called TabSet in SOQL
   public static async getCustomApplications(org: Org): Promise<SfEntity[]> {
-    if(!org) {
+    if (!org) {
       return null;
     }
     const query = "SELECT Id, ApplicationId, Label FROM AppMenuItem WHERE Type='TabSet'";
@@ -125,7 +122,7 @@ export class SfQuery {
   // https://developer.salesforce.com/docs/atlas.en-us.226.0.object_reference.meta/object_reference/sforce_api_objects_setupentityaccess.htm
   //
   public static async getSetupEntityTypes(org: Org): Promise<string[]> {
-    if(!org) {
+    if (!org) {
       return null;
     }
     const query = 'SELECT SetupEntityType FROM SetupEntityAccess GROUP BY SetupEntityType';
@@ -140,7 +137,7 @@ export class SfQuery {
   // Get the SfFolder structure. SFDX only return parent folder information in the metadata. Need to build grandparent
   // structure for Reports, Dashboards, etc...
   public static async getFolders(org: Org): Promise<SfFolder[]> {
-    if(!org) {
+    if (!org) {
       return null;
     }
     const query = 'SELECT Id,ParentId,Name,DeveloperName,Type FROM Folder ORDER BY ParentId';
@@ -160,7 +157,7 @@ export class SfQuery {
 
   // Pulls SfPermissionSet for Profile & PermissionsSet info
   public static async getPermissions(org: Org): Promise<Map<string, SfPermissionSet>> {
-    if(!org) {
+    if (!org) {
       return null;
     }
     const query = 'SELECT Id,Name,Profile.Name,IsOwnedByProfile FROM PermissionSet ORDER BY Profile.Name, Name';
@@ -179,7 +176,7 @@ export class SfQuery {
 
   // Gets the SfObjectPermission Permissions for the specified object type
   public static async getObjectPermissions(org: Org, customObjectTypeName: string): Promise<SfObjectPermission[]> {
-    if(!org || !customObjectTypeName) {
+    if (!org || !customObjectTypeName) {
       return null;
     }
     const query = `SELECT Id,ParentId,PermissionsCreate,PermissionsDelete,PermissionsEdit,PermissionsModifyAllRecords,PermissionsRead,PermissionsViewAllRecords,SObjectType FROM ObjectPermissions WHERE SObjectType='${customObjectTypeName}' ORDER BY SObjectType`;
@@ -203,7 +200,7 @@ export class SfQuery {
 
   // Get the SfFieldPermission permissions for the specific object type
   public static async getFieldPermissions(org: Org, customObjectTypeName: string): Promise<SfFieldPermission[]> {
-    if(!org || !customObjectTypeName) {
+    if (!org || !customObjectTypeName) {
       return null;
     }
     const query = `SELECT Id,ParentId,PermissionsEdit,PermissionsRead,Field FROM FieldPermissions WHERE SobjectType = '${customObjectTypeName}' ORDER BY Field`;
@@ -222,8 +219,11 @@ export class SfQuery {
   }
 
   // Gets the SfSetupEntityAccess information for the specified SetupEntityTypes
-  public static async getSetupEntityAccessForTypes(org: Org, setupEntityTypeNames: string[]): Promise<SfSetupEntityAccess[]> {
-    if(!org || !setupEntityTypeNames || setupEntityTypeNames.length === 0) {
+  public static async getSetupEntityAccessForTypes(
+    org: Org,
+    setupEntityTypeNames: string[]
+  ): Promise<SfSetupEntityAccess[]> {
+    if (!org || !setupEntityTypeNames || setupEntityTypeNames.length === 0) {
       return null;
     }
     const entityTypes = setupEntityTypeNames ? setupEntityTypeNames.join("','") : '';
@@ -240,7 +240,12 @@ export class SfQuery {
     return setupEntityAccesses;
   }
 
-  public static async queryOrg( org: Org,query: string, isToolingAPIQuery: boolean | undefined = false, allRows: boolean | undefined = false): Promise<Record[]> {
+  public static async queryOrg(
+    org: Org,
+    query: string,
+    isToolingAPIQuery: boolean | undefined = false,
+    allRows: boolean | undefined = false
+  ): Promise<Record[]> {
     const records: any[] = [];
     const connection = isToolingAPIQuery ? org.getConnection().tooling : org.getConnection();
 
@@ -271,7 +276,7 @@ export class SfQuery {
       }
       namespaces += `'${ns}'`;
     }
-    if(namespaces.length > 0) {
+    if (namespaces.length > 0) {
       query += ` IN (${namespaces})`;
     }
     query += ' ORDER BY Name ASC';
@@ -323,10 +328,11 @@ export class SfQuery {
 
   // Get all the Validation Rules from the specified Org
   public static async getValidationRules(org: Org, includeLogic = false): Promise<SfValidationRule[]> {
-    if(!org) {
+    if (!org) {
       return null;
     }
-    let query = 'SELECT Id,Active,Description,EntityDefinition.DeveloperName,ErrorDisplayField,ErrorMessage FROM ValidationRule';
+    let query =
+      'SELECT Id,Active,Description,EntityDefinition.DeveloperName,ErrorDisplayField,ErrorMessage FROM ValidationRule';
     let records = await SfQuery.queryOrg(org, query, true);
     const vrs: SfValidationRule[] = [];
     for (const record of records) {
@@ -340,7 +346,7 @@ export class SfQuery {
       vrs.push(vr);
     }
 
-    if(includeLogic) {
+    if (includeLogic) {
       for (const vr of vrs) {
         query = `SELECT Id, Metadata FROM ValidationRule WHERE Id='${vr.id}'`;
         records = await SfQuery.queryOrg(org, query, true);
@@ -350,7 +356,13 @@ export class SfQuery {
     return vrs;
   }
 
-  public static async *waitForRecordCount(org: Org, query: string, recordCount = 0, maxWaitSeconds = 60, sleepMilliseconds = 5000): AsyncGenerator<number, void, void> {
+  public static async *waitForRecordCount(
+    org: Org,
+    query: string,
+    recordCount = 0,
+    maxWaitSeconds = 60,
+    sleepMilliseconds = 5000
+  ): AsyncGenerator<number, void, void> {
     const maxCounter = (maxWaitSeconds * 1000) / sleepMilliseconds;
     let counter = 0;
     let records = null;
@@ -367,14 +379,17 @@ export class SfQuery {
     }
   }
 
-  public static async *waitForApexTests( org: Org, parentJobId: string, waitCountMaxSeconds = 0): AsyncGenerator<number, number, void> {
-    if(!org) {
+  public static async *waitForApexTests(
+    org: Org,
+    parentJobId: string,
+    waitCountMaxSeconds = 0
+  ): AsyncGenerator<number, number, void> {
+    if (!org) {
       return null;
     }
 
     // Check every 30 seconds or waitCountMaxSeconds so we don't waste a bunch of queries
-    const interval = waitCountMaxSeconds >= 30 ? 30000 : waitCountMaxSeconds;
-
+    const interval = waitCountMaxSeconds >= 30 ? 30_000 : waitCountMaxSeconds;
 
     // we want zero records
     const targetCount = 0;
@@ -382,7 +397,7 @@ export class SfQuery {
 
     // If we have a ApexJob Id - lets make sure its started
     let recordCount = 0;
-    if(parentJobId) {
+    if (parentJobId) {
       const jobQuery = `SELECT Id FROM AsyncApexJob WHERE Id = '${parentJobId}' AND Status IN ('Queued')`;
       // Just wait for batch to start
       for await (recordCount of SfQuery.waitForRecordCount(org, jobQuery, targetCount, waitCountMaxSeconds, interval)) {
@@ -392,7 +407,7 @@ export class SfQuery {
       }
       query += ` AND ParentJobId = '${parentJobId}'`;
     }
-    
+
     for await (recordCount of SfQuery.waitForRecordCount(org, query, targetCount, waitCountMaxSeconds, interval)) {
       yield recordCount;
       if (recordCount === targetCount) {
@@ -404,7 +419,7 @@ export class SfQuery {
 
   // Gets the SfSetupEntityAccess information for the specified SetupEntityTypes
   public static getInClause(values: string[] = [''], isValueNumeric = false): string {
-    if(!values) {
+    if (!values) {
       return null;
     }
     let inClause = '';

@@ -1,9 +1,9 @@
-import path = require('path');
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
-import Utils from './utils';
-import { DeltaOptions } from './delta-options';
-import Constants from './constants';
-import SchemaUtils from './schema-utils';
+import Utils from './utils.js';
+import { DeltaOptions } from './delta-options.js';
+import Constants from './constants.js';
+import SchemaUtils from './schema-utils.js';
 
 export class Delta {
   public deltaKind: string;
@@ -34,7 +34,7 @@ export abstract class DeltaProvider {
     filePath: string,
     fullCopyDirNames: string[],
     allowFullCopyPathWithExt = false
-  ): string {
+  ): string | null {
     let fullCopyPath = '';
     let gotFullCopyPath = false;
     if (filePath && fullCopyDirNames) {
@@ -105,7 +105,7 @@ export abstract class DeltaProvider {
           // write the deleted-files.txt report into the parent folder of the destination
           // Reset log file
           await Utils.deleteFile(deleteReportFile);
-        } catch (err) {
+        } catch (err: any) {
           if (!Utils.isENOENT(err)) {
             await this.logMessage(`Unable to delete old report: ${err.message as string}.`);
           }
@@ -134,8 +134,8 @@ export abstract class DeltaProvider {
       if (forceFile) {
         if (this.deltas.size > 0) {
           // Remove the force entries from the hash so they
-          // 'act' like new files and are copiied to the destination.
-          await this.logMessage('Puring force file entries from deltas.', true);
+          // 'act' like new files and are copied to the destination.
+          await this.logMessage('Pruning force file entries from deltas.', true);
           for await (const line of Utils.readFileLines(forceFile)) {
             for await (const filePath of Utils.getFiles(line)) {
               if (this.deltas.delete(filePath)) {
@@ -278,12 +278,12 @@ export abstract class DeltaProvider {
     }
   }
 
-  public async validateDeltaOptions(deltaOptions: DeltaOptions): Promise<string> {
+  public async validateDeltaOptions(deltaOptions: DeltaOptions): Promise<string | null> {
     const result = (): string => {
       if (!deltaOptions.source) {
         return 'No delta -s(ource) specified.';
       }
-      return null;
+      return null as unknown as string;
     };
     return Promise.resolve(result());
   }

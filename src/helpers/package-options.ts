@@ -1,6 +1,6 @@
-import { SfTasks } from './sf-tasks';
-import { OptionsBase } from './options';
-import { SfCore } from './sf-core';
+import { SfTasks } from './sf-tasks.js';
+import { OptionsBase } from './options.js';
+import { SfCore } from './sf-core.js';
 
 export class PackageOptions extends OptionsBase {
   private static CURRENT_VERSION = 1.0;

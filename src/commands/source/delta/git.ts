@@ -1,9 +1,9 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import Utils from '../../../helpers/utils';
-import { DeltaCommandBase } from '../../../helpers/delta-command';
-import { DeltaProvider, Delta } from '../../../helpers/delta-provider';
-import { DeltaOptions } from '../../../helpers/delta-options';
+import { CommandBase } from '../../../helpers/command-base.js';
+import Utils from '../../../helpers/utils.js';
+import { DeltaCommandBase } from '../../../helpers/delta-command.js';
+import { DeltaProvider, Delta } from '../../../helpers/delta-provider.js';
+import { DeltaOptions } from '../../../helpers/delta-options.js';
 
 export default class Git extends CommandBase {
   public static description = CommandBase.messages.getMessage('source.delta.git.commandDescription');
@@ -63,7 +63,7 @@ export default class Git extends CommandBase {
   protected async runInternal(): Promise<void> {
     const { flags } = await this.parse(Git);
     const deltaOptions = await DeltaCommandBase.getDeltaOptions(flags);
-    if(!deltaOptions.deltaFilePath) {
+    if (!deltaOptions.deltaFilePath) {
       deltaOptions.deltaFilePath = flags.git;
     }
 

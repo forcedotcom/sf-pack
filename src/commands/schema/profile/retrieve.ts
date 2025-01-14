@@ -1,9 +1,9 @@
-import path = require('path');
+import path from 'node:path';
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../../helpers/command-base';
-import Utils from '../../../helpers/utils';
-import { ProfileDownload } from '../../../helpers/profile-download';
-import SfProject from '../../../helpers/sf-project';
+import { CommandBase } from '../../../helpers/command-base.js';
+import Utils from '../../../helpers/utils.js';
+import { ProfileDownload } from '../../../helpers/profile-download.js';
+import SfProject from '../../../helpers/sf-project.js';
 
 export default class ProfileRetrieve extends CommandBase {
   public static description = CommandBase.messages.getMessage('schema.profile.retrieve.commandDescription');
@@ -21,6 +21,7 @@ export default class ProfileRetrieve extends CommandBase {
       required: true,
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {

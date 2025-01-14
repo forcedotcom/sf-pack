@@ -1,9 +1,10 @@
-import path = require('path');
+/* eslint-disable no-console */
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
-import { expect } from '@oclif/test';
-import Utils, { RestAction, RestResult } from '../../src/helpers/utils';
-import Constants from '../../src/helpers/constants';
-import Setup from './setup';
+import { expect } from 'chai';
+import Utils, { RestAction, RestResult } from '../../src/helpers/utils.js';
+import Constants from '../../src/helpers/constants.js';
+import Setup from './setup.js';
 
 const testObject = { test: true };
 
@@ -25,13 +26,13 @@ describe(testName + ' Tests', () => {
 
     restResult.isError = false;
     expect(restResult.getContent()).to.equal(restResult.body);
-    expect(restResult.throw()).to.be.null;
+    expect(restResult.throw()).to.be.undefined;
 
-    expect(restResult.redirectUrl).to.not.be.null;
+    expect(restResult.redirectUrl).to.not.be.undefined;
 
     restResult.code = 200;
     expect(restResult.isRedirect).to.be.false;
-    expect(restResult.redirectUrl).to.be.null;
+    expect(restResult.redirectUrl).to.be.undefined;
   });
 });
 
@@ -276,10 +277,10 @@ describe('Utils Test', () => {
     const xml = "<root><node index='0'>data0</node><node1 index='0'>data0</node1><node index='1'>data1</node></root>";
     const xpath = '//root/node/text()';
     it('Can handle nulls', () => {
-      expect(Utils.selectXPath(null, null)).to.equal(null);
-      expect(Utils.selectXPath(xml, null)).to.equal(null);
-      expect(Utils.selectXPath(null, [])).to.equal(null);
-      expect(Utils.selectXPath(xml, [])).to.equal(null);
+      expect(Utils.selectXPath(null, null)).to.be.undefined;
+      expect(Utils.selectXPath(xml, null)).to.be.undefined
+      expect(Utils.selectXPath(null, [])).to.be.undefined
+      expect(Utils.selectXPath(xml, [])).to.be.undefined
       expect(Utils.selectXPath(xml, [xpath])).to.not.equal(null);
       expect(Utils.selectXPath(xml, [null, xpath])).to.not.equal(null);
     });
@@ -347,7 +348,7 @@ describe('Utils Test', () => {
   testName = 'getFieldValues';
   describe(testName + ' Test', () => {
     it(testName + ' can handle null', async () => {
-      expect(Utils.getFieldValues(null, null, null)).to.be.null;
+      expect(Utils.getFieldValues(null, null, null)).to.be.undefined;
       expect(Utils.getFieldValues([null], null, null)[0]).to.be.null;
       expect(Utils.getFieldValues([testObject], null, null)[0]).to.be.null;
       expect(Utils.getFieldValues([testObject], null)[0]).to.be.null;
@@ -370,7 +371,7 @@ describe('Utils Test', () => {
 
   describe('unmaskEmail Tests', () => {
     it('Can handle nulls', () => {
-      expect(Utils.unmaskEmail(null)).to.equal(null);
+      expect(Utils.unmaskEmail(null)).to.be.undefined;
     });
     it('Can unmaskEmail', () => {
       expect(Utils.unmaskEmail('test.user@aie.army.com.soqldev.invalid')).to.equal('test.user@aie.army.com.soqldev');
@@ -388,13 +389,13 @@ describe('Utils Test', () => {
     });
     it('Can Handle Null', async () => {
       let result = await Utils.writeObjectToXmlFile(null, null, null);
-      expect(result).equal(null);
+      expect(result).to.be.undefined;
 
       result = await Utils.writeObjectToXmlFile(null, null);
-      expect(result).equal(null);
+      expect(result).to.be.undefined;
 
       result = await Utils.writeObjectToXmlFile(null, {});
-      expect(result).equal(null);
+      expect(result).to.be.undefined;
     });
     it('Can Write File', async () => {
       const result = await Utils.writeObjectToXmlFile(testFilePathTest, testObject);
@@ -411,11 +412,8 @@ describe('Utils Test', () => {
       await Utils.deleteFile(testFilePathTest);
     });
     it(testName + ' can Handle Null', async () => {
-      let result = Utils.writeObjectToXml(null, null);
-      expect(result).equal(null);
-
-      result = Utils.writeObjectToXml(null, Utils.defaultXmlOptions);
-      expect(result).equal(null);
+      expect(Utils.writeObjectToXml(null, null)).to.be.undefined;
+      expect(Utils.writeObjectToXml(null, Utils.defaultXmlOptions)).to.be.undefined;
     });
     it(testName + '  can Write Xml', async () => {
       const result = Utils.writeObjectToXml(testObject);
@@ -454,7 +452,7 @@ describe('Utils Test', () => {
       process.chdir(lkgCwd);
     });
     it('Can Handle Null', () => {
-      expect(Utils.setCwd(null)).equal(null);
+      expect(Utils.setCwd(null)).to.be.undefined;
     });
     it('Can Set Absolute Current Working Directory', () => {
       const testCwd = path.resolve(path.dirname(testFilePath));
@@ -589,7 +587,7 @@ describe('Utils Test', () => {
   });
   describe('parseDelimitedLine Test', () => {
     it('Can handle nulls', () => {
-      expect(Utils.parseDelimitedLine(null)).to.be.null;
+      expect(Utils.parseDelimitedLine(null)).to.be.undefined;
     });
     it('Can handle empty strings', () => {
       expect(Utils.parseDelimitedLine('')).to.deep.equal([]);
@@ -616,12 +614,12 @@ describe('Utils Test', () => {
   describe('parseCSVFile Test', () => {
     it('Can handle nulls', async () => {
       for await (const csvObj of Utils.parseCSVFile(null)) {
-        expect(csvObj).to.be.null;
+        expect(csvObj).to.be.undefined;
       }
     });
     it('Can handle empty strings', async () => {
       for await (const csvObj of Utils.parseCSVFile('')) {
-        expect(csvObj).to.be.null;
+        expect(csvObj).to.be.undefined;
       }
     });
     it('Can parse CSV File', async () => {
@@ -670,8 +668,8 @@ describe('Utils Test', () => {
   testName = 'getRestResult';
   describe(testName + ' Test', () => {
     it(testName + ' can Handle Null', async () => {
-      expect(await Utils.getRestResult(null, null)).to.be.null;
-      expect(await Utils.getRestResult(RestAction.GET, null)).to.be.null;
+      expect(await Utils.getRestResult(null, null)).to.be.undefined;
+      expect(await Utils.getRestResult(RestAction.GET, null)).to.be.undefined;
     });
     it(testName + ' can GET', async () => {
       const results = await Utils.getRestResult(RestAction.GET, Constants.METADATA_COVERAGE_REPORT_URL);

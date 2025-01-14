@@ -1,4 +1,5 @@
-/// <reference types="node" />
+import { ExecOptions } from 'node:child_process';
+import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
 export declare const NO_CONTENT_CODE = 204;
 export declare enum LoggerLevel {
@@ -23,21 +24,21 @@ export declare enum IOItem {
     Unknown = "Unknown"
 }
 export declare class RestResult {
-    id: string;
-    code: number;
+    id: string | undefined;
+    code: number | undefined;
     body: any;
     isError: boolean;
-    contentType: string;
+    contentType: string | undefined;
     isBinary: boolean;
     headers: any;
     get isRedirect(): boolean;
-    get redirectUrl(): string;
-    throw(): Error;
+    get redirectUrl(): string | undefined;
+    throw(): Error | void;
     getContent(): any;
     private getError;
 }
 export declare class CmdResponse {
-    status: number;
+    status: number | undefined;
     result: any;
 }
 export default class Utils {
@@ -47,32 +48,14 @@ export default class Utils {
         encoding: string;
     };
     static tempFilesPath: string;
-    static defaultXmlOptions: {
-        renderOpts: {
-            pretty: boolean;
-            indent: string;
-            newline: string;
-        };
-        xmldec: {
-            version: string;
-            encoding: string;
-        };
-        eofChar: string;
-        encoding: string;
-    };
-    static execOptions: {
-        env: NodeJS.ProcessEnv;
-        maxBuffer: number;
-    };
-    private static reqUtils;
-    private static reqGlob;
-    private static glob;
-    private static bent;
+    static defaultXmlOptions: xml2js.BuilderOptions;
+    static execOptions: ExecOptions;
     static getFiles(folderPath: string, isRecursive?: boolean): AsyncGenerator<string, void, void>;
     static getFolders(folderPath: string, isRecursive?: boolean): AsyncGenerator<string, void, void>;
+    static replaceBackslashes(pathWithBackslashes: string): string;
     static getItems(rootPath: string, itemKind: IOItem, isRecursive?: boolean, depth?: number): AsyncGenerator<string, void, void>;
     static readFileLines(filePath: string): AsyncGenerator<string, void, void>;
-    static readFile(filePath: string, options?: any): Promise<string>;
+    static readFile(filePath: string, options?: any): Promise<string | null>;
     static pathExists(pathToCheck: string): Promise<boolean>;
     static getPathStat(pathToCheck: string): Promise<any>;
     static getPathKind(pathToCheck: string): Promise<IOItem>;
@@ -80,22 +63,23 @@ export default class Utils {
     static mkDirPath(destination: string, hasFileName?: boolean): Promise<void>;
     static copyFile(source: string, destination: string): Promise<void>;
     static sortArray(array: any[]): any[];
-    static selectXPath(xml: string, xPaths: string[]): Map<string, string[]>;
+    static selectXPath(xml: string, xPaths: string[]): Map<string, string[]> | undefined;
     static deleteFile(filePath: string): Promise<boolean>;
     static sleep(sleepMilliseconds?: number): Promise<void>;
-    static getFieldValues(records: any[], fieldName?: string, mustHaveValue?: boolean): string[];
-    static getFieldValue(record: any, fieldName?: string, mustHaveValue?: boolean): string;
-    static unmaskEmail(email: string, mask?: string): string;
-    static writeObjectToXml(metadata: any, xmlOptions?: any): string;
-    static writeObjectToXmlFile(filePath: string, metadata: any, xmlOptions?: any): Promise<string>;
-    static readObjectFromXmlFile(filePath: string, xmlOptions?: any): Promise<any>;
-    static setCwd(newCwdPath: string): string;
+    static getFieldValues(records: any[], fieldName?: string, mustHaveValue?: boolean): string[] | undefined;
+    static getFieldValue(record: any, fieldName?: string, mustHaveValue?: boolean): string | null;
+    static unmaskEmail(email: string, mask?: string): string | undefined;
+    static writeObjectToXml(metadata: any, xmlOptions?: xml2js.BuilderOptions): string | undefined;
+    static writeObjectToXmlFile(filePath: string, metadata: any, xmlOptions?: xml2js.BuilderOptions): Promise<string | undefined>;
+    static readObjectFromXmlFile(filePath: string, xmlOptions?: xml2js.ParserOptions): Promise<any>;
+    static parseObjectFromXml(xml: string, xmlOptions?: xml2js.ParserOptions): Promise<any>;
+    static setCwd(newCwdPath: string): string | undefined;
     static deleteDirectory(dirPath: string, recursive?: boolean): Promise<boolean>;
     static writeFile(filePath: string, contents: any): Promise<void>;
     static chunkRecords(recordsToChunk: any[], chunkSize: number): any[];
-    static getRestResult(action: RestAction, url: string, parameter?: any, headers?: any, validStatusCodes?: number[], isFollowRedirects?: boolean): Promise<RestResult>;
+    static getRestResult(action: RestAction, url: string, parameter?: any, headers?: any, validStatusCodes?: number[], isFollowRedirects?: boolean): Promise<RestResult | undefined>;
     static normalizePath(filePath: string): string;
-    static parseDelimitedLine(delimitedLine: string, delimiter?: string, wrapperChars?: string[], skipChars?: string[]): string[];
+    static parseDelimitedLine(delimitedLine: string, delimiter?: string, wrapperChars?: string[], skipChars?: string[]): string[] | undefined;
     static parseCSVFile(csvFilePath: string, delimiter?: string, wrapperChars?: string[]): AsyncGenerator<any, void, void>;
     static getMIMEType(filename: string): string;
     static stripANSI(input: string, onlyFirst?: boolean): string;
