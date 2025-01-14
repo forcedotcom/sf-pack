@@ -1,6 +1,6 @@
 {
   "name": "@salesforce/sf-pack",
-  "description": "Plugin Extensions",  
+  "description": "Plugin Extensions",
   "version": "1.1.0",
   "dependencies": {
     "@oclif/core": "^4",
@@ -8,7 +8,6 @@
     "@salesforce/sf-plugins-core": "^12",
     "@types/mime-types": "^2.1.4",
     "@xmldom/xmldom": "0.9.5",
-    "ansis": "3.3.2",
     "bent": "^7.3.12",
     "form-data": "^4.0.1",
     "glob": "10.4.5",
@@ -75,6 +74,7 @@
     "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "test:only": "wireit",
     "test:compile": "wireit",
+    "test:cover": "wireit",
     "version": "oclif readme"
   },
   "publishConfig": {
@@ -138,7 +138,7 @@
       ]
     },
     "test:only": {
-      "command": "nyc mocha \"test/**/*.test.ts\"",
+      "command": "nyc --reporter=html --reporter=text mocha \"test/**/*.test.ts\"",
       "env": {
         "FORCE_COLOR": "2"
       },
@@ -187,6 +187,21 @@
         "./*.md",
         "./!(CHANGELOG).md",
         "messages/**/*.md"
+      ],
+      "output": []
+    },
+    "test:cover": {
+      "command": "nyc --reporter=html --reporter=text mocha --exit --timeout 7000",
+      "env": {
+        "FORCE_COLOR": "2"
+      },
+      "files": [
+        "test/**/*.ts",
+        "src/**/*.ts",
+        "**/tsconfig.json",
+        ".mocha*",
+        "!*.nut.ts",
+        ".nycrc"
       ],
       "output": []
     }

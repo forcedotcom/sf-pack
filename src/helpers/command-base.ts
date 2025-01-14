@@ -1,9 +1,8 @@
 import { Ux, SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, Org, Connection } from '@salesforce/core';
 
-
 // Initialize Messages with the current plugin directory
-Messages.importMessagesDirectory(process.cwd());
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 
 export class ConditionalError extends Error {
   public isRethrown = false;
@@ -14,6 +13,9 @@ export class ConditionalError extends Error {
   }
 }
 
+// SF Plugins have migrated to ESM
+// https://github.com/salesforcecli/cli/wiki/Migrate-Your-Plugin-to-ESM
+//
 export abstract class CommandBase extends SfCommand<void> {
   // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
   // or any library that is using the messages framework can also be loaded this way.
