@@ -1,9 +1,9 @@
-import { expect } from '@oclif/test';
-import { OptionsFactory } from '../../src/helpers/options-factory';
-import SchemaOptions from '../../src/helpers/schema-options';
-import SchemaUtils from '../../src/helpers/schema-utils';
-import Utils from '../../src/helpers/utils';
-import Setup from './setup';
+import { expect } from 'chai';
+import { OptionsFactory } from '../../src/helpers/options-factory.js';
+import SchemaOptions from '../../src/helpers/schema-options.js';
+import SchemaUtils from '../../src/helpers/schema-utils.js';
+import Utils from '../../src/helpers/utils.js';
+import Setup from './setup.js';
 
 describe('SchemaUtils Tests', () => {
   const schema = {
@@ -20,13 +20,13 @@ describe('SchemaUtils Tests', () => {
           {
             active: true,
             value: 'PL1',
-            defaultValue: true
+            defaultValue: true,
           },
           {
             active: true,
             value: 'PL2',
-          }
-        ]
+          },
+        ],
       },
       {
         label: 'Field 1',
@@ -39,13 +39,13 @@ describe('SchemaUtils Tests', () => {
           {
             active: true,
             value: 'PL1',
-            defaultValue: true
+            defaultValue: true,
           },
           {
             active: true,
             value: 'PL2',
-          }
-        ]
+          },
+        ],
       },
     ],
     childRelationships: [
@@ -161,7 +161,7 @@ describe('SchemaUtils Tests', () => {
       }
       expect(rows.length).equals(schema.fields.length - 1);
     });
-    it('Get Schema name from file',async  () => {
+    it('Get Schema name from file', async () => {
       let count = 0;
       for await (const fileName of Utils.getFiles(Setup.sourceForceAppRoot, true)) {
         expect(SchemaUtils.getMetadataBaseName(fileName)).to.not.be.null;

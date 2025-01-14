@@ -1,9 +1,13 @@
-import path = require('path');
-import { expect } from '@oclif/test';
+import path from 'node:path';
+import { expect } from 'chai';
 // import { UX } from '@salesforce/command';
-import Utils from '../../src/helpers/utils';
-import { ProfileDownload, ObjPermissionStructure, FieldPermissionStructure } from '../../src/helpers/profile-download';
-import Setup from './setup';
+import Utils from '../../src/helpers/utils.js';
+import {
+  ProfileDownload,
+  ObjPermissionStructure,
+  FieldPermissionStructure,
+} from '../../src/helpers/profile-download.js';
+import Setup from './setup.js';
 
 const profileJson = {
   fullName: 'Admin',
@@ -92,9 +96,9 @@ describe('Profile Command Tests', () => {
     });
   });
   describe('Download Permissions', () => {
-    it(' Download Permission', async function() {
+    it(' Download Permission', async function () {
       const org = await Setup.org();
-      if(!org) {
+      if (!org) {
         this.skip();
       }
       const tempPath = path.join(process.cwd(), Utils.tempFilesPath);

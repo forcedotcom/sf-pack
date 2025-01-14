@@ -1,8 +1,8 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { CommandBase } from '../../helpers/command-base';
-import Utils from '../../helpers/utils';
-import { OptionsFactory } from '../../helpers/options-factory';
-import { XPathOptions } from '../../helpers/xpath-options';
+import { CommandBase } from '../../helpers/command-base.js';
+import Utils from '../../helpers/utils.js';
+import { OptionsFactory } from '../../helpers/options-factory.js';
+import { XPathOptions } from '../../helpers/xpath-options.js';
 
 export default class XPath extends CommandBase {
   public static description = CommandBase.messages.getMessage('source.xpath.commandDescription');
@@ -12,17 +12,19 @@ export default class XPath extends CommandBase {
     Validates the project source from the x-path rules specified in '${XPath.defaultOptionsFileName}'`,
   ];
 
-  public static readonly flags =  {
+  public static readonly flags = {
     options: Flags.file({
       char: 'o',
       description: CommandBase.messages.getMessage('source.xpath.optionsFlagDescription'),
     }),
+    ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected async runInternal(): Promise<void> {
-    const {flags} = await this.parse(XPath);
+    const { flags } = await this.parse(XPath);
     // Read/Write the options file if it does not exist already
-    const options = await OptionsFactory.get(XPathOptions, flags.options ?? XPath.defaultOptionsFileName);
+    const options = await OptionsFactory.get(XPathOptions, flags.options as string?? XPath.defaultOptionsFileName);
 
     for (const [sourceFolder, rules] of options.rules) {
       if (!sourceFolder) {

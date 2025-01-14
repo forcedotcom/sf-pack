@@ -1,14 +1,14 @@
-import { CommandBase } from '../../helpers/command-base';
-import { ObjectDetail, FieldDetail, PermissionSet, MetadataDetail } from '../../helpers/sf-permission';
+import { CommandBase } from '../../helpers/command-base.js';
+import { ObjectDetail, FieldDetail, PermissionSet, MetadataDetail } from '../../helpers/sf-permission.js';
 export default class Permissions extends CommandBase {
     static defaultReportPath: string;
     static defaultMetadataFolders: string[];
     static description: string;
     static examples: string[];
     static readonly flags: {
-        source: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
-        report: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
-        folders: import("@oclif/core/lib/interfaces").OptionFlag<string, import("@oclif/core/lib/interfaces").CustomOptions>;
+        source: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        report: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        folders: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
     };
     protected defaultReportHeaderName: string;
     protected objectMetadata: Map<string, ObjectDetail>;

@@ -1,12 +1,12 @@
-import path = require('path');
-import { expect } from '@oclif/test';
-import { OptionsBase, OptionsSettings } from '../../src/helpers/options';
-import { OptionsFactory } from '../../src/helpers/options-factory';
-import SchemaOptions from '../../src/helpers/schema-options';
-import { UnmaskOptions } from '../../src/helpers/unmask-options';
-import { XPathOptions } from '../../src/helpers/xpath-options';
-import Utils from '../../src/helpers/utils';
-import { DeltaOptions } from '../../src/helpers/delta-options';
+import path from 'node:path';
+import { expect } from 'chai';
+import { OptionsBase, OptionsSettings } from '../../src/helpers/options.js';
+import { OptionsFactory } from '../../src/helpers/options-factory.js';
+import SchemaOptions from '../../src/helpers/schema-options.js';
+import { UnmaskOptions } from '../../src/helpers/unmask-options.js';
+import { XPathOptions } from '../../src/helpers/xpath-options.js';
+import Utils from '../../src/helpers/utils.js';
+import { DeltaOptions } from '../../src/helpers/delta-options.js';
 
 export class TestOptions extends OptionsBase {
   private static CURRENT_VERSION = 2.0;
@@ -120,7 +120,7 @@ describe('Options Tests', () => {
   });
   describe('UnmaskOptions Tests', () => {
     it('Creates New Object & File', async () => {
-      const options = await OptionsFactory.get(UnmaskOptions, optionsPath);
+      const options: UnmaskOptions = await OptionsFactory.get(UnmaskOptions, optionsPath);
       expect(options.userQuery).to.not.be.undefined;
       expect(options.userQuery.length).to.not.equal(0);
 
@@ -146,7 +146,7 @@ describe('Options Tests', () => {
       try {
         await options.save(null);
         expect.fail();
-      }catch(err) {
+      } catch (err) {
         expect(err.message).to.contain('The optionsPath argument cannot be null.');
       }
     });
@@ -168,23 +168,23 @@ describe('Options Tests', () => {
   });
   describe('DeltaOptions Tests', () => {
     it('Creates New Object & File', async () => {
-      const options =new DeltaOptions();
+      const options = new DeltaOptions();
       await options.loadDefaults();
 
       // It contains default data
       expect(options).to.not.be.null;
       expect(options.deltaFilePath).to.not.be.null;
-      
-      const defaultPath =  path.sep === '\\' ? '/' : '\\\\';
+
+      const defaultPath = path.sep === '\\' ? '/' : '\\\\';
       options.deltaFilePath = defaultPath;
       options.source = defaultPath;
       options.destination = defaultPath;
       options.deleteReportFile = defaultPath;
       options.forceFile = defaultPath;
       options.ignoreFile = defaultPath;
-      
+
       options.normalize();
-      
+
       expect(options.deltaFilePath).to.not.equal(defaultPath);
       expect(options.source).to.not.equal(defaultPath);
       expect(options.destination).to.not.equal(defaultPath);

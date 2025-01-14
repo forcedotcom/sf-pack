@@ -1,11 +1,11 @@
-import { expect } from '@oclif/test';
+import { expect } from 'chai';
 import { before } from 'mocha';
-import { Record } from 'jsforce';
-import Utils from '../../src/helpers/utils';
-import { SfQuery } from '../../src/helpers/sf-query';
-import { SfClient, ApiKind } from '../../src/helpers/sf-client';
-import { RestAction } from '../../src/helpers/utils';
-import Setup from '../helpers/setup';
+import { Record } from '@jsforce/jsforce-node';
+import Utils from '../../src/helpers/utils.js';
+import { SfQuery } from '../../src/helpers/sf-query.js';
+import { SfClient, ApiKind } from '../../src/helpers/sf-client.js';
+import { RestAction } from '../../src/helpers/utils.js';
+import Setup from '../helpers/setup.js';
 
 const unknownId = '00000000001';
 const NOT_FOUND = '(404) "Not Found"';
@@ -74,23 +74,23 @@ describe('Sf Client Tests', () => {
 
   describe('Rest Client Tests', () => {
     describe('do Tests', () => {
-      it('Can Handle Nulls', async function() {
+      it('Can Handle Nulls', async function () {
         try {
           new SfClient(null);
           expect.fail();
-        }catch (err) {
+        } catch (err) {
           expect(err.message).to.equal('org is required');
         }
       });
-      it('Can set API Version', async function() {
-        if(!sfClient) {
+      it('Can set API Version', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const client = new SfClient(await Setup.org());
         client.setApiVersion(55.5);
       });
-      it('Can GET Scehma', async function() {
-        if(!sfClient) {
+      it('Can GET Scehma', async function () {
+        if (!sfClient) {
           this.skip();
         }
         for await (const result of sfClient.getMetadataSchemas()) {
@@ -98,26 +98,26 @@ describe('Sf Client Tests', () => {
           expect(result.name).to.not.be.undefined;
         }
       });
-      it('Can GET Max API', async function() {
-        if(!sfClient) {
+      it('Can GET Max API', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const result = await sfClient.getMaxApiVersion();
         expect(result).to.not.be.undefined;
       });
-      it('Can GET Default Scehma Handle Nulls', async function() {
-        if(!sfClient) {
+      it('Can GET Default Scehma Handle Nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
           await sfClient.getMetadataSchema(null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
       });
-      it('Can GET Default Scehma', async function() {
-        if(!sfClient) {
+      it('Can GET Default Scehma', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -126,8 +126,8 @@ describe('Sf Client Tests', () => {
         expect(result.objectDescribe).to.not.be.undefined;
         expect(result.objectDescribe.name).to.equal(metaDataType);
       });
-      it('Can GET Tooling Scehma', async function() {
-        if(!sfClient) {
+      it('Can GET Tooling Scehma', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.TOOLING.toString();
@@ -136,25 +136,25 @@ describe('Sf Client Tests', () => {
         expect(result.objectDescribe).to.not.be.undefined;
         expect(result.objectDescribe.name).to.equal(metaDataType);
       });
-      it('Can getById Handle Nulls', async function() {
-        if(!sfClient) {
+      it('Can getById Handle Nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
           await sfClient.getById(null, null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
         try {
           await sfClient.getById(ApiTestKind.TOOLING.toString(), null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('id parameter is required.');
         }
       });
-      it('Can getByIds Handle Nulls', async function() {
-        if(!sfClient) {
+      it('Can getByIds Handle Nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
@@ -163,7 +163,7 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
         const metaDataType = ApiTestKind.TOOLING.toString();
@@ -173,12 +173,12 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('ids parameter is required.');
         }
       });
-      it('Can Handle 404 (Default Schema)', async function() {
-        if(!sfClient) {
+      it('Can Handle 404 (Default Schema)', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const unknownMetaDataType = ApiTestKind.UNKNOWN.toString();
@@ -188,8 +188,8 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.contain(NOT_FOUND);
         }
       });
-      it('Can Handle 404 (Default Record)', async function() {
-        if(!sfClient) {
+      it('Can Handle 404 (Default Record)', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -199,8 +199,8 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.contain(NOT_FOUND);
         }
       });
-      it('Can Handle 404 (Tooling Schema)', async function() {
-        if(!sfClient) {
+      it('Can Handle 404 (Tooling Schema)', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const unknownMetaDataType = ApiTestKind.UNKNOWN.toString();
@@ -210,8 +210,8 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.contain(NOT_FOUND);
         }
       });
-      it('Can Handle 404 (Tooling Record)', async function() {
-        if(!sfClient) {
+      it('Can Handle 404 (Tooling Record)', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -221,8 +221,8 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.contain(NOT_FOUND);
         }
       });
-      it('Can get Tooling Instance', async function() {
-        if(!sfClient) {
+      it('Can get Tooling Instance', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.TOOLING.toString();
@@ -233,8 +233,8 @@ describe('Sf Client Tests', () => {
           expect(result.Id).to.equal(id);
         }
       });
-      it('Can get Tooling Instances', async function() {
-        if(!sfClient) {
+      it('Can get Tooling Instances', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.TOOLING.toString();
@@ -246,8 +246,8 @@ describe('Sf Client Tests', () => {
           expect(content.Id).to.equal(ids[counter++]);
         }
       });
-      it('Can get Default Instance', async function() {
-        if(!sfClient) {
+      it('Can get Default Instance', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -258,8 +258,8 @@ describe('Sf Client Tests', () => {
           expect(result.Id).to.equal(id);
         }
       });
-      it('Can get VersionData from ContentVersion', async function() {
-        if(!sfClient) {
+      it('Can get VersionData from ContentVersion', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.FILE.toString();
@@ -274,8 +274,8 @@ describe('Sf Client Tests', () => {
           expect(bytes instanceof Buffer).to.be.true;
         }
       }).timeout(0);
-      it('Can get Default Instances', async function() {
-        if(!sfClient) {
+      it('Can get Default Instances', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -287,8 +287,8 @@ describe('Sf Client Tests', () => {
           expect(content.Id).to.equal(ids[counter++]);
         }
       });
-      it('Can update Default Instance', async function() {
-        if(!sfClient) {
+      it('Can update Default Instance', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -301,8 +301,8 @@ describe('Sf Client Tests', () => {
           expect(result).to.equal(record.Id);
         }
       });
-      it('Can update composite', async function() {
-        if(!sfClient) {
+      it('Can update composite', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const desc = new Date().toJSON();
@@ -328,26 +328,26 @@ describe('Sf Client Tests', () => {
           expect(result.success).to.be.true;
         }
       });
-      it('Can updateByRecord handle nulls', async function() {
-        if(!sfClient) {
+      it('Can updateByRecord handle nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
           await sfClient.updateByRecord(null, null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
         try {
           await sfClient.updateByRecord(metaDataType, null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('record parameter is required.');
         }
       });
-      it('Can getByRecords handle nulls', async function() {
-        if(!sfClient) {
+      it('Can getByRecords handle nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
@@ -356,7 +356,7 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
         const metaDataType = ApiTestKind.TOOLING.toString();
@@ -366,12 +366,12 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('records parameter is required.');
         }
       }).timeout(0);
-      it('Can getByRecords', async function() {
-        if(!sfClient) {
+      it('Can getByRecords', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -387,8 +387,8 @@ describe('Sf Client Tests', () => {
           expect(result).to.not.be.null;
         }
       });
-      it('Can updateByRecords handle nulls', async function() {
-        if(!sfClient) {
+      it('Can updateByRecords handle nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
@@ -397,7 +397,7 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
         const metaDataType = ApiTestKind.TOOLING.toString();
@@ -407,12 +407,12 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('records parameter is required.');
         }
       });
-      it('Can updateByRecords', async function() {
-        if(!sfClient) {
+      it('Can updateByRecords', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const metaDataType = ApiTestKind.DEFAULT.toString();
@@ -429,52 +429,56 @@ describe('Sf Client Tests', () => {
           expect(result2).to.not.be.null;
         }
       }).timeout(0);
-      it('Can postObjectMultipart handle nulls', async function() {
-        if(!sfClient) {
+      it('Can postObjectMultipart handle nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
-       
+
         try {
           await sfClient.postObjectMultipart(null, null, null, null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('objectName parameter is required.');
         }
 
         try {
           await sfClient.postObjectMultipart('objectName', null, null, null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('objectRecord parameter is required.');
         }
 
         try {
           await sfClient.postObjectMultipart('objectName', 'objectRecord', null, null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('fileName parameter is required.');
         }
         try {
           await sfClient.postObjectMultipart('objectName', 'objectRecord', 'fileName', null);
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('filePath parameter is required.');
         }
       });
-      it('Can postObjectMultipart', async function() {
-        if(!sfClient) {
+      it('Can postObjectMultipart', async function () {
+        if (!sfClient) {
           this.skip();
         }
         const record = {
           PathOnClient: 'records.csv',
-          ContentBody: ''
+          ContentBody: '',
         };
-        const results = await sfClient.postObjectMultipart('ContentVersion', record, 'records.csv', './test/records.csv');
+        const results = await sfClient.postObjectMultipart(
+          'ContentVersion',
+          record,
+          'records.csv',
+          './test/records.csv'
+        );
         expect(results).to.not.be.null;
-        
       }).timeout(0);
-      it('Can do Handle Nulls', async function() {
-        if(!sfClient) {
+      it('Can do Handle Nulls', async function () {
+        if (!sfClient) {
           this.skip();
         }
         try {
@@ -483,7 +487,7 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('action parameter is required.');
         }
         try {
@@ -492,22 +496,23 @@ describe('Sf Client Tests', () => {
             expect.fail();
           }
           expect.fail();
-        }catch(err){
+        } catch (err) {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
       });
-      it('Can do', async function() {
-        if(!sfClient) {
+      it('Can do', async function () {
+        if (!sfClient) {
           this.skip();
         }
-        const records = [{
-          id: testData.get(ApiTestKind.DEFAULT)[0].Id 
-        }];
-        
-        for await (const result of sfClient.do(RestAction.GET, 'Account', records, 'id', ApiKind.DEFAULT,[200])) {
+        const records = [
+          {
+            id: testData.get(ApiTestKind.DEFAULT)[0].Id,
+          },
+        ];
+
+        for await (const result of sfClient.do(RestAction.GET, 'Account', records, 'id', ApiKind.DEFAULT, [200])) {
           expect(result).to.not.be.undefined;
         }
-
       });
     });
   });

@@ -1,7 +1,7 @@
-import { expect } from '@oclif/test';
-import { OptionsFactory } from '../../src/helpers/options-factory';
-import SchemaOptions from '../../src/helpers/schema-options';
-import SchemaUtils from '../../src/helpers/schema-utils';
+import { expect } from 'chai';
+import { OptionsFactory } from '../../src/helpers/options-factory.js';
+import SchemaOptions from '../../src/helpers/schema-options.js';
+import SchemaUtils from '../../src/helpers/schema-utils.js';
 
 const optionsPath = './options.json';
 
@@ -125,7 +125,7 @@ describe('SchemaOptions Tests', () => {
         `PicklistValueDefault|getPicklistDefaultValue(${SchemaUtils.CONTEXT_FIELD})`,
       ]);
       await schemaOptions.save(optionsPath);
-  
+
       schemaOptions = await OptionsFactory.get(SchemaOptions, optionsPath);
       // It contains default data
       expect(schemaOptions).is.not.null;

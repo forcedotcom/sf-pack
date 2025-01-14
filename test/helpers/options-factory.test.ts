@@ -1,10 +1,10 @@
-import { expect } from '@oclif/test';
-import { OptionsFactory } from '../../src/helpers/options-factory';
-import SchemaOptions from '../../src/helpers/schema-options';
-import Utils from '../../src/helpers/utils';
-import { PackageOptions } from '../../src/helpers/package-options';
-import { OptionsSettings } from '../../src/helpers/options';
-import {TestOptions } from './options.test';
+import { expect } from 'chai';
+import { OptionsFactory } from '../../src/helpers/options-factory.js';
+import SchemaOptions from '../../src/helpers/schema-options.js';
+import Utils from '../../src/helpers/utils.js';
+import { PackageOptions } from '../../src/helpers/package-options.js';
+import { OptionsSettings } from '../../src/helpers/options.js';
+import { TestOptions } from './options.test.js';
 
 const optionsPath = './options.json';
 describe('OptionsFactory Tests', () => {
@@ -32,7 +32,7 @@ describe('OptionsFactory Tests', () => {
     try {
       await OptionsFactory.set(new TestOptions(), null);
       expect.fail();
-    }catch(err) {
+    } catch (err) {
       expect(err.message).to.contain('You must specify an optionsFilePath.');
     }
   });

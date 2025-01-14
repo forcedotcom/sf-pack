@@ -1,10 +1,10 @@
-import { expect } from '@oclif/test';
+import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-import { SfJobInfo, SfTasks } from '../../src/helpers/sf-tasks';
-import { SfQuery } from '../../src/helpers/sf-query';
-import { ApiKind, SfClient } from '../../src/helpers/sf-client';
-import { RestAction } from '../../src/helpers/utils';
-import Setup from './setup';
+import { SfJobInfo, SfTasks } from '../../src/helpers/sf-tasks.js';
+import { SfQuery } from '../../src/helpers/sf-query.js';
+import { ApiKind, SfClient } from '../../src/helpers/sf-client.js';
+import { RestAction } from '../../src/helpers/utils.js';
+import Setup from './setup.js';
 
 describe('SfJobInfo Tests', () => {
   it('Can Check if isDone', async function () {
@@ -44,9 +44,7 @@ const describeMetadatasTest = new Set<any>([
     childXmlNames: [],
   },
   {
-    childXmlNames: [
-      'CustomLabel',
-    ],
+    childXmlNames: ['CustomLabel'],
     directoryName: 'labels',
     inFolder: false,
     metaFile: false,
@@ -66,7 +64,7 @@ const describeMetadatasTest = new Set<any>([
     metaFile: false,
     suffix: 'report',
     xmlName: 'Report',
-    childXmlNames: []
+    childXmlNames: [],
   },
   {
     directoryName: 'email',
@@ -74,7 +72,7 @@ const describeMetadatasTest = new Set<any>([
     metaFile: true,
     suffix: 'email',
     xmlName: 'EmailTemplate',
-    childXmlNames: []
+    childXmlNames: [],
   },
 ]);
 
@@ -123,13 +121,12 @@ describe('Sf Tasks Tests', () => {
       expect(results.length).to.be.greaterThan(0);
       expect(results[0].xmlName).to.not.be.null;
     }).timeout(0);
-
   });
 
   describe('listMetadatas Tests', () => {
     it('Can Handle Null', async function () {
-      expect(await SfTasks.listMetadatas(null,null)).to.be.null;
-      expect(await SfTasks.listMetadatas(null,new Set<string>())).to.be.null;
+      expect(await SfTasks.listMetadatas(null, null)).to.be.null;
+      expect(await SfTasks.listMetadatas(null, new Set<string>())).to.be.null;
     });
 
     it('Can listMetadatas', async function () {
@@ -137,17 +134,16 @@ describe('Sf Tasks Tests', () => {
         this.skip();
       }
       const typeName = 'CustomObject';
-      const results = await SfTasks.listMetadatas(org,new Set<string>([typeName]));
+      const results = await SfTasks.listMetadatas(org, new Set<string>([typeName]));
       expect(results).to.not.be.null;
       expect(results.get(typeName)).to.not.be.null;
     }).timeout(0);
-
   });
 
   describe('describeObject Tests', () => {
     it('Can Handle Null', async function () {
-      expect(await SfTasks.describeObject(null,null)).to.be.null;
-      expect(await SfTasks.describeObject(null,'')).to.be.null;
+      expect(await SfTasks.describeObject(null, null)).to.be.null;
+      expect(await SfTasks.describeObject(null, '')).to.be.null;
     });
 
     it('Can describeObject', async function () {
@@ -159,7 +155,6 @@ describe('Sf Tasks Tests', () => {
       expect(results).to.not.be.null;
       expect(results.name).to.equal(name);
     }).timeout(0);
-
   });
 
   describe('enqueueApexTests Tests', () => {
@@ -188,11 +183,11 @@ describe('Sf Tasks Tests', () => {
       const testClasses = await SfQuery.getApexTestClasses(org);
       expect(testClasses).to.not.be.null;
       expect(testClasses.length).to.be.greaterThan(0);
-      
-      const results = await SfTasks.enqueueApexTests(org, testClasses.slice(0,1));
-      if(results.isError) {
+
+      const results = await SfTasks.enqueueApexTests(org, testClasses.slice(0, 1));
+      if (results.isError) {
         // The DailyAsyncApexTests limit might have been reached
-        if(results.code === 500) {
+        if (results.code === 500) {
           this.skip();
         } else {
           results.throw();
@@ -207,9 +202,7 @@ describe('Sf Tasks Tests', () => {
           break;
         }
       }
-
     }).timeout(0);
-
   });
 
   describe('getOrgInfo Tests', () => {
@@ -222,13 +215,12 @@ describe('Sf Tasks Tests', () => {
       }
       const results = await SfTasks.getOrgInfo(org);
       expect(results.accessToken).to.not.be.null;
-      
     }).timeout(0);
   });
 
   describe('getTypesForPackage Tests', () => {
     it('Can Handle Null', async function () {
-      for await (const results of SfTasks.getTypesForPackage(null,null)) {
+      for await (const results of SfTasks.getTypesForPackage(null, null)) {
         expect(results).to.be.null;
         expect.fail();
       }
@@ -320,7 +312,7 @@ describe('Sf Tasks Tests', () => {
       expect(await SfTasks.getConnection(null)).to.be.null;
     });
     it('Can connectToOrg', async function () {
-      if(!Setup.username) {
+      if (!Setup.username) {
         this.skip();
       }
 
@@ -334,12 +326,12 @@ describe('Sf Tasks Tests', () => {
     it('Can Handle Null', async function () {
       expect(await SfTasks.getBulkJobStatus(null, null)).to.be.null;
 
-      for await ( const results of SfTasks.waitForJob(null, null)) {
+      for await (const results of SfTasks.waitForJob(null, null)) {
         expect(results).to.be.null;
       }
 
       const jobInfo = new SfJobInfo();
-      for await ( const results of SfTasks.waitForJob(null,jobInfo)) {
+      for await (const results of SfTasks.waitForJob(null, jobInfo)) {
         expect(results).to.be.null;
       }
     });
@@ -348,10 +340,10 @@ describe('Sf Tasks Tests', () => {
       if (!org) {
         this.skip();
       }
-      
+
       const body = {
         operation: 'query',
-        query: 'SELECT Id FROM Contact'
+        query: 'SELECT Id FROM Contact',
       };
 
       const client = new SfClient(org);
@@ -364,7 +356,7 @@ describe('Sf Tasks Tests', () => {
       expect(jobInfo.id).to.not.be.null;
 
       let counter = 0;
-      for await ( const status of SfTasks.waitForJob(org, jobInfo, 1, 500)) {
+      for await (const status of SfTasks.waitForJob(org, jobInfo, 1, 500)) {
         expect(status).to.not.be.null;
         expect(status.id).to.not.be.null;
         expect(status.batchId).to.not.be.null;
@@ -372,7 +364,7 @@ describe('Sf Tasks Tests', () => {
         counter++;
         break;
       }
-      if(counter === 0) {
+      if (counter === 0) {
         expect.fail('waitForJob returned nothing for job: ' + JSON.stringify(jobInfo));
       }
     }).timeout(0);
@@ -381,12 +373,12 @@ describe('Sf Tasks Tests', () => {
       it('Can Handle Null', async function () {
         expect(await SfTasks.executeAnonymousBlock(null, null)).to.be.null;
       });
-  
+
       it('Can executeAnonymousBlock', async function () {
         if (!org) {
           this.skip();
         }
-        
+
         const apex = `System.debug('executeAnonymousBlock Test Line 1');System.debug('executeAnonymousBlock Test Line 2');`;
         const results = await SfTasks.executeAnonymousBlock(org, apex);
         expect(results.isError).to.be.false;
@@ -398,7 +390,7 @@ describe('Sf Tasks Tests', () => {
         if (!org) {
           this.skip();
         }
-        
+
         const apex = 'executeAnonymousBlock Test Line 1';
         const results = await SfTasks.executeAnonymousBlock(org, apex);
         expect(results.isError).to.be.true;
@@ -411,12 +403,12 @@ describe('Sf Tasks Tests', () => {
       it('Can Handle Null', async function () {
         expect(await SfTasks.getOrgLimits(null)).to.be.null;
       });
-  
+
       it('Can getOrgLimits', async function () {
         if (!org) {
           this.skip();
         }
-        
+
         const results = await SfTasks.getOrgLimits(org);
         expect(results.isError).to.be.false;
         expect(results.body.DailyApiRequests).to.not.be.null;

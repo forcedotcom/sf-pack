@@ -1,9 +1,9 @@
-import { DescribeMetadataObject, FileProperties } from 'jsforce/lib/api/metadata';
-import { DescribeSObjectResult } from 'jsforce';
+import { DescribeMetadataObject, FileProperties } from '@jsforce/jsforce-node/lib/api/metadata.js';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node/lib/types';
 import { Connection, Org, AuthFields } from '@salesforce/core';
-import { RestResult } from './utils';
-import { SfEntity } from './sf-query';
-import { ApiKind } from './sf-client';
+import { RestResult } from './utils.js';
+import { SfEntity } from './sf-query.js';
+import { ApiKind } from './sf-client.js';
 export declare class SfJobInfo {
     id: string;
     batchId: string;

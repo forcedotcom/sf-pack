@@ -1,9 +1,9 @@
 import { Flags } from '@salesforce/sf-plugins-core';
-import { SaveError } from 'jsforce';
-import { CommandBase } from '../../helpers/command-base';
-import Utils, { RestResult } from '../../helpers/utils';
-import { SfClient } from '../../helpers/sf-client';
-import Constants from '../../helpers/constants';
+import { SaveError } from '@jsforce/jsforce-node';
+import { CommandBase } from '../../helpers/command-base.js';
+import Utils, { RestResult } from '../../helpers/utils.js';
+import { SfClient } from '../../helpers/sf-client.js';
+import Constants from '../../helpers/constants.js';
 
 export default class File extends CommandBase {
   public static fileSObjectType = 'ContentVersion';
@@ -41,6 +41,7 @@ export default class File extends CommandBase {
       required: false,
     }),
     ...CommandBase.commonFlags,
+    ...CommandBase.flags,
   };
 
   protected metadataInfo: any = null;
@@ -69,7 +70,7 @@ export default class File extends CommandBase {
     const errors: string[] = [];
     let counter = 0;
     for await (const recordRaw of Utils.parseCSVFile(records)) {
-      if (errors.length > 0 && (flags.allornothing)) {
+      if (errors.length > 0 && flags.allornothing) {
         break;
       }
       counter++;

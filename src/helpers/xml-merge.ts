@@ -1,9 +1,9 @@
-import path = require('path');
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import { Ux } from '@salesforce/sf-plugins-core';
-import Utils from './utils';
-import { SfCore } from './sf-core';
-import Constants from './constants';
+import Utils from './utils.js';
+import { SfCore } from './sf-core.js';
+import Constants from './constants.js';
 
 class MergeResult {
   public source: any;
@@ -129,7 +129,7 @@ export default class XmlMerge {
 
       const pops = [];
       for (const sMem of sType.members) {
-        let dMem: string;
+        let dMem: string = null as any;
         for (const memName of dType.members) {
           if (sMem === memName) {
             dMem = memName;

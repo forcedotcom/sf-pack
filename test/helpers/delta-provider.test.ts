@@ -1,9 +1,9 @@
-import path = require('path');
-import { expect } from '@oclif/test';
-import { DeltaOptions } from '../../src/helpers/delta-options';
-import { DeltaCommandBase } from '../../src/helpers/delta-command';
-import { Delta, DeltaProvider } from '../../src/helpers/delta-provider';
-import Setup from './setup';
+import path from 'node:path';
+import { expect } from 'chai';
+import { DeltaOptions } from '../../src/helpers/delta-options.js';
+import { DeltaCommandBase } from '../../src/helpers/delta-command.js';
+import { Delta, DeltaProvider } from '../../src/helpers/delta-provider.js';
+import Setup from './setup.js';
 
 const config = new DeltaOptions({
   source: 'source',
@@ -18,7 +18,7 @@ export class TestDeltaProvider extends DeltaProvider {
   public deltas = new Map<string, any>();
 
   public processDeltaLine(deltaLine: string): void {
-    if(!deltaLine) {
+    if (!deltaLine) {
       return;
     }
 
@@ -31,7 +31,7 @@ export class TestDeltaProvider extends DeltaProvider {
   }
 
   public async *diff(source: string): AsyncGenerator<Delta, any, any> {
-    if(!source) {
+    if (!source) {
       return null;
     }
     yield await Promise.resolve(new Delta(DeltaProvider.deltaTypeKind.A, source));
@@ -41,7 +41,7 @@ export class TestDeltaProvider extends DeltaProvider {
 describe('Delta Tests', () => {
   it('Can Handle Nulls', async () => {
     const results = new Delta(null, null);
-    
+
     expect(results.deltaFile).to.be.null;
     expect(results.deltaKind).to.be.null;
   });
@@ -102,7 +102,7 @@ describe('DeltaProvider Tests', () => {
   describe('DeltaProvider Instance Tests', () => {
     let testItemCount = 0;
     let testFilePath: string;
-  
+
     beforeEach(async () => {
       testItemCount = 0;
       const folders = new Set();
@@ -113,7 +113,7 @@ describe('DeltaProvider Tests', () => {
           testFilePath = testFile;
         }
         const dir = path.dirname(testFile);
-        if(!folders.has(dir)) {
+        if (!folders.has(dir)) {
           folders.add(dir);
         }
       }
@@ -125,10 +125,10 @@ describe('DeltaProvider Tests', () => {
 
     it('Can Not Handle No Options', async () => {
       const provider = new TestDeltaProvider();
-      try{
+      try {
         await provider.run(null);
         expect.fail();
-      }catch( err) {
+      } catch (err) {
         expect(err.message).equals('No DeltaOptions specified.');
       }
     });
