@@ -20,6 +20,7 @@
     "@salesforce/cli-plugins-testkit": "^5.3.10",
     "@salesforce/dev-scripts": "^10",
     "@types/xml2js": "^0.4.14",
+    "c8": "^10.1.3",
     "eslint-plugin-sf-plugin": "^1.18.6",
     "oclif": "^4.14.0",
     "ts-node": "^10.9.2",
@@ -139,7 +140,22 @@
       ]
     },
     "test:only": {
-      "command": "nyc --reporter=html --reporter=text mocha \"test/**/*.test.ts\"",
+      "command": "c8 --reporter=html --reporter=text mocha --exit --timeout 7000  \"test/**/*.test.ts\"",
+      "env": {
+        "FORCE_COLOR": "2"
+      },
+      "files": [
+        "test/**/*.ts",
+        "src/**/*.ts",
+        "**/tsconfig.json",
+        ".mocha*",
+        "!*.nut.ts",
+        ".nycrc"
+      ],
+      "output": []
+    },
+    "test:cover": {
+      "command": "c8 --reporter=html --reporter=text mocha --exit --timeout 7000 \"test/**/*.test.ts\"",
       "env": {
         "FORCE_COLOR": "2"
       },
@@ -188,21 +204,6 @@
         "./*.md",
         "./!(CHANGELOG).md",
         "messages/**/*.md"
-      ],
-      "output": []
-    },
-    "test:cover": {
-      "command": "nyc --reporter=html --reporter=text mocha --exit --timeout 7000",
-      "env": {
-        "FORCE_COLOR": "2"
-      },
-      "files": [
-        "test/**/*.ts",
-        "src/**/*.ts",
-        "**/tsconfig.json",
-        ".mocha*",
-        "!*.nut.ts",
-        ".nycrc"
       ],
       "output": []
     }
