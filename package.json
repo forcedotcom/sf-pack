@@ -12,7 +12,7 @@
     "form-data": "^4.0.1",
     "glob": "10.4.5",
     "md5-file": "^5.0.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.8/xlsx-0.18.8.tgz",
     "xpath": "^0.0.34"
   },
   "devDependencies": {
@@ -75,7 +75,8 @@
     "test:only": "wireit",
     "test:compile": "wireit",
     "test:cover": "wireit",
-    "version": "oclif readme"
+    "version": "oclif readme",
+    "readme": "oclif readme"
   },
   "publishConfig": {
     "access": "public"

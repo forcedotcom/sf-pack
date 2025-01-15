@@ -14,6 +14,7 @@ SF CLI Extensions from Salesforce Customer Success Group (CSG)
 * [Commands](#commands)
 <!-- tocstop -->
 
+
 # Debugging your plugin
 
 We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands.
@@ -116,13 +117,17 @@ Generates a report which defines user access via PermissionSet to Salesforce App
 
 ```
 USAGE
-  $ sf admin user access -o <value> [-l <value>] [-r <value>]
+  $ sf admin user access -o <value> [--json] [--flags-dir <value>] [-l <value>] [-r <value>]
 
 FLAGS
   -l, --appList=<value>     A comma delimited list of Apps to check access for.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
-  -r, --report=<value>      The optional path for the generated report. UserAccess-{ORG}.xlsx
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -r, --report=<value>      The optional path for the generated report.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -142,13 +147,17 @@ Removes the .invalid extension from a User's email address. This extension is au
 
 ```
 USAGE
-  $ sf admin user unmask -o <value> [-l <value>] [-f <value>]
+  $ sf admin user unmask -o <value> [--json] [--flags-dir <value>] [-l <value>] [-f <value>]
 
 FLAGS
   -f, --userFile=<value>    A file which contains a list of usernames for the User objects to update.
   -l, --userList=<value>    A comma delimited list of usernames for the User objects to update.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -169,12 +178,16 @@ Deletes the Developer Console IDEWorkspace object for the specified user(s).
 
 ```
 USAGE
-  $ sf admin workspace delete -o <value> [-l <value>]
+  $ sf admin workspace delete -o <value> [--json] [--flags-dir <value>] [-l <value>]
 
 FLAGS
   -l, --userList=<value>    A comma delimited list of usernames to reset workspaces for.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -194,14 +207,18 @@ Clears the Apex Code Coverage data from the specified Org.
 
 ```
 USAGE
-  $ sf apex coverage clear -o <value> [-m <value>] [-n <value>]
+  $ sf apex coverage clear -o <value> [--json] [--flags-dir <value>] [-m <value>] [-n <value>]
 
 FLAGS
   -m, --metadatas=<value>            An optional comma separated list of metadata to include. The defaults are:
                                      (ApexCodeCoverageAggregate.)
   -n, --classOrTriggerNames=<value>  An optional comma separated list of class or trigger names to include
-  -o, --target-org=<value>           (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target
-                                     org. Not required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>           (required) Username or alias of the target org. Not required if the `target-org`
+                                     configuration variable is already set.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -218,13 +235,17 @@ Executes Apex tests and includes Code Coverage metrics.
 
 ```
 USAGE
-  $ sf apex coverage execute -o <value> [-w <value>]
+  $ sf apex coverage execute -o <value> [--json] [--flags-dir <value>] [-w <value>]
 
 FLAGS
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -w, --wait=<value>        The optional wait time (minutes) for test execution to complete. A value of -1 means
                             infinite wait. A value of 0 means no wait. The default is -1
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -247,14 +268,18 @@ Pull Code Coverage metrics and generates a report.
 
 ```
 USAGE
-  $ sf apex coverage report -o <value> [-r <value>] [-w <value>]
+  $ sf apex coverage report -o <value> [--json] [--flags-dir <value>] [-r <value>] [-w <value>]
 
 FLAGS
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
-  -r, --report=<value>      The optional path for the generated report. CodeCoverageReport-{ORG}.xlsx
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -r, --report=<value>      The optional path for the generated report.
   -w, --wait=<value>        The optional wait time (minutes) for test execution to complete. A value of -1 means
                             infinite wait. A value of 0 means no wait. The default is -1
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -271,15 +296,19 @@ Generates Apex test classes (and cls-meta files) for specified CustomObjects.
 
 ```
 USAGE
-  $ sf apex scaffold -o <value> [-s <value>] [-o <value>]
+  $ sf apex scaffold -o <value> [--json] [--flags-dir <value>] [-s <value>] [-o <value>]
 
 FLAGS
   -o, --options=<value>     A file containing the Apex Test scaffold options. Specifying this option will create the
                             file if it doesn't exist already.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -s, --sobjects=<value>    A comma separated list of SObject types generate Apex Test classes for. This list overrides
                             any SObjects list in the options file.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -299,15 +328,19 @@ Uploads ContentVersion files using a multi-part message when necessary.
 
 ```
 USAGE
-  $ sf api file -r <value> -o <value> [-c <value>] [-a]
+  $ sf api file -r <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-a]
 
 FLAGS
   -a, --allornothing        Set this flag to stop the upload process on the first error
   -c, --columns=<value>     A comma separated list of the columns to use from the CSV file. If not specified, all the
                             columns are used.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -r, --records=<value>     (required) The Path to the file (CSV) containing the ContentVersion record data to upload
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -333,16 +366,20 @@ Performs the GET REST action against the specified URL/URI.
 
 ```
 USAGE
-  $ sf api get -m <value> -i <value> -o <value> [-o <value>] [-t]
+  $ sf api get -m <value> -i <value> -o <value> [--json] [--flags-dir <value>] [-o <value>] [-t]
 
 FLAGS
   -i, --ids=<value>         (required) A comma delimited list of Ids to get. A file will be written for each Id provided
   -m, --metadata=<value>    (required) The metadata to execute the API against. The dot operator can be used to retrieve
                             a specific field (i.e. ContentVersion.VersionData)
   -o, --output=<value>      OPTIONAL: The output folder path for the files. The current directory is the default.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -t, --tooling             Set to true to specify the Tooling API.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -366,7 +403,8 @@ Builds a standard SFDX source format package file from the specified org's exist
 
 ```
 USAGE
-  $ sf package build -o <value> [-x <value>] [-m <value>] [-o <value>] [-n <value>] [-f <value>] [-a]
+  $ sf package build -o <value> [--json] [--flags-dir <value>] [-x <value>] [-m <value>] [-o <value>] [-n <value>]
+    [-f <value>] [-a]
 
 FLAGS
   -a, --append              Set this flag to 'true' if you wish to append to the existing package.xml file. The default
@@ -378,9 +416,13 @@ FLAGS
                             namespaces are excluded.
   -o, --options=<value>     A file containing the package build options. Specifying this option will create the file if
                             it doesn't exist already.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -x, --package=<value>     The path to the package file to be generated. By default the path is 'package.xml'
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -388,11 +430,11 @@ DESCRIPTION
 
 EXAMPLES
   $ sf package build -o options/package-options.json -x manifest/package-acu.xml -u myOrgAlias
-      Builds a SFDX package file (./manifest/package.xml) which contains all the metadata from the myOrgAlias.
+      Builds a SF package file (./manifest/package.xml) which contains all the metadata from the myOrgAlias.
       The options defined (options/package-options.json) are honored when building the package.
 
   $ sf package build -f deploy
-      Builds a SFDX package file (./manifest/package.xml) from the MDAPI formatted data in the deploy folder .
+      Builds a SF package file (./manifest/package.xml) from the MDAPI formatted data in the deploy folder .
 ```
 
 ## `sf package merge`
@@ -401,14 +443,20 @@ Merges one SFDX package file into another.
 
 ```
 USAGE
-  $ sf package merge -s <value> -d <value> [-c]
+  $ sf package merge -s <value> -d <value> -o <value> [--json] [--flags-dir <value>] [-c]
 
 FLAGS
   -c, --compare              Include this flag to compare the two packages. Both packages will have common items
                              *removed*.
   -d, --destination=<value>  (required) The destination SFDX package which contains the merge results. It will be
                              created if it does not exist.
+  -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
+                             configuration variable is already set.
   -s, --source=<value>       (required) The source SFDX package. This package wins all conflict battles!
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -428,7 +476,7 @@ Retrieve all metadata related to Profile security/access permissions.
 
 ```
 USAGE
-  $ sf package permissions -o <value> [-x <value>] [-m <value>] [-n <value>]
+  $ sf package permissions -o <value> [--json] [--flags-dir <value>] [-x <value>] [-m <value>] [-n <value>]
 
 FLAGS
   -m, --metadata=<value>    A comma separated list of the metadata types to include. This overrides the default list:
@@ -436,10 +484,14 @@ FLAGS
                             CustomField, CustomTab, RecordType, Layout.
   -n, --namespaces=<value>  A comma separated list of namespaces to include when retrieving metadata. By default
                             namespaces are excluded.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -x, --package=<value>     The path to the package file to be generated. By default the path is
                             'package-permissions.xml'
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -461,18 +513,22 @@ Generates a DataDictionary-[Org].xlsx file from an Org's Object & Field metadata
 
 ```
 USAGE
-  $ sf schema dictionary -o <value> [-r <value>] [-n <value>] [-o <value>] [-t <value>]
+  $ sf schema dictionary -o <value> [--json] [--flags-dir <value>] [-r <value>] [-n <value>] [-o <value>] [-t <value>]
 
 FLAGS
   -n, --namespaces=<value>  A comma separated list of namespaces to include when retrieving metadata. By default
                             namespaces are excluded.
   -o, --options=<value>     OPTIONAL: A file containing the Data Dictionary options. Specifying this option will create
                             the file if it doesn't exist already.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -r, --report=<value>      The path for the data dictionary report XLSX file. This overrides the default:
                             DataDictionary-{ORG}.xlsx.
   -t, --tmpFile=<value>     OPTIONAL: The path of a pregenerated dictionary tmp file.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -489,13 +545,17 @@ Retries Profiles from Org without need to generate package.xml
 
 ```
 USAGE
-  $ sf schema profile retrieve -n <value> -o <value>
+  $ sf schema profile retrieve -n <value> -o <value> [--json] [--flags-dir <value>]
 
 FLAGS
   -n, --names=<value>       (required) Comma separated profile names with out any extension.Example "Admin,Agent". 5
                             Profiles can be retrieved at a time
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -512,16 +572,20 @@ Generates a custom field usage report for specified Objects.
 
 ```
 USAGE
-  $ sf schema usage -m <value> -o <value> [-r <value>] [-n <value>]
+  $ sf schema usage -m <value> -o <value> [--json] [--flags-dir <value>] [-r <value>] [-n <value>]
 
 FLAGS
   -m, --objects=<value>     (required) A comma separated list of standard or custom to include in the report.
   -n, --namespaces=<value>  A comma separated list of namespaces to include when retrieving metadata. By default
                             namespaces are excluded.
-  -o, --target-org=<value>  (required) [default: mmalling@aie.army.mil.johnrev] Username or alias of the target org. Not
-                            required if the `target-org` configuration variable is already set.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
   -r, --report=<value>      The path for the usage report XLSX file. This overrides the default:
                             CustomFieldUsage-{ORG}.xlsx.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -538,8 +602,8 @@ Uses a git-diff file to detect deltas. Generate a git-diff.txt diff file as foll
 
 ```
 USAGE
-  $ sf source delta git [-g <value>] [-o <value>] [-s <value>] [-d <value>] [-f <value>] [-i <value>] [-r <value>]
-    [-c] [-a <value>]
+  $ sf source delta git [--json] [--flags-dir <value>] [-g <value>] [-o <value>] [-s <value>] [-d <value>] [-f
+    <value>] [-i <value>] [-r <value>] [-c] [-a <value>]
 
 FLAGS
   -a, --copyfulldir=<value>   Specifies a comma delimited list of directories where all files should be copied if one of
@@ -556,6 +620,10 @@ FLAGS
                               if it doesn't exist already.
   -r, --deletereport=<value>  Path to a file to write deleted files.
   -s, --source=<value>        The source folder to start the delta scan from.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -574,8 +642,8 @@ Uses an MD5 hash file to detect deltas.
 
 ```
 USAGE
-  $ sf source delta md5 [-m <value>] [-o <value>] [-s <value>] [-d <value>] [-f <value>] [-i <value>] [-r <value>]
-    [-c] [-a <value>]
+  $ sf source delta md5 [--json] [--flags-dir <value>] [-m <value>] [-o <value>] [-s <value>] [-d <value>] [-f
+    <value>] [-i <value>] [-r <value>] [-c] [-a <value>]
 
 FLAGS
   -a, --copyfulldir=<value>   Specifies a comma delimited list of directories where all files should be copied if one of
@@ -593,6 +661,10 @@ FLAGS
   -r, --deletereport=<value>  Path to a file to write deleted files.
   -s, --source=<value>        The source folder to start the delta scan from.
 
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
 DESCRIPTION
 
   Uses an MD5 hash file to detect deltas.
@@ -609,16 +681,22 @@ Generate a security report based on configured permissions.
 
 ```
 USAGE
-  $ sf source permissions [-p <value>] [-r <value>] [-f <value>]
+  $ sf source permissions -o <value> [--json] [--flags-dir <value>] [-p <value>] [-r <value>] [-f <value>]
 
 FLAGS
-  -f, --folders=<value>  OPTIONAL: A comma separated list of folders to include. This list overrides the defaults:
-                         **/objects/*/*.object-meta.xml, **/objects/*/fields/*.field-meta.xml,
-                         **/permissionsets/*.permissionset-meta.xml, **/profiles/*.profile-meta.xml.
-  -p, --source=<value>   OPTIONAL: The source folder to start the meta scan from. Overrides the project's default
-                         package directory folder.
-  -r, --report=<value>   OPTIONAL: The path for the permissions report XLSX file. This overrides the default:
-                         PermissionsReport.xlsx.
+  -f, --folders=<value>     OPTIONAL: A comma separated list of folders to include. This list overrides the defaults:
+                            **/objects/*/*.object-meta.xml, **/objects/*/fields/*.field-meta.xml,
+                            **/permissionsets/*.permissionset-meta.xml, **/profiles/*.profile-meta.xml.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -p, --source=<value>      OPTIONAL: The source folder to start the meta scan from. Overrides the project's default
+                            package directory folder.
+  -r, --report=<value>      OPTIONAL: The path for the permissions report XLSX file. This overrides the default:
+                            PermissionsReport.xlsx.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -638,16 +716,22 @@ Determines the compatibility for one or more profiles metadata files with a spec
 
 ```
 USAGE
-  $ sf source profile [-p <value>] [-m] [-o <value>]
+  $ sf source profile -o <value> [--json] [--flags-dir <value>] [-p <value>] [-m] [-o <value>]
 
 FLAGS
-  -m, --modify          OPTIONAL: Setting this flag to true will updated the existing metadata to remove the
-                        incompatible entries.
-  -o, --output=<value>  OPTIONAL: The output folder path for the modified profile metadata files. The existing files are
-                        overwritten if not specified.
-  -p, --source=<value>  OPTIONAL: Comma separated path to the Profile and/or PermissionsSet  metadata to evaluate. This
-                        overrides the defaults:
-                        **/profiles/*.profile-meta.xml,**/permissionsets/*.permissionset-meta.xml.
+  -m, --modify              OPTIONAL: Setting this flag to true will updated the existing metadata to remove the
+                            incompatible entries.
+  -o, --output=<value>      OPTIONAL: The output folder path for the modified profile metadata files. The existing files
+                            are overwritten if not specified.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -p, --source=<value>      OPTIONAL: Comma separated path to the Profile and/or PermissionsSet  metadata to evaluate.
+                            This overrides the defaults:
+                            **/profiles/*.profile-meta.xml,**/permissionsets/*.permissionset-meta.xml.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
@@ -668,11 +752,17 @@ Validates XML against xpath selects and known bad values.
 
 ```
 USAGE
-  $ sf source xpath [-o <value>]
+  $ sf source xpath -o <value> [--json] [--flags-dir <value>] [-o <value>]
 
 FLAGS
-  -o, --options=<value>  A file containing the XPathOptions json. Specifying this option will create the file if it
-                         doesn't exist already.
+  -o, --options=<value>     A file containing the XPathOptions json. Specifying this option will create the file if it
+                            doesn't exist already.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
 
