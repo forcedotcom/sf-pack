@@ -77,7 +77,8 @@
     "test:compile": "wireit",
     "test:cover": "wireit",
     "version": "oclif readme",
-    "readme": "oclif readme"
+    "readme": "oclif readme",
+    "licenses": "wireit"
   },
   "publishConfig": {
     "access": "public"
@@ -86,7 +87,8 @@
     "build": {
       "dependencies": [
         "compile",
-        "lint"
+        "lint",
+        "licenses"
       ]
     },
     "compile": {
@@ -206,9 +208,14 @@
         "messages/**/*.md"
       ],
       "output": []
+    },
+    "licenses": {
+      "command":"license-checker --json --out sf-pack-licenses-v%npm_package_version%.json",
+      "files": [],
+      "output": []
     }
   },
   "exports": "./lib/index.js",
   "type": "module",
-  "author": "mmallingSFDC"
+  "author": "@salesforce"
 }
