@@ -16,7 +16,7 @@ export default class Md5 extends CommandBase {
             run(deltaOptions: import("../../../helpers/delta-options.js").DeltaOptions): Promise<any>;
             loadDeltaFile(deltaFilePath?: string): Promise<void>;
             logMessage(message: string, includeConsole?: boolean): Promise<void>;
-            validateDeltaOptions(deltaOptions: import("../../../helpers/delta-options.js").DeltaOptions): Promise<string | null>;
+            validateDeltaOptions(deltaOptions: import("../../../helpers/delta-options.js").DeltaOptions): Promise<string>;
         };
         deltaTypeKind: {
             NONE: string;
@@ -24,7 +24,7 @@ export default class Md5 extends CommandBase {
             M: string;
             D: string;
         };
-        getFullCopyPath(filePath: string, fullCopyDirNames: string[], allowFullCopyPathWithExt?: boolean): string | null;
+        getFullCopyPath(filePath: string, fullCopyDirNames: string[], allowFullCopyPathWithExt?: boolean): string;
     };
     static readonly flags: any;
     protected name: string;
