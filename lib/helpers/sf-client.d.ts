@@ -7,7 +7,8 @@ export declare enum ApiKind {
     COMPOSITE = "composite/",
     BULK_QUERY = "jobs/query/",
     BULK_INJECT = "jobs/injest/",
-    LIMITS = "limits/"
+    LIMITS = "limits/",
+    QUERY = "query"
 }
 export declare class SfClient {
     static readonly metaDataInfo: {
@@ -49,6 +50,7 @@ export declare class SfClient {
     doAction(action: RestAction, uri: string, data?: any, headers?: any, validStatusCodes?: number[], isFollowRedirects?: boolean): Promise<RestResult>;
     doComposite(action: RestAction, record: any, validStatusCodes?: number[]): Promise<RestResult>;
     getMaxApiVersion(): Promise<string>;
+    query(soql: string): Promise<RestResult>;
     getBaseUri(apiKind?: ApiKind): Promise<string>;
     getUri(metaDataType?: string, id?: string, apiKind?: ApiKind): Promise<string>;
     private doInternal;
