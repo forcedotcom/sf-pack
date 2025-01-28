@@ -542,8 +542,14 @@ describe('Sf Client Tests', () => {
         const soql: string = 'SELECT Id, EventType, LogFile, LogDate, LogFileLength FROM EventLogFile WHERE EventType=\'API\'';
         const records = await sfClient.query(soql);
         expect(records).to.not.be.undefined;
-        // eslint-disable-next-line no-console
-        console.log(JSON.stringify(records));
+      });
+      it('Can getInstanceUrl', async function () {
+        if (!sfClient) {
+          this.skip();
+        }
+        const url = sfClient.getInstanceUrl(false);
+        expect(url).to.not.be.undefined;
+        expect(url).to.not.be.null;
       });
     });
   });

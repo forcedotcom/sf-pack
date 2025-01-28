@@ -23,6 +23,8 @@ export default class Constants {
   public static readonly DEFAULT_PACKAGE_VERSION = '49.0';
   public static readonly ENOENT = 'ENOENT';
   public static readonly CONTENT_TYPE_APPLICATION = 'application/octetstream';
+  public static readonly CONTENT_TYPE_CSV = 'text/csv';
+  public static readonly CONTENT_TYPE_TEXT = 'text/plain';
   public static readonly HEADERS_CONTENT_TYPE = 'content-type';
   public static readonly METADATA_FILE_SUFFIX = '-meta.xml';
   public static readonly HTTP_STATUS_REDIRECT = [301];

@@ -78,6 +78,11 @@ export class SfClient {
     };
   }
 
+  public async getInstanceUrl(forceRefresh: boolean): Promise<string> {
+    await this.initialize(forceRefresh);
+    return this.instanceUrl;
+  }
+
   public setApiVersion(apiVersion: number): void {
     this.apiVersion = apiVersion.toString();
   }
