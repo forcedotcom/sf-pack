@@ -1,6 +1,4 @@
-
 /* eslint-disable no-console */
-/*
 import Utils from '../src/helpers/utils.js';
 import Setup from './helpers/setup.js';
 
@@ -13,5 +11,3 @@ before(async function () {
   const result = await Utils.command(login, true);
   console.log(result);
 });
-
-*/
