@@ -16,8 +16,7 @@ export default class Setup {
   public static retrievePackageFilePath = 'test/package-acc.xml';
   public static deltaIgnoreFile = 'test/deltaIgnore.txt';
 
-  // private static orgUsername: string = null;
-  private static orgUsername = 'mmalling@empathetic-panda-kbjs2g.com';
+  private static orgUsername: string = null;
 
   public static get username(): string {
     return Setup.orgUsername;
