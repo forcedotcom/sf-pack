@@ -15,6 +15,7 @@ export enum ApiKind {
   BULK_QUERY = 'jobs/query/',
   BULK_INJECT = 'jobs/injest/',
   LIMITS = 'limits/',
+  QUERY = 'query',
 }
 
 export class SfClient {
@@ -75,6 +76,11 @@ export class SfClient {
       Authorization: `Bearer ${this.accessToken}`,
       Host: this.instanceUrl.split('//')[1],
     };
+  }
+
+  public async getInstanceUrl(forceRefresh: boolean): Promise<string> {
+    await this.initialize(forceRefresh);
+    return this.instanceUrl;
   }
 
   public setApiVersion(apiVersion: number): void {
@@ -328,6 +334,21 @@ export class SfClient {
     return result.body[result.body.length - 1].version as string;
   }
 
+  public async query(soql: string): Promise<RestResult> {
+    if(!soql) {
+      throw new Error('soql parameter is required.');;
+    }
+    await this.initialize(false);
+
+    let uri = await this.getBaseUri(ApiKind.QUERY);
+    // Salesforce only wants ' ' replaces with '+'.
+    // Utils like URLSearchParams also replace commas - which is a problem
+    uri += `?q=${soql.replaceAll(/ /g,'+')}`;
+
+    const result = await this.handleResponse(RestAction.GET, uri);
+    return result;
+  }
+
   public async getBaseUri(apiKind: ApiKind = ApiKind.DEFAULT): Promise<string> {
     await this.initialize(false);
     if (!this.apiVersion) {
@@ -347,11 +368,7 @@ export class SfClient {
     return uri;
   }
 
-  public async getUri(
-    metaDataType: string = null,
-    id: string = null,
-    apiKind: ApiKind = ApiKind.DEFAULT
-  ): Promise<string> {
+  public async getUri( metaDataType: string = null, id: string = null, apiKind: ApiKind = ApiKind.DEFAULT ): Promise<string> {
     let uri = await this.getBaseUri(apiKind);
     uri += 'sobjects/';
     if (metaDataType) {

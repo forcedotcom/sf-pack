@@ -139,6 +139,14 @@
       "idsFlagDescription": "A comma delimited list of Ids to get. A file will be written for each Id provided",
       "toolingAPIFlagDescription": "Set to true to specify the Tooling API.",
       "outputFoldersFlagDescription": "OPTIONAL: The output folder path for the files. The current directory is the default."
+    },
+    "query": {
+      "commandDescription": "\r\nSend the specified SOQL query to the Salesforce query API.",
+      "soqlFlagDescription": "The SOQL query to send to the QUERY API"
+    },
+    "eventlog": {
+      "commandDescription": "\r\nRetrieves EventLog files from a Salesforce org based on the SOQL query pulled from the options file.",
+      "optionsFlagDescription": "A file containing the package build options. Specifying this option will create the file if it doesn't exist already."
     }
   }
 }
