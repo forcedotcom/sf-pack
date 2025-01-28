@@ -458,14 +458,21 @@ export default class Utils {
             // Read payload
             /* eslint-disable-next-line camelcase */
             response.content_type = response.headers[Constants.HEADERS_CONTENT_TYPE];
-            if (response.content_type === Constants.CONTENT_TYPE_APPLICATION) {
-              const buff: ArrayBuffer = await response.arrayBuffer();
-              result.body = Buffer.from(buff);
-              result.isBinary = true;
-            } else {
-              result.body = await response.json();
+            switch(response.content_type) {
+              case Constants.CONTENT_TYPE_APPLICATION:
+                // eslint-disable-next-line no-case-declarations
+                const buff: ArrayBuffer = await response.arrayBuffer();
+                result.body = Buffer.from(buff);
+                result.isBinary = true;
+                break;
+              case Constants.CONTENT_TYPE_CSV:
+              case Constants.CONTENT_TYPE_TEXT:
+                result.body = await response.text();
+                break;
+              default:
+                result.body = await response.json();
+                break;
             }
-
             return result;
         }
       } catch (err) {
