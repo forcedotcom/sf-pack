@@ -16,14 +16,14 @@ export default class Setup {
   public static retrievePackageFilePath = 'test/package-acc.xml';
   public static deltaIgnoreFile = 'test/deltaIgnore.txt';
 
-  private static orgUsername: string = null;
+  protected static orgUsername = null;
 
   public static get username(): string {
     return Setup.orgUsername;
   }
 
-  public static get usernameFlag(): string {
-    return Setup.username ? `-u ${Setup.username}` : '';
+  public static set username(username: string) {
+    Setup.orgUsername = username;
   }
 
   public static async org(): Promise<Org> {

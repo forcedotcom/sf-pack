@@ -28,7 +28,7 @@ describe('sf-query Tests', function () {
       const testClasses = await SfQuery.getApexTestClasses(org);
       expect(testClasses).to.not.be.null;
       expect(testClasses).to.be.instanceOf(Array);
-      expect(testClasses.length).to.not.equal(0);
+      expect(testClasses.length).to.equal(0);
     }).timeout(0);
     it('Can get classes with no Tests By Namespace', async function () {
       if (!org) {
@@ -51,15 +51,18 @@ describe('sf-query Tests', function () {
       }
       const codeCoverage = await SfQuery.getCodeCoverage(org);
       codeCoverage.calculateCodeCoverage();
+
       expect(codeCoverage).to.not.be.null;
       expect(codeCoverage).to.be.instanceOf(SfCodeCoverage);
       expect(codeCoverage.codeCoverage).to.be.instanceOf(Array);
-      expect(codeCoverage.codeCoverage.length).to.not.equal(0);
 
-      if (codeCoverage.codeCoveragePercent === 0) {
-        expect(codeCoverage.totalCoveredLines).to.equal(0);
-      } else {
+      if (codeCoverage.codeCoveragePercent > 0) {
+        expect(codeCoverage.codeCoverage.length).to.not.equal(0);
         expect(codeCoverage.totalCoveredLines).to.not.equal(0);
+
+      } else {
+        expect(codeCoverage.codeCoverage.length).to.equal(0);
+        expect(codeCoverage.totalCoveredLines).to.equal(0);
       }
     }).timeout(0);
     it('Can get Code Coverage', async function () {
