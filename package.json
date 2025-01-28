@@ -22,7 +22,7 @@
     "@types/xml2js": "^0.4.14",
     "c8": "^10.1.3",
     "eslint-plugin-sf-plugin": "^1.18.6",
-    "oclif": "^4.14.0",
+    "oclif": "^4.17.13",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
@@ -210,7 +210,7 @@
       "output": []
     },
     "licenses": {
-      "command":"license-checker --json --out sf-pack-licenses-v%npm_package_version%.json",
+      "command": "license-checker --json --out sf-pack-licenses-v%npm_package_version%.json",
       "files": [],
       "output": []
     }

@@ -134,7 +134,7 @@ export class SfQuery {
     return setupEntityTypes;
   }
 
-  // Get the SfFolder structure. SFDX only return parent folder information in the metadata. Need to build grandparent
+  // Get the SfFolder structure. SF only return parent folder information in the metadata. Need to build grandparent
   // structure for Reports, Dashboards, etc...
   public static async getFolders(org: Org): Promise<SfFolder[]> {
     if (!org) {
