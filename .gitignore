@@ -5,11 +5,12 @@
 /tmp
 /.wireit
 /.sfdx
+/.sf
 
 /coverage
 
 
-# We need to include the oclif.manifest.json file - otherwise the sfdx plugins:install command doesn't work
+# We need to include the oclif.manifest.json file - otherwise the sf plugins:install command doesn't work
 # https://salesforce.stackexchange.com/questions/313052/sf-how-can-i-make-my-plugin-available-to-install-via-sf-pluginsinstall-and
 # /oclif.manifest.json
 

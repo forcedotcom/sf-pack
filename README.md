@@ -399,7 +399,7 @@ EXAMPLES
 
 ## `sf package build`
 
-Builds a standard SFDX source format package file from the specified org's existing metadata.
+Builds a standard SF source format package file from the specified org's existing metadata.
 
 ```
 USAGE
@@ -426,7 +426,7 @@ GLOBAL FLAGS
 
 DESCRIPTION
 
-  Builds a standard SFDX source format package file from the specified org's existing metadata.
+  Builds a standard SF source format package file from the specified org's existing metadata.
 
 EXAMPLES
   $ sf package build -o options/package-options.json -x manifest/package-acu.xml -u myOrgAlias
@@ -439,7 +439,7 @@ EXAMPLES
 
 ## `sf package merge`
 
-Merges one SFDX package file into another.
+Merges one SF package file into another.
 
 ```
 USAGE
@@ -448,11 +448,11 @@ USAGE
 FLAGS
   -c, --compare              Include this flag to compare the two packages. Both packages will have common items
                              *removed*.
-  -d, --destination=<value>  (required) The destination SFDX package which contains the merge results. It will be
-                             created if it does not exist.
+  -d, --destination=<value>  (required) The destination SF package which contains the merge results. It will be created
+                             if it does not exist.
   -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
                              configuration variable is already set.
-  -s, --source=<value>       (required) The source SFDX package. This package wins all conflict battles!
+  -s, --source=<value>       (required) The source SF package. This package wins all conflict battles!
 
 GLOBAL FLAGS
   --flags-dir=<value>  Import flag values from a directory.
@@ -460,7 +460,7 @@ GLOBAL FLAGS
 
 DESCRIPTION
 
-  Merges one SFDX package file into another.
+  Merges one SF package file into another.
 
 EXAMPLES
   $ sf package merge -s manifest/package.xml -d manifest/package-sprint17.xml

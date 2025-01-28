@@ -514,6 +514,43 @@ describe('Sf Client Tests', () => {
           expect(result).to.not.be.undefined;
         }
       });
+      it('Can query handle null', async function () {
+        if (!sfClient) {
+          this.skip();
+        }
+        try {
+          await sfClient.query(null);
+          expect.fail();
+        } catch (err) {
+          expect(err.message).to.equal('soql parameter is required.');
+        }
+      });
+      it('Can query Accounts', async function () {
+        if (!sfClient) {
+          this.skip();
+        }
+        const soql: string = 'SELECT ID, Name FROM Account LIMIT 1';
+        const records = await sfClient.query(soql);
+        expect(records).to.not.be.undefined;
+        expect(records.body.records[0].Name).to.not.be.undefined;
+        
+      });
+      it('Can query Event Management', async function () {
+        if (!sfClient) {
+          this.skip();
+        }
+        const soql: string = 'SELECT Id, EventType, LogFile, LogDate, LogFileLength FROM EventLogFile WHERE EventType=\'API\'';
+        const records = await sfClient.query(soql);
+        expect(records).to.not.be.undefined;
+      });
+      it('Can getInstanceUrl', async function () {
+        if (!sfClient) {
+          this.skip();
+        }
+        const url = sfClient.getInstanceUrl(false);
+        expect(url).to.not.be.undefined;
+        expect(url).to.not.be.null;
+      });
     });
   });
 }).timeout(0);
