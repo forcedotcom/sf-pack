@@ -1,4 +1,6 @@
+
 /* eslint-disable no-console */
+/*
 import Utils from '../src/helpers/utils.js';
 import Setup from './helpers/setup.js';
 
@@ -12,11 +14,4 @@ before(async function () {
   console.log(result);
 });
 
-/*
-after(async function () {
-  this.timeout(0);
-  const logout = `sf org logout --target-org ${Setup.username}`;
-  const result = await Utils.command(logout, true);
-  console.log(result);
-});
 */
