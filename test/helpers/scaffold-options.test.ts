@@ -26,3 +26,5 @@ describe('ScaffoldOptions Tests', () => {
     expect(scaffoldOptions.sObjectTypes.length).equals(0);
   });
 }).timeout(0);
+
+
