@@ -37,6 +37,7 @@ export declare class SfClient {
     constructor(org: Org);
     getHeaders(): any;
     initialize(forceRefresh?: boolean): Promise<void>;
+    getInstanceUrl(forceRefresh: boolean): Promise<string>;
     setApiVersion(apiVersion: number): void;
     getMetadataSchemas(apiKind?: ApiKind): AsyncGenerator<any, void, void>;
     getMetadataSchema(metaDataType: string, apiKind?: ApiKind): Promise<RestResult>;
