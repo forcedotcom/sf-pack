@@ -28,7 +28,8 @@ describe('sf-query Tests', function () {
       const testClasses = await SfQuery.getApexTestClasses(org);
       expect(testClasses).to.not.be.null;
       expect(testClasses).to.be.instanceOf(Array);
-      expect(testClasses.length).to.equal(0);
+
+      expect(testClasses.length).to.equal(1,'***Apex classes not found - Did you deploy the classes in the force-app folder? ***');
     }).timeout(0);
     it('Can get classes with no Tests By Namespace', async function () {
       if (!org) {
