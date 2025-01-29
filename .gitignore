@@ -70,3 +70,4 @@ oclif.manifest.json
 ignore/*
 deploy/*
 .sf/config.json
+test/*ignore*.test.ts

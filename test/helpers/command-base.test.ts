@@ -46,8 +46,6 @@ export class TestCommand extends CommandBase {
   }
 }
 
-const username = Setup.username;
-
 describe('ConditionalError Tests', () => {
   it('Can handle nulls', () => {
     const error = new ConditionalError(null, null);
@@ -65,8 +63,8 @@ describe('CommandBase', () => {
   let command: TestCommand = null;
 
   before('Create Command', async () => {
-    if (username) {
-      command = new TestCommand(['-u', username], new Config(null));
+    if (Setup.username) {
+      command = new TestCommand(['-u', Setup.username], new Config(null));
     }
   });
 

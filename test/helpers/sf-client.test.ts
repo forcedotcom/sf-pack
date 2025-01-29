@@ -116,7 +116,7 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.equal('metadataType parameter is required.');
         }
       });
-      it('Can GET Default Scehma', async function () {
+      it(`Can Get ${ApiTestKind.DEFAULT.toString()} Schema`, async function () {
         if (!sfClient) {
           this.skip();
         }
@@ -177,7 +177,7 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.equal('ids parameter is required.');
         }
       });
-      it('Can Handle 404 (Default Schema)', async function () {
+      it(`Can Handle 404 (${ApiTestKind.UNKNOWN.toString()} Schema)`, async function () {
         if (!sfClient) {
           this.skip();
         }
@@ -188,7 +188,7 @@ describe('Sf Client Tests', () => {
           expect(err.message).to.contain(NOT_FOUND);
         }
       });
-      it('Can Handle 404 (Default Record)', async function () {
+      it(`Can Handle 404 (${ApiTestKind.DEFAULT.toString()} Record)`, async function () {
         if (!sfClient) {
           this.skip();
         }
@@ -246,7 +246,7 @@ describe('Sf Client Tests', () => {
           expect(content.Id).to.equal(ids[counter++]);
         }
       });
-      it('Can get Default Instance', async function () {
+      it(`Can get ${ApiTestKind.DEFAULT.toString()} Instance`, async function () {
         if (!sfClient) {
           this.skip();
         }
@@ -274,7 +274,7 @@ describe('Sf Client Tests', () => {
           expect(bytes instanceof Buffer).to.be.true;
         }
       }).timeout(0);
-      it('Can get Default Instances', async function () {
+      it(`Can get ${ApiTestKind.DEFAULT.toString()} Instance`, async function () {
         if (!sfClient) {
           this.skip();
         }
@@ -287,7 +287,7 @@ describe('Sf Client Tests', () => {
           expect(content.Id).to.equal(ids[counter++]);
         }
       });
-      it('Can update Default Instance', async function () {
+      it(`Can update ${ApiTestKind.DEFAULT.toString()} Instance`, async function () {
         if (!sfClient) {
           this.skip();
         }
@@ -301,7 +301,7 @@ describe('Sf Client Tests', () => {
           expect(result).to.equal(record.Id);
         }
       });
-      it('Can update composite', async function () {
+      it(`Can update ${ApiTestKind.DEFAULT.toString()} Instance via Composite`, async function () {
         if (!sfClient) {
           this.skip();
         }

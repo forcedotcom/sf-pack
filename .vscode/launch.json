@@ -42,11 +42,18 @@
       "preLaunchTask": "Compile tests"
     },
     {
+      "name": "Run All Tests w/Coverage",
       "type": "node",
       "request": "launch",
-      "name": "Debug Current Test",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "args": ["--inspect", "--colors", "${file}"],
+      "program": "${workspaceFolder}/node_modules/c8/bin/c8.js",
+      "args": [
+         "--reporter=html",
+         "--reporter=text",
+         "${workspaceFolder}/node_modules/mocha/bin/mocha",
+         "--exit",
+         "--colors",
+         "test/**/*.test.ts"
+      ],
       "env": {
         "NODE_ENV": "development",
         "SFDX_ENV": "development"
@@ -57,20 +64,25 @@
       "preLaunchTask": "Compile tests"
     },
     {
+      "name": "Run Current Test w/Coverage",
       "type": "node",
       "request": "launch",
-      "name": "Debug All",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "program": "${workspaceFolder}/node_modules/c8/bin/c8.js",
       "args": [
-          "-r",
-          "ts-node/register",
-          "--timeout",
-          "999999",
-          "--colors",
-          "${workspaceFolder}/test/**/*.test.ts",
+         "--reporter=html",
+         "--reporter=text",
+         "${workspaceFolder}/node_modules/mocha/bin/mocha",
+         "--exit",
+         "--colors",
+         "${file}"
       ],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development",
+        "SFDX_ENV": "development"
+      },
+      "sourceMaps": true,
+      "smartStep": true,
+      "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "Compile tests"
     }
   ]

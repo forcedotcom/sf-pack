@@ -182,8 +182,11 @@ describe('Sf Tasks Tests', () => {
 
       const testClasses = await SfQuery.getApexTestClasses(org);
       expect(testClasses).to.not.be.null;
-      expect(testClasses.length).to.be.greaterThan(0);
-
+      if(testClasses.length === 0) {
+        // eslint-disable-next-line no-console
+        console.warn('No Apex Tests exist in Org.');
+        return;
+      }
       const results = await SfTasks.enqueueApexTests(org, testClasses.slice(0, 1));
       if (results.isError) {
         // The DailyAsyncApexTests limit might have been reached
