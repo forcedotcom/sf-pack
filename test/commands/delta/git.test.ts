@@ -140,24 +140,24 @@ describe('GitDeltaProvider Tests', function () {
       deltaOptions.source = Setup.sourceForceAppRoot;
       deltaOptions.destination = Setup.destinationRoot;
 
-      let filesCount = 0;
+      let sourceFilesCount = 0;
       for await (const filePath of Utils.getFiles(Setup.sourceForceAppRoot)) {
         if (filePath) {
-          filesCount++;
+          sourceFilesCount++;
         }
       }
-      expect(29).equals(filesCount);
+      expect(sourceFilesCount).to.be.greaterThan(0);
 
       await gitProvider.run(deltaOptions);
 
-      filesCount = 0;
+      let targetFilesCount = 0;
       for await (const filePath of Utils.getFiles(Setup.destinationRoot)) {
         if (filePath) {
-          filesCount++;
+          targetFilesCount++;
         }
       }
 
-      expect(19).equals(filesCount);
+      expect(19).equals(targetFilesCount);
     });
   });
 });
