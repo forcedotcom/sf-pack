@@ -690,6 +690,7 @@ describe('command Tests', () => {
   it('Can Execute', async () => {
     const results = await Utils.command(`dir ${process.cwd()}`);
     expect(results).is.not.null;
+    expect(results).instanceOf(Array);
   });
   it('Can Handle bad command', async () => {
     try {

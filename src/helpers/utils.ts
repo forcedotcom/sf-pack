@@ -598,7 +598,15 @@ export default class Utils {
         let response: CmdResponse = null as any;
         try {
           if (stdout && String(stdout) !== '') {
-            response = JSON.parse(Utils.stripANSI(stdout)) as CmdResponse;
+            const strippedResult = Utils.stripANSI(stdout);
+            // Try and parse the JSON response
+            try {
+              response = JSON.parse(strippedResult) as CmdResponse;
+            } catch {
+              response = new CmdResponse();
+              response.status = 0;
+              response.result = strippedResult.split(Constants.CR);
+            }
           }
         } catch (err) {
           if(!hideWarnings) {

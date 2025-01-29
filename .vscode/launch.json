@@ -12,7 +12,7 @@
       "skipFiles": ["<node_internals>/**"]
     },
     {
-      "name": "Run All Tests",
+      "name": "Debug All Tests",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
@@ -29,7 +29,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Run Current Test",
+      "name": "Debug Current Test",
       "program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
       "args": ["--inspect", "--colors", "${file}"],
       "env": {
@@ -42,7 +42,7 @@
       "preLaunchTask": "Compile tests"
     },
     {
-      "name": "Run All Tests w/Coverage",
+      "name": "Run All Tests",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/c8/bin/c8.js",
@@ -64,7 +64,7 @@
       "preLaunchTask": "Compile tests"
     },
     {
-      "name": "Run Current Test w/Coverage",
+      "name": "Run Current Test",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/c8/bin/c8.js",
