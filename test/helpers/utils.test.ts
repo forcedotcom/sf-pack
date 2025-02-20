@@ -703,3 +703,40 @@ describe('command Tests', () => {
     }
   });
 });
+
+describe('writeCSVFile Tests', () => {
+  const data = [
+    ['header1', 'header2'],
+    ['value1', 'value2'],
+    ['value3', 'value4'],
+  ];
+
+  const csvFilePath = `${Setup.sourceRoot}/writeCSVFile.csv`;
+
+  beforeEach(async () => {
+    await Utils.deleteFile(csvFilePath);
+  });
+
+  it('Can Handle Nulls', async () => {
+    const result = await Utils.writeCSVFile(null,null);
+    expect(result).is.undefined;
+  });
+  
+  it('Can Handle Null File Path', async () => {
+    const result = await Utils.writeCSVFile(null, data);
+    expect(result).is.undefined;
+  });
+
+  it('Can Handle Null Data', async () => {
+    const result = await Utils.writeCSVFile(csvFilePath, null);
+    expect(result).is.undefined;
+  });
+
+  it('Can Write CSV File', async () => {
+    const result = await Utils.writeCSVFile(csvFilePath, data);
+    expect(result).to.not.equal(null);
+
+    const exists = await Utils.pathExists(csvFilePath);
+    expect(exists).to.be.true;
+  });
+});
