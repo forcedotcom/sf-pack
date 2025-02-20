@@ -240,7 +240,7 @@ export class SfCore {
           return value ? `${value.join(';').replace(/'/g, "\\'")}` : null;
         }
         case 'url':
-          return `https://www.${noUnderscoreName}.salesforce.com.orgAlias/index`;
+          return `https://www.salesforce.com/${noUnderscoreName}/index`;
 
         case 'id':
           // random & invalid Account (001) record Id

@@ -40,7 +40,7 @@
     },
     "template": {
       "commandDescription": "\r\nGenerates a DataTemplate-[Org].xlsx file from an Org's Object & Field metadata.",
-      "reportFlagDescription": "The path for the data template report XLSX file. This overrides the default: %s.",
+      "reportFlagDescription": "The path for the data template csv file(s). This overrides the default: %s.",
       "metadataFlagDescription": "A comma separated list of metadata to include. This list overrides any exclude list in the options file.",
       "optionsFlagDescription": "OPTIONAL: A file containing the Data Template options. Specifying this option will create the file if it doesn't exist already."
     },

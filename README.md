@@ -14,7 +14,6 @@ SF CLI Extensions from Salesforce Customer Success Group (CSG)
 * [Commands](#commands)
 <!-- tocstop -->
 
-
 # Debugging your plugin
 
 We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands.
@@ -22,39 +21,40 @@ We recommend using the Visual Studio Code (VS Code) IDE for your plugin developm
 To debug the `sf package build ` command:
 
 ```sh-session
-$ NODE_OPTIONS=--inspect-brk bin/run package build -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS
 ```
 
 Some common debug commands:
 
 ```sh-session
-$ NODE_OPTIONS=--inspect-brk bin/run admin user access -u ORG_ALIAS
-$ NODE_OPTIONS=--inspect-brk bin/run admin user unmask -u ORG_ALIAS -l test.user@trail.com.trail
-$ NODE_OPTIONS=--inspect-brk bin/run admin user unmask -u ORG_ALIAS -f ./unmask-options.json
-$ NODE_OPTIONS=--inspect-brk bin/run admin workspace delete -u ORG_ALIAS
-$ NODE_OPTIONS=--inspect-brk bin/run admin workspace delete -u ORG_ALIAS -l test.user@trail.com.trail
-$ NODE_OPTIONS=--inspect-brk bin/run apex coverage clear -u ORG_ALIAS
-$ NODE_OPTIONS=--inspect-brk bin/run apex coverage execute -u ORG_ALIAS
-$ NODE_OPTIONS=--inspect-brk bin/run apex coverage:report -u ORG_ALIAS
-$ NODE_OPTIONS=--inspect-brk bin/run apex scaffold -u ORG_ALIAS -s Account
-$ NODE_OPTIONS=--inspect-brk bin/run apex scaffold -u ORG_ALIAS -o scaffold-options.json
-$ NODE_OPTIONS=--inspect-brk bin/run api get -u ORG_ALIAS -m Account -i INSTANCE_ID
-$ NODE_OPTIONS=--inspect-brk bin/run api get -u ORG_ALIAS -m ContentVersion.VersionData -i INSTANCE_ID -o MyOrg-{Id}.pdf
-$ NODE_OPTIONS=--inspect-brk bin/run api file -u TRAIL -r test/ContentVersion.csv -c VersionData,PathOnClient
-$ NODE_OPTIONS=--inspect-brk bin/run package build -u ORG_ALIAS -o package-options.json
-$ NODE_OPTIONS=--inspect-brk bin/run package build -u ORG_ALIAS -s -a
-$ NODE_OPTIONS=--inspect-brk bin/run package build -f deploy
-$ NODE_OPTIONS=--inspect-brk bin/run package merge -s ./test/commands/merge/package-a.xml -d ./test/commands/merge/package-b.xml
-$ NODE_OPTIONS=--inspect-brk bin/run package permissions -u ORG_ALIAS -x manifest/package-profile.xml
-$ NODE_OPTIONS=--inspect-brk bin/run schema dictionary -u ORG_ALIAS
-$ NODE_OPTIONS=--inspect-brk bin/run schema profile retrieve -u ORG_ALIAS -n Admin
-$ NODE_OPTIONS=--inspect-brk bin/run schema usage -m Account,Case
-$ NODE_OPTIONS=--inspect-brk bin/run source permissions -p force-app
-$ NODE_OPTIONS=--inspect-brk bin/run source profile -u ORG_ALIAS -m -o test
-$ NODE_OPTIONS=--inspect-brk bin/run source delta md5 -m test/md5.test.txt -s test/force-app -d test/deploy
-$ NODE_OPTIONS=--inspect-brk bin/run source delta git -g test/git-full-dir.test.txt -s test/force-app -d test/deploy
-$ NODE_OPTIONS=--inspect-brk bin/run source delta git -o delta-options.json
-$ NODE_OPTIONS=--inspect-brk bin/run source xpath -o xpath-options.json
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd admin user access -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd admin user unmask -u ORG_ALIAS -l test.user@trail.com.trail
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd admin user unmask -u ORG_ALIAS -f ./unmask-options.json
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd admin workspace delete -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd admin workspace delete -u ORG_ALIAS -l test.user@trail.com.trail
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd apex coverage clear -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd apex coverage execute -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd apex coverage:report -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd apex scaffold -u ORG_ALIAS -s Account
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd apex scaffold -u ORG_ALIAS -o scaffold-options.json
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m Account -i INSTANCE_ID
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m ContentVersion.VersionData -i INSTANCE_ID -o MyOrg-{Id}.pdf
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api file -u TRAIL -r test/ContentVersion.csv -c VersionData,PathOnClient
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -o package-options.json
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -s -a
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -f deploy
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd package merge -s ./test/commands/merge/package-a.xml -d ./test/commands/merge/package-b.xml
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd package permissions -u ORG_ALIAS -x manifest/package-profile.xml
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd schema dictionary -u ORG_ALIAS
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd schema profile retrieve -u ORG_ALIAS -n Admin
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd schema template -m Account,Case
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd schema usage -m Account,Case
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd source permissions -p force-app
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd source profile -u ORG_ALIAS -m -o test
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd source delta md5 -m test/md5.test.txt -s test/force-app -d test/deploy
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd source delta git -g test/git-full-dir.test.txt -s test/force-app -d test/deploy
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd source delta git -o delta-options.json
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd source xpath -o xpath-options.json
 ```
 
 2. Set some breakpoints in your command code
@@ -97,13 +97,16 @@ NOTE: [Installing unsigned plugins automatically](https://developer.salesforce.c
 * [`sf apex coverage execute`](#sf-apex-coverage-execute)
 * [`sf apex coverage report`](#sf-apex-coverage-report)
 * [`sf apex scaffold`](#sf-apex-scaffold)
+* [`sf api eventlog`](#sf-api-eventlog)
 * [`sf api file`](#sf-api-file)
 * [`sf api get`](#sf-api-get)
+* [`sf api query`](#sf-api-query)
 * [`sf package build`](#sf-package-build)
 * [`sf package merge`](#sf-package-merge)
 * [`sf package permissions`](#sf-package-permissions)
 * [`sf schema dictionary`](#sf-schema-dictionary)
 * [`sf schema profile retrieve`](#sf-schema-profile-retrieve)
+* [`sf schema template`](#sf-schema-template)
 * [`sf schema usage`](#sf-schema-usage)
 * [`sf source delta git`](#sf-source-delta-git)
 * [`sf source delta md5`](#sf-source-delta-md5)
@@ -322,6 +325,35 @@ EXAMPLES
       Generates Apex test classes (and cls-meta files) for specified CustomObjects. The specified options file is used.
 ```
 
+## `sf api eventlog`
+
+Retrieves EventLog files from a Salesforce org based on the SOQL query pulled from the options file.
+
+```
+USAGE
+  $ sf api eventlog -o <value> [--json] [--flags-dir <value>] [-o <value>]
+
+FLAGS
+  -o, --options=<value>     A file containing the package build options. Specifying this option will create the file if
+                            it doesn't exist already.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+
+  Retrieves EventLog files from a Salesforce org based on the SOQL query pulled from the options file.
+
+EXAMPLES
+  $ sf api eventlog  -u myOrgAlias -o options/eventlog-options.json
+      Retrieves the EventLog files from the myOrgAlias Org for the option specified in the options/eventlog-options.json file.
+      $ sf api eventlog -o options/eventlog-options.json
+      Retrieves the EventLog files from the default Org for the option specified in the options/eventlog-options.json file.
+```
+
 ## `sf api file`
 
 Uploads ContentVersion files using a multi-part message when necessary.
@@ -395,6 +427,32 @@ EXAMPLES
   $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i 068r0000003slVtAAI -o ./output/files/{Id}.pdf
       Performs the GET REST API action against the ContentVersion metadata type with an id of 068r0000003slVtAAI and writes the VersionData field value body to 068r0000003slVtAAI.pdf.
       NOTE: Not all metadata types support field data access.
+```
+
+## `sf api query`
+
+Send the specified SOQL query to the Salesforce query API.
+
+```
+USAGE
+  $ sf api query -q <value> -o <value> [--json] [--flags-dir <value>]
+
+FLAGS
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -q, --query=<value>       (required) The SOQL query to send to the QUERY API
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+
+  Send the specified SOQL query to the Salesforce query API.
+
+EXAMPLES
+  $ sf api query -u myOrgAlias -q "SELECT Id, Name FROM Account"
+      Performs the specified SOQL query against the query API endpoint and writes the JSON result to the console.
 ```
 
 ## `sf package build`
@@ -564,6 +622,37 @@ DESCRIPTION
 EXAMPLES
       $ sf schema profile retrieve -u myOrgAlias -n "Admin,Support"
       Retrieves 5 profiles at a time. Default Path - force-app/main/default/profile
+```
+
+## `sf schema template`
+
+Generates a DataTemplate-[Org].xlsx file from an Org's Object & Field metadata.
+
+```
+USAGE
+  $ sf schema template -o <value> [--json] [--flags-dir <value>] [-r <value>] [-m <value>] [-o <value>]
+
+FLAGS
+  -m, --metadata=<value>    A comma separated list of metadata to include. This list overrides any exclude list in the
+                            options file.
+  -o, --options=<value>     OPTIONAL: A file containing the Data Template options. Specifying this option will create
+                            the file if it doesn't exist already.
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -r, --report=<value>      The path for the data template report XLSX file. This overrides the default:
+                            DataTemplate-{ORG}.csv.
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+
+  Generates a DataTemplate-[Org].xlsx file from an Org's Object & Field metadata.
+
+EXAMPLES
+  $ sf schema template -u myOrgAlias
+      Generates one or more DataTemplate-myOrgAlias.csv CSV import files for an Org's configured metadata.
 ```
 
 ## `sf schema usage`
