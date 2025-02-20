@@ -115,14 +115,14 @@ describe('Sf Core Tests', () => {
         type
       } as Field);
     };
-    it('Can Handle Null', async () => {
+    it('Can Handle Null', () => {
       expect(SfCore.generateValue(null)).is.null;
     });
-    it('Can Handle Undefined', async () => {
+    it('Can Handle Undefined', () => {
       expect(SfCore.generateValue(undefined)).is.undefined;
     });
     
-    it('Can Create string-like', async () => {
+    it('Can Create string-like', () => {
       let typeName = 'string';
       let field = createField(typeName);
       let value = SfCore.generateValue(field);
@@ -166,7 +166,7 @@ describe('Sf Core Tests', () => {
 
     });
 
-    it('Can Create number-ish', async () => {
+    it('Can Create number-ish', () => {
 
       let typeName = 'int';
       let field = createField(typeName);
@@ -211,7 +211,7 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
     });
 
-    it('Can Create decimal-ish', async () => {
+    it('Can Create decimal-ish', () => {
       let typeName = 'double';
       let field = createField(typeName);
       field.scale = 2;
@@ -240,7 +240,7 @@ describe('Sf Core Tests', () => {
       expect('' + value).to.contain('.', `failed to create: ${typeName} with scale`);
     });
 
-    it('Can Create address', async () => {
+    it('Can Create address', () => {
       const typeName = 'address';
       const field = createField(typeName);
       const value = SfCore.generateValue(field);
@@ -250,7 +250,7 @@ describe('Sf Core Tests', () => {
       expect(value).to.contain('123', `failed to create: ${typeName}`);
     });
 
-    it('Can Create boolean', async () => {
+    it('Can Create boolean', () => {
       const typeName = 'boolean';
       const field = createField(typeName);
       const value = SfCore.generateValue(field);
@@ -259,7 +259,7 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('boolean', `failed to create: ${typeName}`);
     });
 
-    it('Can Create date-ish', async () => {
+    it('Can Create date-ish', () => {
       let typeName = 'date';
       let field = createField(typeName);
       let value = SfCore.generateValue(field);
@@ -285,7 +285,7 @@ describe('Sf Core Tests', () => {
       expect( new Date(value as string), `Date cannot be created from: ${value} (${typeName})`);
     });
 
-    it('Can Create email', async () => {
+    it('Can Create email', () => {
       const typeName = 'email';
       const field = createField(typeName);
       const value = SfCore.generateValue(field);
@@ -295,7 +295,7 @@ describe('Sf Core Tests', () => {
       expect(value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/), `Invalid ${typeName} value: ${value}`);
     });
 
-    it('Can Create phone', async () => {
+    it('Can Create phone', () => {
       const typeName = 'phone';
       const field = createField(typeName);
       const value = SfCore.generateValue(field);
@@ -307,7 +307,7 @@ describe('Sf Core Tests', () => {
       expect(value).to.contain('ext', `${typeName} value (${value}) missing 'ext'`);
     });
 
-    it('Can Create picklist-ish', async () => {
+    it('Can Create picklist-ish', () => {
       const picklistObjects = [
         { 
           name: 'One',
@@ -345,6 +345,7 @@ describe('Sf Core Tests', () => {
       value = SfCore.generateValue(field);
 
       expect(value).is.not.undefined;
+      expect(value).is.not.null;
       expect(typeof value).to.equal('string', `failed to create: ${typeName} type`);
       values = value.split(';');
       expect(values.length).to.be.greaterThan(1);
@@ -353,7 +354,7 @@ describe('Sf Core Tests', () => {
       }
     });
 
-    it('Can Create url', async () => {
+    it('Can Create url', () => {
       const typeName = 'url';
       const field = createField(typeName);
       const value = SfCore.generateValue(field);
@@ -363,7 +364,7 @@ describe('Sf Core Tests', () => {
       expect(URL.canParse(value as string), `Invalid ${typeName} value: ${value}`);
     });
 
-    it('Can Create id', async () => {
+    it('Can Create id', () => {
       const typeName = 'id';
       const field = createField(typeName);
       const value = SfCore.generateValue(field);
@@ -373,7 +374,7 @@ describe('Sf Core Tests', () => {
       expect(value.length).equals(18);
     });
 
-    it('Can NOT Create types', async () => {
+    it('Can NOT Create types', () => {
       let typeName = 'reference';
       let field = createField(typeName);
       let value = SfCore.generateValue(field);

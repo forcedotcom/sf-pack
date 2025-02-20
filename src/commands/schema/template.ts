@@ -4,21 +4,21 @@ import { Flags } from '@salesforce/sf-plugins-core';
 import { CommandBase } from '../../helpers/command-base.js';
 import { SfTasks } from '../../helpers/sf-tasks.js';
 import { OptionsFactory } from '../../helpers/options-factory.js';
-import { Office } from '../../helpers/office.js';
 import { TemplateOptions } from '../../helpers/template-options.js';
 import { SfCore } from '../../helpers/sf-core.js';
+import Utils from '../../helpers/utils.js';
 
 export default class Template extends CommandBase {
   public static description = CommandBase.messages.getMessage('schema.template.commandDescription');
 
-  public static defaultReportPath = 'DataTemplate-{ORG}.xlsx';
+  public static defaultReportPath = 'DataTemplate-{ORG}.csv';
 
   public static examples = [
     `$ sf schema template -u myOrgAlias
-    Generates a ${Template.defaultReportPath.replace(
+    Generates one or more ${Template.defaultReportPath.replace(
       /\{ORG\}/,
       'myOrgAlias'
-    )} file from an Org's configured Object & Field metadata.`,
+    )} CSV import files for an Org's configured metadata.`,
   ];
 
   public static readonly flags = {
@@ -103,9 +103,13 @@ export default class Template extends CommandBase {
       }
     }
     const reportPathFlag = flags.report as string;
-    const reportPath = path.resolve(reportPathFlag || Template.defaultReportPath).replace(/\{ORG\}/, this.orgAlias);
-    Office.writeXlxsWorkbook(workbook, reportPath);
-
+    const reportFilePath = path.resolve(reportPathFlag || Template.defaultReportPath.replace(/\{ORG\}/, this.orgAlias));
+    const ext = path.extname(reportFilePath);
+    const fileName = reportFilePath.replace(ext,'');
+    for( const metadataName of workbook.keys()) {
+      await Utils.writeCSVFile(`${fileName}.${metadataName}${ext}`,workbook.get(metadataName));
+    }
+    
     // Write options JSON incase there have been structure changes since it was last saved.
     if (flags.options) {
       await this.options.save(flags.options as string);

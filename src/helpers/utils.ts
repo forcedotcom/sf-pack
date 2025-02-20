@@ -1,7 +1,9 @@
 import { exec, ExecOptions } from 'node:child_process';
 import path from 'node:path';
+
 import { promises as fs } from 'node:fs';
 import { createReadStream } from 'node:fs';
+import { createWriteStream } from 'node:fs';
 import { createInterface } from 'node:readline';
 // import reqUtils from'node:util';
 import mime from 'mime-types';
@@ -10,6 +12,7 @@ import * as xpath from 'xpath';
 import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
 import { glob } from 'glob';
+import { stringify } from 'csv-stringify';
 import bent  from'bent';
 import Constants from './constants.js';
 
@@ -628,5 +631,21 @@ export default class Utils {
         }
       });
     });
+  }
+
+  public static async writeCSVFile(csvFilePath: string, data: any[][], csvOptions = { quoted: true }): Promise<void> {
+    if(csvFilePath && data && data.length !== 0) {
+      return new Promise((resolve, reject) => {
+        const writeStream = createWriteStream(csvFilePath);
+        stringify(data, csvOptions, (err, output) => {
+          if (err) {
+            reject();
+          }
+          writeStream.write(output);
+          writeStream.end();
+          resolve();
+        });
+      });
+    }
   }
 }
