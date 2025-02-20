@@ -136,17 +136,16 @@ export class SfCore {
 
     const getPicklist = (picklistValues: any[], count: number): string[] => {
       const values: string[] = [];
-      const index = getRand(0, picklistValues.length);
-      for (const picklist of picklistValues.slice(index)) {
+      for (const picklist of picklistValues) {
         if (!picklist.active) {
           continue;
         }
         values.push(picklist.value as string);
         if (values.length === count) {
-          return values;
+          break;
         }
       }
-      return null;
+      return values;
     };
 
     const getId = (length: number): string => {
