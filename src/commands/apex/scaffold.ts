@@ -273,7 +273,7 @@ export default class Scaffold extends CommandBase {
         case 'phone': {
           const phone = `555-${getRand(100, 999)}-${getRand(1000, 9999)} ext ${++this.index}`;
           // phone max is 40
-          return `'${phone.substr(0, 40)}'`;
+          return `'${phone.substring(0, 40)}'`;
         }
         case 'multipicklist': {
           if (fld.picklistValues?.length === 0) {

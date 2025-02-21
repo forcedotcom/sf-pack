@@ -85,4 +85,7 @@ export default class Utils {
     static getMIMEType(filename: string): string;
     static stripANSI(input: string, onlyFirst?: boolean): string;
     static command(cmd: string, hideWarnings?: boolean): Promise<any>;
+    static writeCSVFile(csvFilePath: string, data: any[][], csvOptions?: {
+        quoted: boolean;
+    }): Promise<void>;
 }
