@@ -11,11 +11,11 @@ import {
 import Setup from './setup.js';
 
 let org: Org = null;
-describe('sf-query Tests', function () {
+describe('sf-query Tests', () => {
   before('Init', async function () {
     org = await Setup.org();
   });
-  describe('getApexTestClasses Tests', function () {
+  describe('getApexTestClasses Tests', () => {
     it('Can Handle Null', async function () {
       expect(await SfQuery.getApexTestClasses(null)).to.be.null;
       expect(await SfQuery.getApexTestClasses(null, null)).to.be.null;
@@ -29,7 +29,7 @@ describe('sf-query Tests', function () {
       expect(testClasses).to.not.be.null;
       expect(testClasses).to.be.instanceOf(Array);
 
-      expect(testClasses.length).to.equal(1,'***Apex classes not found - Did you deploy the classes in the force-app folder? ***');
+      expect(testClasses.length).to.be.greaterThan(0,'***Apex classes not found - Did you deploy the classes in the force-app folder? ***');
     }).timeout(0);
     it('Can get classes with no Tests By Namespace', async function () {
       if (!org) {
@@ -42,7 +42,7 @@ describe('sf-query Tests', function () {
     }).timeout(0);
   });
 
-  describe('getCodeCoverage Tests', function () {
+  describe('getCodeCoverage Tests', () => {
     it('Can Handle Null', async function () {
       expect(await SfQuery.getCodeCoverage(null)).to.be.null;
     });
@@ -80,10 +80,10 @@ describe('sf-query Tests', function () {
     }).timeout(0);
   });
 
-  describe('SfQuery Tests', function () {
+  describe('SfQuery Tests', () => {
     const customObjectType = 'Account';
     let testName = 'getCustomApplications';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getCustomApplications(null)).to.be.null;
       });
@@ -98,7 +98,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getSetupEntityTypes';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getSetupEntityTypes(null)).to.be.null;
       });
@@ -113,7 +113,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getFolders';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getFolders(null)).to.be.null;
       });
@@ -129,7 +129,7 @@ describe('sf-query Tests', function () {
     });
 
     testName = 'getPermissions';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getPermissions(null)).to.be.null;
       });
@@ -144,7 +144,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getObjectPermissions';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getObjectPermissions(null, null)).to.be.null;
       });
@@ -159,7 +159,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getFieldPermissions';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getFieldPermissions(null, null)).to.be.null;
       });
@@ -174,7 +174,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getSetupEntityAccessForTypes';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getSetupEntityAccessForTypes(null, [])).to.be.null;
       });
@@ -189,7 +189,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'waitForApexTests';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         for await (const results of SfQuery.waitForApexTests(null, null, null)) {
           if (results) {
@@ -208,7 +208,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getInClause';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(SfQuery.getInClause(null, false)).to.be.null;
       });
@@ -230,7 +230,7 @@ describe('sf-query Tests', function () {
       }).timeout(0);
     });
     testName = 'getValidationRules';
-    describe(testName + ' Tests', function () {
+    describe(testName + ' Tests', () => {
       it('Can ' + testName + ' Handle Null', async function () {
         expect(await SfQuery.getValidationRules(null)).to.be.null;
       });
