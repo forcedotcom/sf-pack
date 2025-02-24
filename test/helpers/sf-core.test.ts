@@ -221,8 +221,8 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('number', `failed to create: ${typeName}-ish`);
       let numString = '' + value;
       let parts = numString.split('.');
-      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale`);
-      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale`);
+      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
+      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
 
       typeName = 'percent';
       field = createField(typeName);
@@ -233,8 +233,8 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('number', `failed to create: ${typeName}-ish`);
       numString = '' + value;
       parts = numString.split('.');
-      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale`);
-      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale`);
+      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
+      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
 
       typeName = 'currency';
       field = createField(typeName);
@@ -245,8 +245,8 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('number', `failed to create: ${typeName}-ish`);
       numString = '' + value;
       parts = numString.split('.');
-      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale`);
-      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale`);
+      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
+      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
     });
 
     it('Can Create address', () => {
