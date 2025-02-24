@@ -211,42 +211,27 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
     });
 
-    it('Can Create decimal-ish', () => {
-      let typeName = 'double';
-      let field = createField(typeName);
+    const createAndTest = (typeName: string) =>{
+      const field = createField(typeName);
       field.scale = 2;
-      let value = SfCore.generateValue(field);
+      const value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}-ish`);
-      let numString = '' + value;
-      let parts = numString.split('.');
-      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale`);
-      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale`);
+      const numString = '' + value;
+      const parts = numString.split('.');
+      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
+      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale => ${value}`);
+    }
 
-      typeName = 'percent';
-      field = createField(typeName);
-      field.scale = 2;
-      value = SfCore.generateValue(field);
-      
-      expect(value).is.not.undefined;
-      expect(typeof value).to.equal('number', `failed to create: ${typeName}-ish`);
-      numString = '' + value;
-      parts = numString.split('.');
-      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale`);
-      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale`);
-
-      typeName = 'currency';
-      field = createField(typeName);
-      field.scale = 2;
-      value = SfCore.generateValue(field);
-      
-      expect(value).is.not.undefined;
-      expect(typeof value).to.equal('number', `failed to create: ${typeName}-ish`);
-      numString = '' + value;
-      parts = numString.split('.');
-      expect(parts.length).to.equal(2, `failed to create: ${typeName} with scale`);
-      expect(parts[1].length).to.equal(2, `failed to create: ${typeName} with scale`);
+    it('Can Create Double with Scale', () => {
+      createAndTest('double');
+    });
+    it('Can Create percent with Scale', () => {
+      createAndTest('percent');
+    });
+    it('Can Create Currency with Scale', () => {
+      createAndTest('currency');
     });
 
     it('Can Create address', () => {

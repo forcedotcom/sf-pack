@@ -114,13 +114,19 @@ export class SfCore {
         numLen = maxLength;
       }
       const scale = fld.scale ?? 0;
-      for (let index = 1; index <= numLen - scale; index++) {
-        num += get1Rand();
+      if(scale) {
+        // The length is the TOTAL character count for the field...inclusive of the decimal AND scale
+        numLen = numLen - scale - 1;
       }
-      if (fld.scale > 0) {
+      for (let index = 1; index <= numLen - scale; index++) {
+        // Don't want ending zeros as they may get truncated with parseFloat below!
+        num += index !== numLen-1 ? getRand(0,9) : getRand(1,9);
+      }
+      if (scale) {
         num += '.';
         for (let index = 1; index <= scale; index++) {
-          num += get1Rand();
+          // Don't want zeros as they may get truncated with parseFloat below!
+          num += getRand(1,9);
         }
       }
       return parseFloat(num);
@@ -128,10 +134,6 @@ export class SfCore {
 
     const getRand = (min: number, max: number): number => {
       return Math.floor(Math.random() * (max - min) + min);
-    };
-
-    const get1Rand = (): number => {
-      return getRand(0, 9);
     };
 
     const getPicklist = (picklistValues: any[], count: number): string[] => {
