@@ -120,7 +120,8 @@ export class SfCore {
       if (fld.scale > 0) {
         num += '.';
         for (let index = 1; index <= scale; index++) {
-          num += get1Rand();
+          // Don't want zeros as they may get truncated with parseFloat below!
+          num += getRand(1,9);
         }
       }
       return parseFloat(num);
