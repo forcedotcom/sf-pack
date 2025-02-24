@@ -9,6 +9,7 @@
     "@types/mime-types": "^2.1.4",
     "@xmldom/xmldom": "0.9.5",
     "bent": "^7.3.12",
+    "csv-stringify": "^6.5.2",
     "form-data": "^4.0.1",
     "glob": "10.4.5",
     "md5-file": "^5.0.0",

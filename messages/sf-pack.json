@@ -38,6 +38,12 @@
         "names": "Comma separated profile names with out any extension.Example \"Admin,Agent\". 5 Profiles can be retrieved at a time"
       }
     },
+    "template": {
+      "commandDescription": "\r\nGenerates a DataTemplate-[Org].xlsx file from an Org's Object & Field metadata.",
+      "reportFlagDescription": "The path for the data template csv file(s). This overrides the default: %s.",
+      "metadataFlagDescription": "A comma separated list of metadata to include. This list overrides any exclude list in the options file.",
+      "optionsFlagDescription": "OPTIONAL: A file containing the Data Template options. Specifying this option will create the file if it doesn't exist already."
+    },
     "usage": {
       "commandDescription": "\r\nGenerates a custom field usage report for specified Objects.",
       "objectsFlagDescription": "A comma separated list of standard or custom to include in the report.",
