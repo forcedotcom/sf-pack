@@ -12,11 +12,17 @@ import * as xpath from 'xpath';
 import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
 import { glob } from 'glob';
-import { stringify } from 'csv-stringify';
+import { Options as CsvOptions, stringify } from 'csv-stringify';
 import bent  from'bent';
 import Constants from './constants.js';
 
 export const NO_CONTENT_CODE = 204;
+
+export class DefaultOptions implements CsvOptions {
+  public quoted = true;
+  // eslint-disable-next-line camelcase
+  public record_delimiter = Constants.CR + Constants.LF;
+}
 
 export enum LoggerLevel {
   trace = 'trace',
@@ -633,7 +639,7 @@ export default class Utils {
     });
   }
 
-  public static async writeCSVFile(csvFilePath: string, data: any[][], csvOptions = { quoted: true }): Promise<void> {
+  public static async writeCSVFile(csvFilePath: string, data: any[][], csvOptions: CsvOptions = new DefaultOptions()): Promise<void> {
     if(csvFilePath && data && data.length !== 0) {
       return new Promise((resolve, reject) => {
         const writeStream = createWriteStream(csvFilePath);
