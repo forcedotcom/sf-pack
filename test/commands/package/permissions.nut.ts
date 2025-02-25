@@ -1,3 +1,4 @@
+/*
 import path from 'node:path';
 import { expect } from 'chai';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
@@ -37,3 +38,4 @@ describe.skip('Test Exception handler', () => {
     expect(output).to.contain('The specified package folder does not exist:');
   }).timeout(0);
 });
+*/
