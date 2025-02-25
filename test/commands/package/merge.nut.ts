@@ -1,3 +1,4 @@
+/*
 import path from 'node:path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
@@ -55,3 +56,4 @@ describe.skip('package merge NUTs', () => {
     expect(output).to.contain('Packages written');
   });
 });
+*/
