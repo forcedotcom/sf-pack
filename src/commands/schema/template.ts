@@ -88,7 +88,7 @@ export default class Template extends CommandBase {
           if(!this.options.includeReadOnly && field.updateable !== true ) {
             continue;
           }
-          headerRow.push(field.name);
+          headerRow.push(field.label);
 
           let value: string = null;
             try{
