@@ -120,7 +120,7 @@ export class SfCore {
         // 123.45 has precision = 5 and scale = 2
         precision = precision - scale;
       }
-      for (let index = 1; index <= precision - scale; index++) {
+      for (let index = 1; index <= precision; index++) {
         // Don't want starting or ending zeros as they may get truncated with parseFloat below!
         num += (index > 1 && index < precision-1) ? getRand(0,9) : getRand(1,9);
       }
