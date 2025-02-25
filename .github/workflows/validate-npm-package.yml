@@ -23,7 +23,6 @@ jobs:
       - name: Validate npm package
         run: |
           yarn install --frozen-lockfile
-          # yarn add @salesforce/cli
           yarn run test
           npm publish --dry-run
           echo "Validating if package version exists in registry. Job will fail if version in package.json already exists..."
