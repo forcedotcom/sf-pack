@@ -107,20 +107,22 @@ export class SfCore {
       return value;  
     };
 
-    const getDec = (fld: Field, maxLength?: number): number => {
+    const getNum = (fld: Field): number => {
       let num = '';
-      let numLen = fld.precision;
-      if (!numLen || numLen === 0 || numLen > maxLength) {
-        numLen = maxLength;
+      // precision is the current attribute name while digits is the legacy/classic name
+      let precision = fld.precision ?? field.digits ?? 0;
+      if (!precision) {
+        return;
       }
       const scale = fld.scale ?? 0;
       if(scale) {
-        // The length is the TOTAL character count for the field...inclusive of the decimal AND scale
-        numLen = numLen - scale - 1;
+        // The length is the TOTAL character count for the number value (exclusive of the decimal point) AND scale
+        // 123.45 has precision = 5 and scale = 2
+        precision = precision - scale;
       }
-      for (let index = 1; index <= numLen - scale; index++) {
-        // Don't want ending zeros as they may get truncated with parseFloat below!
-        num += index !== numLen-1 ? getRand(0,9) : getRand(1,9);
+      for (let index = 1; index <= precision - scale; index++) {
+        // Don't want starting or ending zeros as they may get truncated with parseFloat below!
+        num += (index > 1 && index < precision-1) ? getRand(0,9) : getRand(1,9);
       }
       if (scale) {
         num += '.';
@@ -187,15 +189,15 @@ export class SfCore {
         }
         case 'int':
         case 'integer':
-          return getDec(fld, 10);
+          return getNum(fld);
         case 'long':
-          return getDec(fld, 16);
+          return getNum(fld);
         case 'double':
         case 'percent':
-          return getDec(fld, 10);
+          return getNum(fld);
 
         case 'currency':
-          return getDec(fld);
+          return getNum(fld);
 
         case 'address':
           return `123 ${fld.name} St.`;

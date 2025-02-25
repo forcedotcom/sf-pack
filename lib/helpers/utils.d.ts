@@ -2,7 +2,12 @@
 import { ExecOptions } from 'node:child_process';
 import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
+import { Options as CsvOptions } from 'csv-stringify';
 export declare const NO_CONTENT_CODE = 204;
+export declare class DefaultOptions implements CsvOptions {
+    quoted: boolean;
+    record_delimiter: string;
+}
 export declare enum LoggerLevel {
     trace = "trace",
     debug = "debug",
@@ -85,7 +90,5 @@ export default class Utils {
     static getMIMEType(filename: string): string;
     static stripANSI(input: string, onlyFirst?: boolean): string;
     static command(cmd: string, hideWarnings?: boolean): Promise<any>;
-    static writeCSVFile(csvFilePath: string, data: any[][], csvOptions?: {
-        quoted: boolean;
-    }): Promise<void>;
+    static writeCSVFile(csvFilePath: string, data: any[][], csvOptions?: CsvOptions): Promise<void>;
 }

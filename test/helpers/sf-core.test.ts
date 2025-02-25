@@ -170,49 +170,74 @@ describe('Sf Core Tests', () => {
 
       let typeName = 'int';
       let field = createField(typeName);
+      field.precision = 8;
       let value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
+      let strValue = value +'';
+      expect(strValue.replace('.','').length).to.equal(field.precision, `failed to create: ${typeName} with correct precision => ${value}`);
 
       typeName = 'integer';
       field = createField(typeName);
+      field.precision = 8;
       value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
+
+      strValue = value +'';
+      expect(strValue.replace('.','').length).to.equal(field.precision, `failed to create: ${typeName} with correct precision => ${value}`);
 
       typeName = 'long';
       field = createField(typeName);
+      field.precision = 10;
       value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
+
+      strValue = value +'';
+      expect(strValue.replace('.','').length).to.equal(field.precision, `failed to create: ${typeName} with correct precision => ${value}`);
 
       typeName = 'double';
       field = createField(typeName);
+      field.precision = 10;
       value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
+
+      strValue = value +'';
+      expect(strValue.replace('.','').length).to.equal(field.precision, `failed to create: ${typeName} with correct precision => ${value}`);
 
       typeName = 'percent';
       field = createField(typeName);
+      field.precision = 5;
       value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
 
+      strValue = value +'';
+      expect(strValue.replace('.','').length).to.equal(field.precision, `failed to create: ${typeName} with correct precision => ${value}`);
+
       typeName = 'currency';
       field = createField(typeName);
+      field.precision = 5;
+      field.scale = 2;
       value = SfCore.generateValue(field);
       
       expect(value).is.not.undefined;
       expect(typeof value).to.equal('number', `failed to create: ${typeName}`);
+
+      strValue = value +'';
+      expect(strValue.replace('.','').length).to.equal(field.precision, `failed to create: ${typeName} with correct precision => ${value}`);
     });
 
     const createAndTest = (typeName: string) =>{
       const field = createField(typeName);
+      field.precision = 5;
       field.scale = 2;
       const value = SfCore.generateValue(field);
       
