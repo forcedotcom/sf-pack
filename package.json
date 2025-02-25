@@ -88,8 +88,7 @@
     "build": {
       "dependencies": [
         "compile",
-        "lint",
-        "licenses"
+        "lint"
       ]
     },
     "compile": {
