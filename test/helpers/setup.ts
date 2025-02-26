@@ -15,7 +15,8 @@ export default class Setup {
   public static anonymousApexFilePath = 'test/apex.cls';
   public static retrievePackageFilePath = 'test/package-acc.xml';
   public static deltaIgnoreFile = 'test/deltaIgnore.txt';
-
+  public static fieldsJsonFile = 'test/fields.json';
+  
   protected static orgUsername = null;
 
   public static get username(): string {

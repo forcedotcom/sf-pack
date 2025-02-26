@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { Field } from '@jsforce/jsforce-node';
 import { SfCore } from '../../src/helpers/sf-core.js';
 import Utils from '../../src/helpers/utils.js';
+import Setup from './setup.js';
 
 describe('Sf Core Tests', () => {
   describe('getPackageBase Tests', () => {
@@ -138,7 +139,7 @@ describe('Sf Core Tests', () => {
       expect(typeof value).to.equal('string', `failed to create: ${typeName}`);
       expect(value.length).to.be.lessThanOrEqual(field.length);
 
-      typeName = 'encryptedString';
+      typeName = 'encryptedstring';
       field = createField(typeName);
       value = SfCore.generateValue(field);
       
@@ -394,23 +395,27 @@ describe('Sf Core Tests', () => {
     });
 
     it('Can NOT Create types', () => {
-      let typeName = 'reference';
-      let field = createField(typeName);
-      let value = SfCore.generateValue(field);
 
-      expect(value).is.undefined;
+      for(const typeName of SfCore.ignoreFieldTypes) {
+        const field = createField(typeName);
+        const value = SfCore.generateValue(field);
+  
+        expect(value).is.undefined;
+      }
+    });
 
-      typeName = 'combobox';
-      field = createField(typeName);
-      value = SfCore.generateValue(field);
+    it('Can Create All?', async () => {
+      const json = JSON.parse(await Utils.readFile(Setup.fieldsJsonFile));
 
-      expect(value).is.undefined;
+      for(const fieldJSON of json.fields) {
+        const field = fieldJSON as Field;
+        if(field.updateable && !SfCore.ignoreFieldTypes.includes(field.type)) {
+          const value = SfCore.generateValue(field);
 
-      typeName = 'dataCategoryGroupReference';
-      field = createField(typeName);
-      value = SfCore.generateValue(field);
-
-      expect(value).is.undefined;
+          expect(value, `failed to create: ${field.type}`).is.not.undefined;
+          expect(value, `failed to create: ${field.type}`).is.not.null;
+        }
+      }
     });
   });
 });

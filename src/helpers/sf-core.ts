@@ -13,6 +13,13 @@ export class SfCore {
 
   public static jsonSpaces = 2;
 
+  public static ignoreFieldTypes = [
+    'reference',
+    'combobox',
+    'dataCategoryGroupReference',
+    'location'
+  ];
+
   public static async getPackageBase(version = null): Promise<any> {
     return {
       Package: {
@@ -168,94 +175,97 @@ export class SfCore {
     // const dateParts = today.split('T');
 
     const getValue = (fld: Field): any => {
-      let index =0;
-      switch (fld.type) {
-        case 'anytype':
-        case 'string':
-        case 'encryptedString':
-        case 'textarea':
-          return `${getStr(fld)}`;
-        case 'base64':
-          return Buffer.from(getStr(fld)).toString('base64');
-        case 'textarea1': {
-          const lineCount = 3;
-          // Calculate length of each line (subtract for \n) then divide
-          const lineLength = Math.floor((fld.length - lineCount) / 3);
-          const lines = [];
-          for (let lineIndex = 0; lineIndex < lineCount; lineIndex++) {
-            lines.push(`${getStr(fld, lineLength)}`);
+      if(!this.ignoreFieldTypes.includes(fld.type)) {
+        let index =0;
+        switch (fld.type) {
+          case 'anytype':
+          case 'string':
+          case 'encryptedstring':
+          case 'textarea':
+            return `${getStr(fld)}`;
+          case 'base64':
+            return Buffer.from(getStr(fld)).toString('base64');
+          case 'textarea1': {
+            const lineCount = 3;
+            // Calculate length of each line (subtract for \n) then divide
+            const lineLength = Math.floor((fld.length - lineCount) / 3);
+            const lines = [];
+            for (let lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+              lines.push(`${getStr(fld, lineLength)}`);
+            }
+            return lines.join('+\n');
           }
-          return lines.join('+\n');
-        }
-        case 'int':
-        case 'integer':
-          return getNum(fld);
-        case 'long':
-          return getNum(fld);
-        case 'double':
-        case 'percent':
-          return getNum(fld);
+          case 'int':
+          case 'integer':
+            return getNum(fld);
+          case 'long':
+            return getNum(fld);
+          case 'double':
+          case 'percent':
+            return getNum(fld);
 
-        case 'currency':
-          return getNum(fld);
+          case 'currency':
+            return getNum(fld);
 
-        case 'address':
-          return `123 ${fld.name} St.`;
+          case 'address':
+            return `123 ${fld.name} St.`;
 
-        case 'boolean':
-          return Math.random() < 0.5;
+          case 'boolean':
+            return Math.random() < 0.5;
 
-        case 'date':
-          // toISOString "2025-02-20T14:24:00.000Z"
-          // Salesforce  "2025-02-20"
-          return new Date().toISOString().substring(0,10);
+          case 'date':
+            // toISOString "2025-02-20T14:24:00.000Z"
+            // Salesforce  "2025-02-20"
+            return new Date().toISOString().substring(0,10);
 
-        case 'datetime':
-          // toISOString "2025-02-20T14:24:00.000Z"
-          // Salesforce  "2025-02-20T14:24:00"
-          // return `${dateParts[0]} ${dateParts[1].substring(0,8)}`;
-          return new Date().toISOString().substring(0,19);
-        case 'time':
-          // toISOString "2025-02-20T14:24:00.000Z"
-          // Salesforce  "19:49:13"
-          return new Date().toISOString().split('T')[1].substring(0,8);
+          case 'datetime':
+            // toISOString "2025-02-20T14:24:00.000Z"
+            // Salesforce  "2025-02-20T14:24:00"
+            // return `${dateParts[0]} ${dateParts[1].substring(0,8)}`;
+            return new Date().toISOString().substring(0,19);
+          case 'time':
+            // toISOString "2025-02-20T14:24:00.000Z"
+            // Salesforce  "19:49:13"
+            return new Date().toISOString().split('T')[1].substring(0,8);
 
-        case 'email':
-          return `${fld.name}@${noUnderscoreName}.email.org`;
+          case 'email':
+            return `${fld.name}@${noUnderscoreName}.email.org`;
 
-        case 'phone': {
-          const phone = `555-${getRand(100, 999)}-${getRand(1000, 9999)} ext ${++index}`;
-          // phone max is 40
-          return `${phone.substring(0, 40)}`;
-        }
-        case 'multipicklist': {
-          if (fld.picklistValues?.length === 0) {
-            return `No picklist Values for: ${fld.name} (${fld.type})`;
+          case 'phone': {
+            const phone = `555-${getRand(100, 999)}-${getRand(1000, 9999)} ext ${++index}`;
+            // phone max is 40
+            return `${phone.substring(0, 40)}`;
           }
-          const count = Math.ceil(fld.picklistValues.length / 2);
-          const values = getPicklist(fld.picklistValues, count);
-          return values ? `${values.join(';').replace(/'/g, "\\'")}` : null;
-        }
-        case 'picklist': {
-          if (fld.picklistValues?.length === 0) {
-            return `No picklist Values for: ${fld.name} (${fld.type})`;
+          case 'multipicklist': {
+            if (fld.picklistValues?.length === 0) {
+              return `No picklist Values for: ${fld.name} (${fld.type})`;
+            }
+            const count = Math.ceil(fld.picklistValues.length / 2);
+            const values = getPicklist(fld.picklistValues, count);
+            return values ? `${values.join(';').replace(/'/g, "\\'")}` : null;
           }
-          const value = getPicklist(fld.picklistValues, 1);
-          return value ? `${value.join(';').replace(/'/g, "\\'")}` : null;
-        }
-        case 'url':
-          return `https://www.salesforce.com/${noUnderscoreName}/index`;
+          case 'picklist': {
+            if (fld.picklistValues?.length === 0) {
+              return `No picklist Values for: ${fld.name} (${fld.type})`;
+            }
+            const value = getPicklist(fld.picklistValues, 1);
+            return value ? `${value.join(';').replace(/'/g, "\\'")}` : null;
+          }
+          case 'url':
+            return `https://www.salesforce.com/${noUnderscoreName}/index`;
 
-        case 'id':
-          // random & invalid Account (001) record Id
-          return '001' + getId(15);
+          case 'id':
+            // random & invalid Account (001) record Id
+            return '001' + getId(15);
 
-        case 'reference':
-        case 'combobox':
-        case 'dataCategoryGroupReference':
-        default:
-          // return `Unknown: ${fld.name} (${fld.type})`;
-      }  
+          case 'reference':
+          case 'combobox':
+          case 'dataCategoryGroupReference':
+          case 'location':
+          default:
+            // return `Unknown: ${fld.name} (${fld.type})`;
+        }  
+      }
     };
     return getValue(field);
   }
