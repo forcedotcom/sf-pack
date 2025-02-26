@@ -82,12 +82,22 @@ export default class Template extends CommandBase {
         for(const fieldName of fieldNames) {
           const field = fieldMap.get(fieldName);
 
-          if(this.options.excludeFieldTypes?.includes(field.type)) {
-            continue;
+          if(this.options.excludeRules) {
+            let skipIt = false;
+            for(const ruleAtt of this.options.excludeRules.keys()) {
+              const ruleValue = this.options.excludeRules.get(ruleAtt);
+              const attValue = (field as object)[ruleAtt];
+              if(ruleValue === attValue) {
+                this.UX.log(`Skipping field '${fieldName}' due to exclude rule (options) '${ruleAtt}'='${ruleValue}'...`);
+                skipIt = true;
+                break;
+              }
+            }
+            if(skipIt) {
+              continue;
+            }
           }
-          if(!this.options.includeReadOnly && field.updateable !== true ) {
-            continue;
-          }
+          
           headerRow.push(field.label);
 
           let value: string = null;

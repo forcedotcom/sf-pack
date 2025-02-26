@@ -11,16 +11,16 @@ describe('ScaffoldOptions Tests', () => {
   it('Loads Defaults', async () => {
     let scaffoldOptions = new TemplateOptions();
     await scaffoldOptions.loadDefaults();
-    expect(scaffoldOptions.excludeFieldTypes).to.be.an('array');
-    expect(scaffoldOptions.excludeFieldTypes.length).equals(3);
+    expect(scaffoldOptions.excludeRules.size).equals(1);
+    expect(scaffoldOptions.excludeRules).to.have.all.keys('createable');
     expect(scaffoldOptions.metaDataTypes).to.be.an('array');
     expect(scaffoldOptions.metaDataTypes.length).equals(0);
 
     await scaffoldOptions.save(optionsPath);
 
     scaffoldOptions = await OptionsFactory.get(TemplateOptions, optionsPath);
-    expect(scaffoldOptions.excludeFieldTypes).to.be.an('array');
-    expect(scaffoldOptions.excludeFieldTypes.length).equals(3);
+    expect(scaffoldOptions.excludeRules.size).equals(1);
+    expect(scaffoldOptions.excludeRules).to.have.all.keys('createable');
     expect(scaffoldOptions.metaDataTypes).to.be.an('array');
     expect(scaffoldOptions.metaDataTypes.length).equals(0);
   });

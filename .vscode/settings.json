@@ -21,6 +21,7 @@
     "datetime",
     "Defaultable",
     "deletereport",
+    "encryptedstring",
     "jsforce",
     "MDAPI",
     "Metadatas",
