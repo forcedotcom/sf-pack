@@ -14,10 +14,6 @@ export class SfCore {
   public static jsonSpaces = 2;
 
   public static ignoreFieldTypes = [
-    'reference',
-    'combobox',
-    'dataCategoryGroupReference',
-    'location'
   ];
 
   public static async getPackageBase(version = null): Promise<any> {
@@ -182,6 +178,7 @@ export class SfCore {
           case 'string':
           case 'encryptedstring':
           case 'textarea':
+          case 'dataCategoryGroupReference':
             return `${getStr(fld)}`;
           case 'base64':
             return Buffer.from(getStr(fld)).toString('base64');
@@ -244,6 +241,7 @@ export class SfCore {
             const values = getPicklist(fld.picklistValues, count);
             return values ? `${values.join(';').replace(/'/g, "\\'")}` : null;
           }
+          case 'combobox':
           case 'picklist': {
             if (fld.picklistValues?.length === 0) {
               return `No picklist Values for: ${fld.name} (${fld.type})`;
@@ -255,13 +253,25 @@ export class SfCore {
             return `https://www.salesforce.com/${noUnderscoreName}/index`;
 
           case 'id':
+          case 'reference':
             // random & invalid Account (001) record Id
             return '001' + getId(15);
-
-          case 'reference':
-          case 'combobox':
-          case 'dataCategoryGroupReference':
           case 'location':
+            // 26.7109444444;67.66725
+            // eslint-disable-next-line no-case-declarations
+            const latFld = {
+              type: 'number',
+              precision: 12,
+              scale: 10
+            } as Field;
+            // eslint-disable-next-line no-case-declarations
+            const longFld = {
+              type: 'number',
+              precision: 7,
+              scale: 5
+            } as Field;
+            
+            return `${getNum(latFld)};${getNum(longFld)}`;
           default:
             // return `Unknown: ${fld.name} (${fld.type})`;
         }  

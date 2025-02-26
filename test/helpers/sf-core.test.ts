@@ -394,27 +394,24 @@ describe('Sf Core Tests', () => {
       expect(value.length).equals(18);
     });
 
-    it('Can NOT Create types', () => {
+    it('Can Create GeoLocation', () => {
+      const typeName = 'location';
+      const field = createField(typeName);
+      const value = SfCore.generateValue(field);
 
-      for(const typeName of SfCore.ignoreFieldTypes) {
-        const field = createField(typeName);
-        const value = SfCore.generateValue(field);
-  
-        expect(value).is.undefined;
-      }
+      expect(value).is.not.undefined;
+      expect(typeof value).to.equal('string', `failed to create: ${typeName}`);
+      expect(value).to.contain(';');
     });
 
     it('Can Create All?', async () => {
       const json = JSON.parse(await Utils.readFile(Setup.fieldsJsonFile));
-
       for(const fieldJSON of json.fields) {
         const field = fieldJSON as Field;
-        if(field.updateable && !SfCore.ignoreFieldTypes.includes(field.type)) {
-          const value = SfCore.generateValue(field);
+        const value = SfCore.generateValue(field);
 
-          expect(value, `failed to create: ${field.type}`).is.not.undefined;
-          expect(value, `failed to create: ${field.type}`).is.not.null;
-        }
+        expect(value, `failed to create: ${field.type}`).is.not.undefined;
+        expect(value, `failed to create: ${field.type}`).is.not.null;
       }
     });
   });
