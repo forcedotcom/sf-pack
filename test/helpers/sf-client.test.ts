@@ -466,14 +466,14 @@ describe('Sf Client Tests', () => {
           this.skip();
         }
         const record = {
-          PathOnClient: 'records.csv',
+          PathOnClient: Setup.csvTestFilePath,
           ContentBody: '',
         };
         const results = await sfClient.postObjectMultipart(
           'ContentVersion',
           record,
           'records.csv',
-          './test/records.csv'
+          Setup.csvTestFilePath
         );
         expect(results).to.not.be.null;
       }).timeout(0);

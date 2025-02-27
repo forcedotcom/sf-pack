@@ -5,17 +5,24 @@ import Utils from '../../src/helpers/utils.js';
 import Constants from '../../src/helpers/constants.js';
 
 export default class Setup {
-  public static sourceRoot = 'test/source_folder';
-  public static destinationRoot = 'test/destination_folder';
-  public static md5FilePath = 'test/md5.test.txt';
-  public static gitFilePath = 'test/git.test.txt';
-  public static gitFullDirFilePath = 'test/git-full-dir.test.txt';
-  public static sourceForceAppRoot = 'test/force-app';
-  public static csvTestFilePath = 'test/records.csv';
-  public static anonymousApexFilePath = 'test/apex.cls';
-  public static retrievePackageFilePath = 'test/package-acc.xml';
-  public static deltaIgnoreFile = 'test/deltaIgnore.txt';
-  public static fieldsJsonFile = 'test/fields.json';
+  public static testPath = 'test';
+  public static tmpPath = path.join('test','tmp');
+  public static testFilesPath = path.join('test','files');
+  
+  // These files are needed for test execution
+  public static gitFullDirFilePath = path.join(Setup.testFilesPath,'git-full-dir.txt');
+  public static sourceForceAppRoot = path.join(Setup.testFilesPath,'force-app');
+  public static csvTestFilePath = path.join(Setup.testFilesPath, 'records.csv');
+  public static anonymousApexFilePath = path.join(Setup.testFilesPath, 'apex.cls');
+  public static deltaIgnoreFile = path.join(Setup.testFilesPath, 'deltaIgnore.txt');
+  public static fieldsJsonFile = path.join(Setup.testFilesPath, 'fields.json');
+  public static deleteReportFile = path.join(Setup.testFilesPath, 'deleteReportFile.txt');
+
+  // These files get created/destroyed via tests
+  public static sourceRoot = Setup.getTmpPath('source_folder');
+  public static destinationRoot = Setup.getTmpPath('destination_folder');
+  public static md5FilePath = Setup.getTmpPath('md5.tmp.txt');
+  public static gitFilePath = Setup.getTmpPath('git.tmp.txt');
   
   protected static orgUsername = null;
 
@@ -84,5 +91,9 @@ export default class Setup {
 
     await fs.appendFile(Setup.md5FilePath, `${filePath}=1${Constants.EOL}`);
     await fs.appendFile(Setup.gitFilePath, `${deltaKind}\t${filePath}${Constants.EOL}`);
+  }
+
+  public static getTmpPath(fileName: string) {
+    return path.join(Setup.tmpPath, fileName);
   }
 }

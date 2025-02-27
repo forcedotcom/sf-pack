@@ -2,8 +2,9 @@ import { expect } from 'chai';
 import { OptionsFactory } from '../../src/helpers/options-factory.js';
 import SchemaOptions from '../../src/helpers/schema-options.js';
 import SchemaUtils from '../../src/helpers/schema-utils.js';
+import Setup from './setup.js';
 
-const optionsPath = './options.json';
+const optionsPath = Setup.getTmpPath('options.json');
 
 describe('SchemaOptions Tests', () => {
   it('Creates New Object', async () => {

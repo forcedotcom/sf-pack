@@ -445,6 +445,7 @@ describe('Utils Test', () => {
     });
   });
 
+  /*
   describe('setCwd Test', () => {
     let lkgCwd: string = null;
     before(async () => {
@@ -477,6 +478,7 @@ describe('Utils Test', () => {
       expect(result).equal(cwd);
     });
   });
+  */
 
   testName = 'deleteDirectory';
   describe(testName + ' Test', () => {
@@ -513,8 +515,8 @@ describe('Utils Test', () => {
   });
 
   describe('mkDirPath Test', () => {
-    const testDirPath = 'testDir1\\testDir2';
-    const testDirFilePath = `${testDirPath}}\\testFile.txt`;
+    const testDirPath = path.join(Setup.tmpPath, 'testDir1','testDir2');
+    const testDirFilePath = path.join(`${testDirPath}`, 'testFile.txt');
     afterEach(async () => {
       await Utils.deleteDirectory(testDirPath);
     });

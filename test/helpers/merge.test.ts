@@ -2,9 +2,10 @@ import path from 'node:path';
 import { expect } from 'chai';
 import Utils from '../../src/helpers/utils.js';
 import xmlMerge from '../../src/helpers/xml-merge.js';
+import Setup from './setup.js';
 
 describe('Xml-Merge Tests', () => {
-  const testPath = './test/merge';
+  const testPath = path.join(Setup.testFilesPath ,'merge');
   const source = path.join(testPath, 'package-a.xml');
   const destination = path.join(testPath, 'package-b.xml');
 

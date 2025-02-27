@@ -17,11 +17,12 @@ import {
   ObjectPermission,
   SfPermission,
 } from '../../src/helpers/sf-permission.js';
+import Setup from './setup.js';
 
-const profileMetadataFilePath = './test/force-app/main/default/profiles/sample.profile-meta.xml';
-const permissionSetMetadataFilePath = './test/force-app/main/default/permissionsets/sample.permissionset-meta.xml';
-const objectMetadataFilePath = './test/force-app/main/default/objects/Asset/Asset.object-meta.xml';
-const fieldMetadataFilePath = './test/force-app/main/default/objects/Address__c/fields/Zip__c.field-meta.xml';
+const profileMetadataFilePath = path.join(Setup.testFilesPath, 'force-app/main/default/profiles/sample.profile-meta.xml');
+const permissionSetMetadataFilePath = path.join(Setup.testFilesPath, 'force-app/main/default/permissionsets/sample.permissionset-meta.xml');
+const objectMetadataFilePath = path.join(Setup.testFilesPath, 'force-app/main/default/objects/Asset/Asset.object-meta.xml');
+const fieldMetadataFilePath = path.join(Setup.testFilesPath, 'force-app/main/default/objects/Address__c/fields/Zip__c.field-meta.xml');
 
 let testName = '';
 describe('Sf Permission Tests', () => {

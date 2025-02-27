@@ -3,8 +3,9 @@ import { PackageOptions } from '../../src/helpers/package-options.js';
 import { SfTasks } from '../../src/helpers/sf-tasks.js';
 import Utils from '../../src/helpers/utils.js';
 import { OptionsFactory } from '../../src/helpers/options-factory.js';
+import Setup from './setup.js';
 
-const optionsPath = './options.json';
+const optionsPath = Setup.getTmpPath('options.json');
 let types: string[] = null;
 
 describe('PackageOptions Tests', () => {
