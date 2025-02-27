@@ -11,8 +11,8 @@ export default class Md5 extends CommandBase {
             processDeltaLine(deltaLine: string): void;
             getMessage(name: string): string;
             diff(source: string): AsyncGenerator<Delta, any, any>;
-            logFile: string;
             deltaOptions: import("../../../helpers/delta-options.js").DeltaOptions;
+            logFilePath: string;
             run(deltaOptions: import("../../../helpers/delta-options.js").DeltaOptions): Promise<any>;
             loadDeltaFile(deltaFilePath?: string): Promise<void>;
             logMessage(message: string, includeConsole?: boolean): Promise<void>;

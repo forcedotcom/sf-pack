@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { expect } from 'chai';
-import Utils from '../../src/helpers/utils.js';
+import Utils, { IOItem } from '../../src/helpers/utils.js';
 import xmlMerge from '../../src/helpers/xml-merge.js';
 import Setup from './setup.js';
 
@@ -101,14 +101,14 @@ describe('Xml-Merge Tests', () => {
       expect(merged.destination.Package.types).not.null;
       expect(merged.destination.Package.types.length).equals(parsed.Package.types.length);
     });
-    it('Diffs Packages', async () => {
-      await xmlMerge.mergeXmlFiles(source, destination, true);
+    it('Diffs Packages w/Log', async () => {
+      const logFilePath = Setup.getTmpPath('xml-merge.log');
+      await Utils.deleteFile(logFilePath);
+
+      await xmlMerge.mergeXmlFiles(source, destination, true, null, logFilePath);
 
       const sMerged = await Utils.readObjectFromXmlFile(source);
       const dMerged = await Utils.readObjectFromXmlFile(destination);
-
-      // Same numnber of types
-      // expect(sMerged.Package.types.length).to.not.equal(dMerged.Package.types.length);
 
       // ApexClass
       let sPackType = xmlMerge.getType(sMerged.Package, 'ApexClass');
@@ -138,6 +138,9 @@ describe('Xml-Merge Tests', () => {
       dPackType = xmlMerge.getType(dMerged.Package, 'Tabs');
       expect(!sPackType);
       expect(!dPackType);
+
+      const pathKind = await Utils.getPathKind(logFilePath);
+      expect(pathKind).to.equal(IOItem.File);
     });
   });
 });

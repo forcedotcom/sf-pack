@@ -1,4 +1,3 @@
-import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import { Ux } from '@salesforce/sf-plugins-core';
 import Utils from './utils.js';
@@ -15,13 +14,16 @@ export default class XmlMerge {
     sourceXmlFile: string,
     destinationXmlFile: string,
     isPackageCompare?: boolean,
-    ux?: Ux
+    ux?: Ux,
+    logFilePath?: string
   ): Promise<any> {
     let results = new MergeResult();
-    const logFilePath = path.join(path.dirname(destinationXmlFile), 'xml-merge.log');
+    // const logFilePath = path.join(path.dirname(destinationXmlFile), 'xml-merge.log');
     try {
       // Reset log file
-      await Utils.deleteFile(logFilePath);
+      if(logFilePath) {
+        await Utils.deleteFile(logFilePath);
+      }
 
       if (!(await Utils.pathExists(sourceXmlFile))) {
         await this.logMessage(`Source package does not exist: ${sourceXmlFile}`, logFilePath, ux);
@@ -80,13 +82,15 @@ export default class XmlMerge {
   }
 
   public static async logMessage(message: string, logFile: string, ux?: Ux): Promise<void> {
-    if (typeof message === 'string') {
-      await fs.appendFile(logFile, `${message}${Constants.EOL}`);
-    } else {
-      await fs.appendFile(logFile, `${JSON.stringify(message)}${Constants.EOL}`);
-    }
-    if (ux) {
-      ux.log(message);
+    if(logFile){
+      if (typeof message === 'string') {
+        await fs.appendFile(logFile, `${message}${Constants.EOL}`);
+      } else {
+        await fs.appendFile(logFile, `${JSON.stringify(message)}${Constants.EOL}`);
+      }
+      if (ux) {
+        ux.log(message);
+      }
     }
   }
 
