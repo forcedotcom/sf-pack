@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { DeltaCommandBase } from '../../src/helpers/delta-command.js';
+import Setup from './setup.js';
 
 const config = {
   source: 'source',
@@ -44,7 +45,7 @@ describe('DeltaCommand Tests', () => {
     });
 
     it('Can Load Options', async () => {
-      config.options = './test/options.json';
+      config.options = Setup.getTmpPath('options.json');
       const deltaOptions = await DeltaCommandBase.getDeltaOptions(config);
       expect(deltaOptions.deltaFilePath).equals('');
       expect(deltaOptions.source).equals('');

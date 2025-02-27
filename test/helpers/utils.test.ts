@@ -513,8 +513,8 @@ describe('Utils Test', () => {
   });
 
   describe('mkDirPath Test', () => {
-    const testDirPath = 'testDir1\\testDir2';
-    const testDirFilePath = `${testDirPath}}\\testFile.txt`;
+    const testDirPath = path.join(Setup.tmpPath, 'testDir1','testDir2');
+    const testDirFilePath = path.join(`${testDirPath}`, 'testFile.txt');
     afterEach(async () => {
       await Utils.deleteDirectory(testDirPath);
     });

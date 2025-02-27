@@ -5,8 +5,9 @@ import Utils from '../../src/helpers/utils.js';
 import { PackageOptions } from '../../src/helpers/package-options.js';
 import { OptionsSettings } from '../../src/helpers/options.js';
 import { TestOptions } from './options.test.js';
+import Setup from './setup.js';
 
-const optionsPath = './options.json';
+const optionsPath = Setup.getTmpPath('options.json');
 describe('OptionsFactory Tests', () => {
   beforeEach('Cleanup', async () => {
     await Utils.deleteFile(optionsPath);
