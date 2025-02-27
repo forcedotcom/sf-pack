@@ -6,9 +6,10 @@ import Utils from '../../../src/helpers/utils.js';
 import { XPathOptions } from '../../../src/helpers/xpath-options.js';
 import { OptionsFactory } from '../../../src/helpers/options-factory.js';
 import Constants from '../../../src/helpers/constants.js';
+import Setup from '../../helpers/setup.js';
 
-const optionsPath = 'test-options.json';
-const xmlPath = 'test.profile-meta.xml';
+const optionsPath = Setup.getTmpPath('test-options.json');
+const xmlPath = Setup.getTmpPath('test.profile-meta.xml');
 
 describe('XPath Tests', function () {
   beforeEach(async () => {

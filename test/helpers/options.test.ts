@@ -7,6 +7,7 @@ import { UnmaskOptions } from '../../src/helpers/unmask-options.js';
 import { XPathOptions } from '../../src/helpers/xpath-options.js';
 import Utils from '../../src/helpers/utils.js';
 import { DeltaOptions } from '../../src/helpers/delta-options.js';
+import Setup from './setup.js';
 
 export class TestOptions extends OptionsBase {
   private static CURRENT_VERSION = 2.0;
@@ -26,7 +27,7 @@ export class TestOptions extends OptionsBase {
   }
 }
 
-const optionsPath = './options.json';
+const optionsPath = Setup.getTmpPath('options.json');
 beforeEach('Cleanup', async () => {
   await Utils.deleteFile(optionsPath);
 });

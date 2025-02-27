@@ -1,4 +1,0 @@
-{
-  "soqlQuery": "SELECT Id, EventType, LogFile, LogDate, LogFileLength FROM EventLogFile WHERE EventType='ContentTransfer'",
-  "outputFolder": "./"
-}

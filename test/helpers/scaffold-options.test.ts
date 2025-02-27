@@ -2,8 +2,9 @@ import { expect } from 'chai';
 import { ScaffoldOptions } from '../../src/helpers/scaffold-options.js';
 import Utils from '../../src/helpers/utils.js';
 import { OptionsFactory } from '../../src/helpers/options-factory.js';
+import Setup from './setup.js';
 
-const optionsPath = './options.json';
+const optionsPath = Setup.getTmpPath('options.json');
 
 describe('ScaffoldOptions Tests', () => {
   beforeEach('Cleanup', async () => {
