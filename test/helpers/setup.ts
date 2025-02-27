@@ -52,6 +52,9 @@ export default class Setup {
     if (exists) {
       await fs.rm(folder, { recursive: true });
     }
+    
+    // Create tmp folder
+    await Utils.mkDirPath(Setup.tmpPath);
 
     await Utils.mkDirPath(folder);
     if (folder !== Setup.sourceRoot) {

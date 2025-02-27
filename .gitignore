@@ -72,3 +72,4 @@ ignore/*
 deploy/*
 .sf/config.json
 test/*ignore*.test.ts
+test/tmp/**/*
