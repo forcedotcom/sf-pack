@@ -23,13 +23,13 @@ export abstract class DeltaProvider {
     D: 'D',
   };
 
-  public logFile = 'delta.log';
   public deltaOptions = new DeltaOptions();
+  public logFilePath: string;
 
   public abstract name: string;
   public abstract deltaLineToken: string;
   public abstract deltas: Map<string, any>;
-
+  
   public static getFullCopyPath(
     filePath: string,
     fullCopyDirNames: string[],
@@ -66,8 +66,11 @@ export abstract class DeltaProvider {
       this.deltaOptions = deltaOptions;
       this.deltaOptions.normalize();
     }
+    
     // Reset log file
-    await Utils.deleteFile(this.logFile);
+    if(this.logFilePath) {
+      await Utils.deleteFile(this.logFilePath);
+    }
 
     const metrics = {
       Copy: 0,
@@ -267,10 +270,12 @@ export abstract class DeltaProvider {
   }
 
   public async logMessage(message: string, includeConsole = false): Promise<void> {
-    if (typeof message === 'string') {
-      await fs.appendFile(this.logFile, `${message}${Constants.EOL}`);
-    } else {
-      await fs.appendFile(this.logFile, `${JSON.stringify(message)}${Constants.EOL}`);
+    if(this.logFilePath) {
+      if (typeof message === 'string') {
+        await fs.appendFile(this.logFilePath, `${message}${Constants.EOL}`);
+      } else {
+        await fs.appendFile(this.logFilePath, `${JSON.stringify(message)}${Constants.EOL}`);
+      }
     }
     if (includeConsole || this.deltaOptions.logAllMessagesToConsole) {
       /* eslint-disable-next-line no-console */
