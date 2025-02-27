@@ -13,8 +13,8 @@ export default class Git extends CommandBase {
             getMessage(name: string): string;
             diff(source?: string): AsyncGenerator<Delta, any, any>;
             validateDeltaOptions(deltaOptions: DeltaOptions): Promise<string>;
-            logFile: string;
             deltaOptions: DeltaOptions;
+            logFilePath: string;
             run(deltaOptions: DeltaOptions): Promise<any>;
             loadDeltaFile(deltaFilePath?: string): Promise<void>;
             logMessage(message: string, includeConsole?: boolean): Promise<void>;

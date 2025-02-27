@@ -11,8 +11,8 @@ export declare abstract class DeltaProvider {
         M: string;
         D: string;
     };
-    logFile: string;
     deltaOptions: DeltaOptions;
+    logFilePath: string;
     abstract name: string;
     abstract deltaLineToken: string;
     abstract deltas: Map<string, any>;
