@@ -445,7 +445,6 @@ describe('Utils Test', () => {
     });
   });
 
-  /*
   describe('setCwd Test', () => {
     let lkgCwd: string = null;
     before(async () => {
@@ -478,7 +477,6 @@ describe('Utils Test', () => {
       expect(result).equal(cwd);
     });
   });
-  */
 
   testName = 'deleteDirectory';
   describe(testName + ' Test', () => {
