@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node';
 import { Org } from '@salesforce/core';
 import Utils from '../../src/helpers/utils.js';
 import Constants from '../../src/helpers/constants.js';
@@ -98,5 +99,10 @@ export default class Setup {
 
   public static getTmpPath(fileName: string) {
     return path.join(Setup.tmpPath, fileName);
+  }
+
+  public static async loadDescribeSObjectResult(jsonFilePath: string): Promise<DescribeSObjectResult> {
+    const json = await Utils.readFile(jsonFilePath);
+    return JSON.parse(json) as DescribeSObjectResult;
   }
 }
