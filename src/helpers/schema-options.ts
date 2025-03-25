@@ -162,9 +162,9 @@ export default class SchemaOptions extends OptionsBase {
         ]);
         this.outputDefMap.set('childRelationships', [
           `ParentObjectName|${SchemaUtils.CONTEXT_SCHEMA}.name`,
+          `ChildRelationShipName|${SchemaUtils.CONTEXT_FIELD}.relationshipName`,
           `ChildObjectName|${SchemaUtils.CONTEXT_FIELD}.childSObject`,
           `LookUpFieldOnChildObject|${SchemaUtils.CONTEXT_FIELD}.field`,
-          `ChildRelationShipName|${SchemaUtils.CONTEXT_FIELD}.relationshipName`,
         ]);
         this.outputDefMap.set('recordTypeInfos', [
           `SObjectName|${SchemaUtils.CONTEXT_SCHEMA}.name`,

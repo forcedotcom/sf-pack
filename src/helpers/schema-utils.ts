@@ -30,11 +30,7 @@ export default class SchemaUtils {
     },
   };
 
-  public static *getDynamicSchemaData(
-    schema: any,
-    dynamicCode: string,
-    collection: any[]
-  ): Generator<any, void, string[]> {
+  public static *getDynamicSchemaData( schema: any, dynamicCode: string, collection: any[] ): Generator<any, void, string[]> {
     if (!schema) {
       throw new Error('The schema argument cannot be null.');
     }

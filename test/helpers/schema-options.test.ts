@@ -89,7 +89,7 @@ describe('SchemaOptions Tests', () => {
       schemaOptions.outputDefMap = new Map<string, string[]>();
       expect(await schemaOptions.load(optionsPath)).to.not.be.null;
     });
-    it('Loads options', async () => {
+    it('Loads options (fields)', async () => {
       const schemaOptions = new SchemaOptions();
       await schemaOptions.load(null);
       schemaOptions.outputDefMap.set('fields', [
@@ -112,6 +112,19 @@ describe('SchemaOptions Tests', () => {
 
       fields = schemaOptions.getEntityDefinitionFields('bogus');
       expect(fields).to.not.be.null;
+    });
+    it('Loads options (recordTypeInfos)', async () => {
+      const schemaOptions = new SchemaOptions();
+      await schemaOptions.load(null);
+      schemaOptions.outputDefMap.set('recordTypeInfos', [
+        `SObjectName|${SchemaUtils.CONTEXT_SCHEMA}.name`,
+        `RecordTypeName|${SchemaUtils.CONTEXT_FIELD}.name`,
+        `RecordTypeLabel|${SchemaUtils.CONTEXT_FIELD}.developerName`,
+        `IsMaster|${SchemaUtils.CONTEXT_FIELD}.master`,
+      ]);
+      const recordTypeInfos = schemaOptions.getEntityDefinitionFields('recordTypeInfos');
+      expect(recordTypeInfos).to.not.be.null;
+      expect(recordTypeInfos.length).to.equal(0);
     });
     it(`Saves`, async () => {
       let schemaOptions = new SchemaOptions();
