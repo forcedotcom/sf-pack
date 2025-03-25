@@ -31,3 +31,5 @@ deploy/*
 test/*ignore*.test.ts
 test/tmp/**/*
 test/**/xml-merge.log
+DataDictionary-*.*
+~*.*

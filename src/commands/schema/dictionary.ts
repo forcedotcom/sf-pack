@@ -91,40 +91,30 @@ export default class Dictionary extends CommandBase {
             continue;
           }
 
-          let nameFieldIndex = -1;
-          // Query for Entity & Field Definition
-          const entityDefinitionFields = this.options.getEntityDefinitionFields(name);
+          let nameFieldIndex = null;
+          // First try and find a Name field
           const outputDefs = this.options.outputDefMap.get(name);
-
-          if (entityDefinitionFields.length > 0) {
-            for (let index = 0; index < outputDefs.length; index++) {
-              const outputDef = outputDefs[index];
-              if (outputDef.includes(`|${SchemaUtils.CONTEXT_FIELD_NAME}`)) {
-                nameFieldIndex = index;
-                break;
-              }
-            }
-            if (nameFieldIndex === -1) {
-              this.raiseError('No Name field found');
+          for (let index = 0; index < outputDefs.length; index++) {
+            const outputDef = outputDefs[index];
+            if (outputDef.includes(`|${SchemaUtils.CONTEXT_FIELD_NAME}`)) {
+              nameFieldIndex = index;
+              break;
             }
           }
 
-          const fieldDefinitionMap = await this.entityDefinitionValues(metaDataType, entityDefinitionFields);
           const dynamicCode = this.options.getDynamicCode(name);
-
           const schemaRows = new Map<string, any[]>();
           for await (const row of SchemaUtils.getDynamicSchemaData(schema, dynamicCode, collection)) {
-            if (row.length === 0) {
-              continue;
+            if (row.length !== 0) {
+              schemaRows.set(row[nameFieldIndex ?? 0] as string, row as any[]);
             }
-            schemaRows.set(row[nameFieldIndex] as string, row as any[]);
           }
 
-          for (const fieldName of fieldDefinitionMap.keys()) {
+          // Query for Entity & Field Definition
+          const entityDefinitionFields = this.options.getEntityDefinitionFields(name);
+          const fieldDefinitionMap = await this.entityDefinitionValues(metaDataType, entityDefinitionFields);
+          for (const fieldName of schemaRows.keys()) {
             const row = schemaRows.get(fieldName);
-            if (!row || row.length === 0) {
-              continue;
-            }
             const fieldDefinitionRecord = fieldDefinitionMap.get(fieldName);
             if (fieldDefinitionRecord != null && outputDefs) {
               for (let index = 0; index < outputDefs.length; index++) {
