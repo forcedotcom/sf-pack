@@ -1,5 +1,6 @@
 import { Ux, SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages, Org, Connection } from '@salesforce/core';
+import Utils from './utils.js';
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
@@ -56,6 +57,29 @@ export abstract class CommandBase extends SfCommand<void> {
     }
     return CommandBase.uxInst;
   }
+
+  public static async readIdsFromFlagOrFile(flagValue: string): Promise<string[]> {
+      const ids: string[] = [];
+      const trimFunc = (oldIds: string[]): string[] => {
+        const newIds  = [];
+        for(const id of oldIds ?? []) {
+          if(id) {
+            newIds.push(id.trim());
+          }
+        }
+        return newIds;
+      };
+  
+      if(await Utils.pathExists(flagValue)) {
+        for await (const line of Utils.readFileLines(flagValue)) {
+          const results = trimFunc(line.split(','));
+          ids.push(...results);
+        }
+      } else {
+        ids.push(...trimFunc(flagValue.split(',')));
+      }
+      return ids;
+    }
 
   public async run(): Promise<void> {
     this.debug('Start run');

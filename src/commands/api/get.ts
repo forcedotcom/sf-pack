@@ -45,7 +45,7 @@ export default class Get extends CommandBase {
 
     const sfClient = new SfClient(this.org);
 
-    const ids: string[] = flags.ids.split(',');
+    const ids = await CommandBase.readIdsFromFlagOrFile(flags.ids as string);
     for await (const response of sfClient.getByIds(flags.metadata as string, ids, apiKind)) {
       const outFilePath: string = flags.output || '{Id}.json';
       const content = response.getContent();

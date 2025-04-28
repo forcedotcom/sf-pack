@@ -17,6 +17,7 @@ export declare abstract class CommandBase extends SfCommand<void> {
     protected get orgId(): string | undefined;
     protected get connection(): Connection | undefined;
     protected get UX(): Ux;
+    static readIdsFromFlagOrFile(flagValue: string): Promise<string[]>;
     run(): Promise<void>;
     protected errorHandler(err: Error, throwErr?: boolean): void;
     protected raiseError(message: string): void;
