@@ -8,5 +8,6 @@ export default class Get extends CommandBase {
         output: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         tooling: import("@oclif/core/interfaces").BooleanFlag<boolean>;
     };
+    static readIdsFromFlagOrFile(flagValue: string): Promise<string[]>;
     protected runInternal(): Promise<void>;
 }

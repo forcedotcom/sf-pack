@@ -39,13 +39,36 @@ export default class Get extends CommandBase {
     ...CommandBase.flags,
   };
 
+  public static async readIdsFromFlagOrFile(flagValue: string): Promise<string[]> {
+    const ids: string[] = [];
+    const trimFunc = (oldIds: string[]): string[] => {
+      const newIds  = [];
+      for(const id of oldIds ?? []) {
+        if(id) {
+          newIds.push(id.trim());
+        }
+      }
+      return newIds;
+    };
+
+    if(await Utils.pathExists(flagValue)) {
+      for await (const line of Utils.readFileLines(flagValue)) {
+        const results = trimFunc(line.split(','));
+        ids.push(...results);
+      }
+    } else {
+      ids.push(...trimFunc(flagValue.split(',')));
+    }
+    return ids;
+  }
+
   protected async runInternal(): Promise<void> {
     const { flags } = await this.parse(Get);
     const apiKind = flags.tooling ? ApiKind.TOOLING : ApiKind.DEFAULT;
 
     const sfClient = new SfClient(this.org);
 
-    const ids: string[] = flags.ids.split(',');
+    const ids = await Get.readIdsFromFlagOrFile(flags.ids as string);
     for await (const response of sfClient.getByIds(flags.metadata as string, ids, apiKind)) {
       const outFilePath: string = flags.output || '{Id}.json';
       const content = response.getContent();
