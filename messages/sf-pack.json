@@ -131,12 +131,15 @@
   },
   "api": {
     "file": {
+      "recordsFlagDescription": "The Path to the file (CSV) containing the ContentVersion record data to act on",
+      "columnsFlagDescription": "A comma separated list of the columns to use from the CSV file. If not specified, all the columns are used.",
+      "allOrNothingFlagDescription": "Set this flag to stop the process on the first error",
+      "filesPathFlagDescription": "The directory which contains the files to get/post",
+      "get": {
+        "commandDescription": "\r\nGETs ContentVersion files from the Salesforce instance."
+      },
       "post": {
-        "metadataFlagDescription": "The MetaData Type name to upload",
-        "commandDescription": "\r\nUploads ContentVersion files using a multi-part message when necessary.",
-        "recordsFlagDescription": "The Path to the file (CSV) containing the ContentVersion record data to upload",
-        "columnsFlagDescription": "A comma separated list of the columns to use from the CSV file. If not specified, all the columns are used.",
-        "allOrNothingFlagDescription": "Set this flag to stop the upload process on the first error"
+        "commandDescription": "\r\nPOSTs ContentVersion files using a multi-part message when necessary."
       }
     },
     "get": {

@@ -13,16 +13,19 @@ export declare enum ApiKind {
 export declare class SfClient {
     static readonly metaDataInfo: {
         ContentVersion: {
+            Id: string;
             MetaName: string;
             DataName: string;
             Filename: string;
         };
         Document: {
+            Id: string;
             MetaName: string;
             DataName: string;
             Filename: string;
         };
         Attachment: {
+            Id: string;
             MetaName: string;
             DataName: string;
             Filename: string;

@@ -31,7 +31,7 @@ export default class Constants {
   public static readonly EOL = os.EOL;
   public static readonly CR = '\r';
   public static readonly LF = '\n';
-  public static readonly CONENTVERSION_MAX_SIZE = 37_000_000;
+  public static readonly CONTENT_VERSION_MAX_SIZE = 37_000_000;
   public static readonly MIME_JSON = 'application/json';
   public static readonly DEFAULT_CSV_TEXT_WRAPPERS = ['"'];
   public static readonly MAX_EXCEL_LENGTH = 32_767;

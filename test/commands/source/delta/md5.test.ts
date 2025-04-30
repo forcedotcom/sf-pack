@@ -1,9 +1,9 @@
 import { promises as fs } from 'node:fs';
 import { expect } from 'chai';
-import Setup from '../../helpers/setup.js';
-import { DeltaOptions } from '../../../src/helpers/delta-options.js';
-import Utils from '../../../src/helpers/utils.js';
-import Md5 from '../../../src/commands/source/delta/md5.js';
+import Setup from '../../../helpers/setup.js';
+import { DeltaOptions } from '../../../../src/helpers/delta-options.js';
+import Utils from '../../../../src/helpers/utils.js';
+import Md5 from '../../../../src/commands/source/delta/md5.js';
 
 const bogusMd5FilePath = 'bogus_' + Setup.md5FilePath;
 const md5Provider = new Md5.md5DeltaProvider();

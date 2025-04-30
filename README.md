@@ -37,9 +37,11 @@ $ NODE_OPTIONS=--inspect-brk bin/run.cmd apex coverage execute -u ORG_ALIAS
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd apex coverage:report -u ORG_ALIAS
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd apex scaffold -u ORG_ALIAS -s Account
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd apex scaffold -u ORG_ALIAS -o scaffold-options.json
-$ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m Account -i INSTANCE_ID
-$ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m ContentVersion.VersionData -i INSTANCE_ID -o MyOrg-{Id}.pdf
-$ NODE_OPTIONS=--inspect-brk bin/run.cmd api file -u TRAIL -r test/ContentVersion.csv -c VersionData,PathOnClient
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m Account -i 068r0000003slVtAAI
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m ContentVersion.VersionData -i 068r0000003slVtAAI,068r0000003slVtAAB -f MyOrg-{Id}.pdf
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r ./test/files/api/ContentVersionGet.csv -f test/files/api/cvFiles
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r test/ContentVersionIds.csv -f ./Files
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api file post -u ORG_ALIAS -r test/files/api/ContentVersion.csv -f test/files/api/ContentVersion
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -o package-options.json
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -s -a
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -f deploy
@@ -78,6 +80,11 @@ Otherwise install the plug-in:
 ```
 sf plugins install @salesforce/sf-pack
 ```
+or
+
+```
+sf plugins install https://github.com/forcedotcom/sf-pack
+```
 
 Verify link/install:
 
@@ -98,7 +105,8 @@ NOTE: [Installing unsigned plugins automatically](https://developer.salesforce.c
 * [`sf apex coverage report`](#sf-apex-coverage-report)
 * [`sf apex scaffold`](#sf-apex-scaffold)
 * [`sf api eventlog`](#sf-api-eventlog)
-* [`sf api file`](#sf-api-file)
+* [`sf api file get`](#sf-api-file-get)
+* [`sf api file post`](#sf-api-file-post)
 * [`sf api get`](#sf-api-get)
 * [`sf api query`](#sf-api-query)
 * [`sf package build`](#sf-package-build)
@@ -299,15 +307,15 @@ Generates Apex test classes (and cls-meta files) for specified CustomObjects.
 
 ```
 USAGE
-  $ sf apex scaffold -o <value> [--json] [--flags-dir <value>] [-s <value>] [-o <value>]
+  $ sf apex scaffold -s <value> -o <value> [--json] [--flags-dir <value>] [-o <value>]
 
 FLAGS
   -o, --options=<value>     A file containing the Apex Test scaffold options. Specifying this option will create the
                             file if it doesn't exist already.
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
-  -s, --sobjects=<value>    A comma separated list of SObject types generate Apex Test classes for. This list overrides
-                            any SObjects list in the options file.
+  -s, --sobjects=<value>    (required) A comma separated list of SObject types generate Apex Test classes for. This list
+                            overrides any SObjects list in the options file.
 
 GLOBAL FLAGS
   --flags-dir=<value>  Import flag values from a directory.
@@ -354,21 +362,22 @@ EXAMPLES
       Retrieves the EventLog files from the default Org for the option specified in the options/eventlog-options.json file.
 ```
 
-## `sf api file`
+## `sf api file get`
 
-Uploads ContentVersion files using a multi-part message when necessary.
+GETs ContentVersion files from the Salesforce instance.
 
 ```
 USAGE
-  $ sf api file -r <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-a]
+  $ sf api file get -r <value> -f <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-a]
 
 FLAGS
-  -a, --allornothing        Set this flag to stop the upload process on the first error
+  -a, --allornothing        Set this flag to stop the process on the first error
   -c, --columns=<value>     A comma separated list of the columns to use from the CSV file. If not specified, all the
                             columns are used.
+  -f, --filespath=<value>   (required) The directory which contains the files to get/post
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
-  -r, --records=<value>     (required) The Path to the file (CSV) containing the ContentVersion record data to upload
+  -r, --records=<value>     (required) The Path to the file (CSV) containing the ContentVersion record data to act on
 
 GLOBAL FLAGS
   --flags-dir=<value>  Import flag values from a directory.
@@ -376,20 +385,49 @@ GLOBAL FLAGS
 
 DESCRIPTION
 
-  Uploads ContentVersion files using a multi-part message when necessary.
+  GETs ContentVersion files from the Salesforce instance.
 
 EXAMPLES
-  $ sf api file -u myOrgAlias -r ContentVersions.csv
-      Uploads the ContentVersion records defined in ContentVersions.csv. 
-      NOTE: filename = PathOnClient, filePath = ContentVersion then PathOnClient
+  $ sf api file get -u myOrgAlias -r ContentVersions.csv  -f ./output/files
+      Downloads the ContentVersion records defined in ContentVersions.csv and writes them to './output/files/{Id}'.
 
-  $ sf api file -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
-      Uploads the ContentVersion records defined in ContentVersions.csv using only the columns: ContentDocumentId,VersionData,PathOnClient. 
-      NOTE: filename = PathOnClient, filePath = ContentVersion then PathOnClient
+  NOTE: the ContentVersion.csv file must have an Id column
+```
 
-  $ sf api file -u myOrgAlias -r ContentVersions.csv -a
+## `sf api file post`
+
+POSTs ContentVersion files using a multi-part message when necessary.
+
+```
+USAGE
+  $ sf api file post -r <value> -f <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-a]
+
+FLAGS
+  -a, --allornothing        Set this flag to stop the process on the first error
+  -c, --columns=<value>     A comma separated list of the columns to use from the CSV file. If not specified, all the
+                            columns are used.
+  -f, --filespath=<value>   (required) The directory which contains the files to get/post
+  -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
+                            configuration variable is already set.
+  -r, --records=<value>     (required) The Path to the file (CSV) containing the ContentVersion record data to act on
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+
+  POSTs ContentVersion files using a multi-part message when necessary.
+
+EXAMPLES
+  $ sf api file post -u myOrgAlias -r ContentVersions.csv -f ContentVersion
+      Uploads the ContentVersion records defined in ContentVersions.csv using the {id} named files in ./ContentVersion.
+
+  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -f ./ContentVersion -c ContentDocumentId,VersionData,PathOnClient
+      Uploads the ContentVersion records defined in ContentVersions.csv using only the columns: ContentDocumentId,VersionData,PathOnClient.
+
+  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -f ContentVersion -a
       Uploads the ContentVersion records defined in ContentVersions.csv. The whole process will stop on the first failure.
-      NOTE: filename = PathOnClient, filePath = ContentVersion then PathOnClient
 ```
 
 ## `sf api get`
@@ -398,13 +436,14 @@ Performs the GET REST action against the specified URL/URI.
 
 ```
 USAGE
-  $ sf api get -m <value> -i <value> -o <value> [--json] [--flags-dir <value>] [-o <value>] [-t]
+  $ sf api get -m <value> -i <value> -o <value> [--json] [--flags-dir <value>] [-f <value>] [-t]
 
 FLAGS
-  -i, --ids=<value>         (required) A comma delimited list of Ids to get. A file will be written for each Id provided
+  -f, --file=<value>        OPTIONAL: The output folder path for the files. The current directory is the default.
+  -i, --ids=<value>         (required) A comma delimited list of Ids (or path to text file of Ids) to get. A file will
+                            be written for each Id provided
   -m, --metadata=<value>    (required) The metadata to execute the API against. The dot operator can be used to retrieve
                             a specific field (i.e. ContentVersion.VersionData)
-  -o, --output=<value>      OPTIONAL: The output folder path for the files. The current directory is the default.
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
   -t, --tooling             Set to true to specify the Tooling API.
@@ -426,7 +465,11 @@ EXAMPLES
 
   $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i 068r0000003slVtAAI -o ./output/files/{Id}.pdf
       Performs the GET REST API action against the ContentVersion metadata type with an id of 068r0000003slVtAAI and writes the VersionData field value body to 068r0000003slVtAAI.pdf.
-      NOTE: Not all metadata types support field data access.
+
+  $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i test/ContentVersionIds.txt -o ./output/files/{Id}.pdf
+      Performs the GET REST API action against the ContentVersion metadata type for each of the ids contained in the test/ContentVersionIds.txt and writes the VersionData field value body to 068r0000003slVtAAI.pdf.
+
+  NOTE: Not all metadata types support field data access.
 ```
 
 ## `sf api query`
@@ -639,7 +682,7 @@ FLAGS
                             the file if it doesn't exist already.
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
-  -r, --report=<value>      The path for the data template report XLSX file. This overrides the default:
+  -r, --report=<value>      The path for the data template csv file(s). This overrides the default:
                             DataTemplate-{ORG}.csv.
 
 GLOBAL FLAGS
