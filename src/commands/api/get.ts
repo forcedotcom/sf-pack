@@ -12,8 +12,10 @@ export default class Get extends CommandBase {
     `$ sf api get -u myOrgAlias -t true -m Account -i 068r0000003slVtAAI -o ./output/files/{Id}.json
     Performs the GET REST API action against the Account metadata type with an id of 068r0000003slVtAAI and writes the body to ./output/files/068r0000003slVtAAI.json.`,
     `$ sf api get -u myOrgAlias -m ContentVersion.VersionData -i 068r0000003slVtAAI -o ./output/files/{Id}.pdf
-    Performs the GET REST API action against the ContentVersion metadata type with an id of 068r0000003slVtAAI and writes the VersionData field value body to 068r0000003slVtAAI.pdf.
-    NOTE: Not all metadata types support field data access.`,
+    Performs the GET REST API action against the ContentVersion metadata type with an id of 068r0000003slVtAAI and writes the VersionData field value body to 068r0000003slVtAAI.pdf.`,
+    `$ sf api get -u myOrgAlias -m ContentVersion.VersionData -i test/ContentVersionIds.txt -o ./output/files/{Id}.pdf
+    Performs the GET REST API action against the ContentVersion metadata type for each of the ids contained in the test/ContentVersionIds.txt and writes the VersionData field value body to 068r0000003slVtAAI.pdf.`,
+    `NOTE: Not all metadata types support field data access.`,
   ];
 
   public static readonly flags = {
@@ -27,8 +29,8 @@ export default class Get extends CommandBase {
       description: CommandBase.messages.getMessage('api.get.idsFlagDescription'),
       required: true,
     }),
-    output: Flags.string({
-      char: 'o',
+    file: Flags.string({
+      char: 'f',
       description: CommandBase.messages.getMessage('api.get.outputFoldersFlagDescription'),
     }),
     tooling: Flags.boolean({
@@ -47,7 +49,7 @@ export default class Get extends CommandBase {
 
     const ids = await CommandBase.readIdsFromFlagOrFile(flags.ids as string);
     for await (const response of sfClient.getByIds(flags.metadata as string, ids, apiKind)) {
-      const outFilePath: string = flags.output || '{Id}.json';
+      const outFilePath: string = flags.file || '{Id}.json';
       const content = response.getContent();
       if (response.isBinary) {
         await Utils.writeFile(outFilePath.replace('{Id}', response.id), content);

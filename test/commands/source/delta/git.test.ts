@@ -1,9 +1,9 @@
 import { promises as fs } from 'node:fs';
 import { expect } from 'chai';
-import Setup from '../../helpers/setup.js';
-import { DeltaOptions } from '../../../src/helpers/delta-options.js';
-import Utils, { IOItem } from '../../../src/helpers/utils.js';
-import Git from '../../../src/commands/source/delta/git.js';
+import Setup from '../../../helpers/setup.js';
+import { DeltaOptions } from '../../../../src/helpers/delta-options.js';
+import Utils, { IOItem } from '../../../../src/helpers/utils.js';
+import Git from '../../../../src/commands/source/delta/git.js';
 
 const bogusGitFilePath = 'bogus_' + Setup.gitFilePath;
 const gitProvider = new Git.gitDeltaProvider();
