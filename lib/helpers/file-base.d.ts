@@ -20,6 +20,5 @@ export declare abstract class FileBase extends CommandBase {
     protected filesPath: string;
     protected runInternal(): Promise<void>;
     protected preRun(): Promise<any>;
-    protected sanitizeRecord(raw: object, columns?: string[]): any;
     protected abstract doFileAction(record: object): Promise<RestResult>;
 }

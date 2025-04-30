@@ -11,4 +11,5 @@ export default class Post extends FileBase {
     };
     protected doFileAction(recordRaw: object): Promise<RestResult>;
     protected postFile(objectName: string, objectRecord: any, filePath: string): Promise<any>;
+    protected sanitizeRecord(raw: object, columns?: string[]): any;
 }
