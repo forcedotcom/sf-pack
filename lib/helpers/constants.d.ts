@@ -28,7 +28,7 @@ export default class Constants {
     static readonly EOL: string;
     static readonly CR = "\r";
     static readonly LF = "\n";
-    static readonly CONENTVERSION_MAX_SIZE = 37000000;
+    static readonly CONTENT_VERSION_MAX_SIZE = 37000000;
     static readonly MIME_JSON = "application/json";
     static readonly DEFAULT_CSV_TEXT_WRAPPERS: string[];
     static readonly MAX_EXCEL_LENGTH = 32767;

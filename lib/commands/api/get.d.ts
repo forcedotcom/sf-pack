@@ -5,7 +5,7 @@ export default class Get extends CommandBase {
     static readonly flags: {
         metadata: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         ids: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
-        output: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        file: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         tooling: import("@oclif/core/interfaces").BooleanFlag<boolean>;
     };
     protected runInternal(): Promise<void>;

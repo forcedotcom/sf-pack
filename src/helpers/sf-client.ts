@@ -21,16 +21,19 @@ export enum ApiKind {
 export class SfClient {
   public static readonly metaDataInfo = {
     ContentVersion: {
+      Id: 'Id',
       MetaName: 'entity_content',
       DataName: 'VersionData',
       Filename: 'PathOnClient',
     },
     Document: {
+      Id: 'Id',
       MetaName: 'entity_document',
       DataName: 'Body',
       Filename: 'Name',
     },
     Attachment: {
+      Id: 'Id',
       MetaName: 'entity_document',
       DataName: 'Body',
       Filename: 'Name',
