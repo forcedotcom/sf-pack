@@ -105,35 +105,6 @@ export abstract class FileBase extends CommandBase {
   protected async preRun(): Promise<any> {
 
   }
-    
-  protected sanitizeRecord(raw: object, columns: string[] = []): any {
-    if (columns) {
-      const newRaw = {};
-      for (const column of columns) {
-        if (column in raw) {
-          newRaw[column] = raw[column];
-        } else {
-          this.raiseError(
-            `The specified column/field ('${column}') does not exist in CSV record: ${JSON.stringify(raw)}`
-          );
-        }
-      }
-      const keys: string[] = Object.keys(raw);
-      for (const key of keys) {
-        if (columns.includes(key)) {
-          continue;
-        }
-        delete raw[key];
-      }
-    } else {
-      for (const key of ['Id', 'FileType']) {
-        if (key in raw) {
-          delete raw[key];
-        }
-      }
-    }
-    return raw;
-  }
-
+  
   protected abstract doFileAction(record: object): Promise<RestResult>;
 }
