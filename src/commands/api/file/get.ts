@@ -58,7 +58,12 @@ export default class Get extends FileBase {
     const content = result.getContent();
     let outFilePath: string = path.join(this.filesPath, result.id);
     if(this.flags.ext) {
-      outFilePath += '.' + (recordRaw[this.flags.ext] as string);
+      const ext = recordRaw[this.flags.ext] as string;
+      if(ext) {
+        outFilePath += '.' + ext;
+      } else {
+        this.UX.log(`Error: the column named '${this.flags.ext}' does not exist.`);    
+      }
     }
     // optionally append file ext
     await Utils.writeFile(outFilePath, result.isBinary ? content: JSON.stringify(content));
