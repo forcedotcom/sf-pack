@@ -136,7 +136,8 @@
       "allOrNothingFlagDescription": "Set this flag to stop the process on the first error",
       "filesPathFlagDescription": "The directory which contains the files to get/post",
       "get": {
-        "commandDescription": "\r\nGETs ContentVersion files from the Salesforce instance."
+        "commandDescription": "\r\nGETs ContentVersion files from the Salesforce instance.",
+        "extFlagDescription": "OPTIONAL: Specify the CSV column name for file extension to append to the file."
       },
       "post": {
         "commandDescription": "\r\nPOSTs ContentVersion files using a multi-part message when necessary."

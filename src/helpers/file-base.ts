@@ -50,7 +50,8 @@ export abstract class FileBase extends CommandBase {
   protected filesPath: string = null;
 
   protected async runInternal(): Promise<void> {
-    this.flags = (await this.parse(FileBase))?.flags;
+    // this.flags = (await this.parse(FileBase))?.flags;
+    await this.parseFlags();
     this.metadataInfo = SfClient.metaDataInfo[FileBase.fileSObjectType];
     this.records = this.flags.records;
     this.columns = this.flags.columns ? this.flags.columns.split(',') : null;
@@ -104,6 +105,10 @@ export abstract class FileBase extends CommandBase {
 
   protected async preRun(): Promise<any> {
 
+  }
+
+  protected async parseFlags(): Promise<void> {
+    this.flags = (await this.parse(FileBase))?.flags;
   }
   
   protected abstract doFileAction(record: object): Promise<RestResult>;
