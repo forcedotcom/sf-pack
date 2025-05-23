@@ -3,7 +3,15 @@ import { RestResult } from '../../../helpers/utils.js';
 export default class Get extends FileBase {
     static description: string;
     static examples: string[];
+    static readonly flags: {
+        records: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        columns: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        filespath: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+        allornothing: import("@oclif/core/interfaces").BooleanFlag<boolean>;
+        ext: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
+    };
     protected metadataName: string;
     protected preRun(): any;
+    protected parseFlags(): Promise<any>;
     protected doFileAction(recordRaw: object): Promise<RestResult>;
 }

@@ -41,6 +41,7 @@ $ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m Account -i 068r
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api get -u ORG_ALIAS -m ContentVersion.VersionData -i 068r0000003slVtAAI,068r0000003slVtAAB -f MyOrg-{Id}.pdf
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r ./test/files/api/ContentVersionGet.csv -f test/files/api/cvFiles
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r test/ContentVersionIds.csv -f ./Files
+$ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r test/ContentVersionIds.csv -e FileExtension -f ./Files
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file post -u ORG_ALIAS -r test/files/api/ContentVersion.csv -f test/files/api/ContentVersion
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -o package-options.json
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -s -a
@@ -368,12 +369,13 @@ GETs ContentVersion files from the Salesforce instance.
 
 ```
 USAGE
-  $ sf api file get -r <value> -f <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-a]
+  $ sf api file get -r <value> -f <value> -o <value> [--json] [--flags-dir <value>] [-e <value>] [-c <value>] [-a]
 
 FLAGS
   -a, --allornothing        Set this flag to stop the process on the first error
   -c, --columns=<value>     A comma separated list of the columns to use from the CSV file. If not specified, all the
                             columns are used.
+  -e, --ext=<value>         OPTIONAL: Specify the CSV column name for file extension to append to the file.
   -f, --filespath=<value>   (required) The directory which contains the files to get/post
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
