@@ -1,4 +1,4 @@
-import path from 'node:path';
+// import path from 'node:path';
 import { SaveError, SaveResult } from '@jsforce/jsforce-node';
 import { CommandBase } from '../../../helpers/command-base.js';
 import { FileBase } from '../../../helpers/file-base.js';
@@ -10,11 +10,11 @@ export default class Post extends FileBase {
   public static description = CommandBase.messages.getMessage('api.file.post.commandDescription');
 
   public static examples = [
-    `$ sf api file post -u myOrgAlias -r ContentVersions.csv -f ContentVersion
+    `$ sf api file post -u myOrgAlias -r ContentVersions.csv
     Uploads the ContentVersion records defined in ContentVersions.csv using the {id} named files in ./ContentVersion.`,
-    `$ sf api file post  -u myOrgAlias -r ContentVersions.csv -f ./ContentVersion -c ContentDocumentId,VersionData,PathOnClient
+    `$ sf api file post  -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
     Uploads the ContentVersion records defined in ContentVersions.csv using only the columns: ContentDocumentId,VersionData,PathOnClient.`,
-    `$ sf api file post  -u myOrgAlias -r ContentVersions.csv -f ContentVersion -a
+    `$ sf api file post  -u myOrgAlias -r ContentVersions.csv -a
     Uploads the ContentVersion records defined in ContentVersions.csv. The whole process will stop on the first failure.`,
   ];
 
@@ -25,9 +25,15 @@ export default class Post extends FileBase {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected async doFileAction(recordRaw: object): Promise<RestResult> {
     let result: RestResult = null;
-    const fileName: string = recordRaw[this.metadataInfo.DataName] ?? recordRaw[this.metadataInfo.Filename];
-    const filePath = path.join(this.filesPath, recordRaw[this.metadataInfo.Id] as string);
+    const fileName: string = recordRaw[this.metadataInfo.Filename];
+    const filePath: string = recordRaw[this.metadataInfo.DataName];
+    // const recordId = recordRaw[this.metadataInfo.Id] as string;
+    // if (!recordId) {
+    //   this.errors.push(`Record does not contain Id column: ${this.metadataInfo.Id}.`);
+    //   return result;
+    // }
     
+    // const filePath = path.join(this.filesPath, recordId);
     const record = this.columns ? this.sanitizeRecord(recordRaw, this.columns) : recordRaw;
 
     if (!filePath) {

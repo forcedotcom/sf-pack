@@ -22,7 +22,7 @@ export abstract class FileBase extends CommandBase {
     filespath: Flags.directory({
       char: 'f',
       description: CommandBase.messages.getMessage('api.file.filesPathFlagDescription'),
-      required: true,
+      required: false,
     }),
     allornothing: Flags.boolean({
       char: 'a',
@@ -76,7 +76,7 @@ export abstract class FileBase extends CommandBase {
       return;
     }
 
-    if (!(await Utils.pathExists(this.filesPath))) {
+    if (this.filesPath && !(await Utils.pathExists(this.filesPath))) {
       this.raiseError(`Path does not exists: ${this.filesPath}.`);
       return;
     }
