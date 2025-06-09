@@ -369,14 +369,17 @@ GETs ContentVersion files from the Salesforce instance.
 
 ```
 USAGE
-  $ sf api file get -r <value> -f <value> -o <value> [--json] [--flags-dir <value>] [-e <value>] [-c <value>] [-a]
+  $ sf api file get -r <value> -o <value> [--json] [--flags-dir <value>] [-e <value>] [-c <value>] [-f <value>]
+    [-a] [-m <value>]
 
 FLAGS
   -a, --allornothing        Set this flag to stop the process on the first error
   -c, --columns=<value>     A comma separated list of the columns to use from the CSV file. If not specified, all the
                             columns are used.
   -e, --ext=<value>         OPTIONAL: Specify the CSV column name for file extension to append to the file.
-  -f, --filespath=<value>   (required) The directory which contains the files to get/post
+  -f, --filespath=<value>   The directory which contains the files to get/post
+  -m, --metadata=<value>    The metadata to execute the API against. The dot operator can be used to retrieve a specific
+                            field (i.e. ContentVersion.VersionData)
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
   -r, --records=<value>     (required) The Path to the file (CSV) containing the ContentVersion record data to act on
@@ -402,13 +405,16 @@ POSTs ContentVersion files using a multi-part message when necessary.
 
 ```
 USAGE
-  $ sf api file post -r <value> -f <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-a]
+  $ sf api file post -r <value> -o <value> [--json] [--flags-dir <value>] [-c <value>] [-f <value>] [-a] [-m
+    <value>]
 
 FLAGS
   -a, --allornothing        Set this flag to stop the process on the first error
   -c, --columns=<value>     A comma separated list of the columns to use from the CSV file. If not specified, all the
                             columns are used.
-  -f, --filespath=<value>   (required) The directory which contains the files to get/post
+  -f, --filespath=<value>   The directory which contains the files to get/post
+  -m, --metadata=<value>    The metadata to execute the API against. The dot operator can be used to retrieve a specific
+                            field (i.e. ContentVersion.VersionData)
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
   -r, --records=<value>     (required) The Path to the file (CSV) containing the ContentVersion record data to act on
@@ -422,13 +428,13 @@ DESCRIPTION
   POSTs ContentVersion files using a multi-part message when necessary.
 
 EXAMPLES
-  $ sf api file post -u myOrgAlias -r ContentVersions.csv -f ContentVersion
+  $ sf api file post -u myOrgAlias -r ContentVersions.csv
       Uploads the ContentVersion records defined in ContentVersions.csv using the {id} named files in ./ContentVersion.
 
-  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -f ./ContentVersion -c ContentDocumentId,VersionData,PathOnClient
+  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
       Uploads the ContentVersion records defined in ContentVersions.csv using only the columns: ContentDocumentId,VersionData,PathOnClient.
 
-  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -f ContentVersion -a
+  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -a
       Uploads the ContentVersion records defined in ContentVersions.csv. The whole process will stop on the first failure.
 ```
 

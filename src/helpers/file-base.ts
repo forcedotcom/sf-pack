@@ -4,8 +4,6 @@ import Utils, { RestResult } from './utils.js';
 import { SfClient } from './sf-client.js';
 
 export abstract class FileBase extends CommandBase {
-  public static fileSObjectType = 'ContentVersion';
-
   public static readonly;
 
   public static readonly flags = {
@@ -29,6 +27,11 @@ export abstract class FileBase extends CommandBase {
       description: CommandBase.messages.getMessage('api.file.allOrNothingFlagDescription'),
       required: false,
     }),
+    metadata: Flags.file({
+      char: 'm',
+      description: CommandBase.messages.getMessage('api.file.metadataFlagDescription'),
+      required: false,
+    }),
     ...CommandBase.commonFlags,
     ...CommandBase.flags,
   };
@@ -49,27 +52,34 @@ export abstract class FileBase extends CommandBase {
 
   protected filesPath: string = null;
 
+  protected metadataType: string = null;
+
+  protected metadataName: string = null;
+
   protected async runInternal(): Promise<void> {
     // this.flags = (await this.parse(FileBase))?.flags;
     await this.parseFlags();
-    this.metadataInfo = SfClient.metaDataInfo[FileBase.fileSObjectType];
+    
     this.records = this.flags.records;
     this.columns = this.flags.columns ? this.flags.columns.split(',') : null;
     this.filesPath = this.flags.filespath;
-    
-    await this.preRun();
-  
-    this.debug('Executing api:file-base');
-    
 
+    this.metadataType = this.flags.metadata ?? 'ContentVersion';
+    this.metadataInfo = SfClient.metaDataInfo[this.metadataType];
+    
     this.debug(`MetadataInfo: ${JSON.stringify(this.metadataInfo)}`);
     if (!this.metadataInfo) {
-      this.raiseError(`MetaDataInfo not found for: ${FileBase.fileSObjectType}.`);
+      this.raiseError(`MetaDataInfo not found for: ${this.metadataType}.`);
       return;
     }
 
+    this.metadataName = `${this.metadataType}.${this.metadataInfo?.DataName}`;  
+
+    await this.preRun();
+  
+    this.debug('Executing api:file-base');
+
     this.debug(`Records: ${this.records}`);
-    
     // Check required arguments
     if (!(await Utils.pathExists(this.records))) {
       this.raiseError(`Path does not exists: ${this.records}.`);
@@ -88,7 +98,7 @@ export abstract class FileBase extends CommandBase {
         break;
       }
       this.counter++;
-      this.debug(`RAW ${FileBase.fileSObjectType} from CSV: ${JSON.stringify(recordRaw)}`);
+      this.debug(`RAW ${this.metadataType} from CSV: ${JSON.stringify(recordRaw)}`);
 
       await this.doFileAction(recordRaw as object);
 

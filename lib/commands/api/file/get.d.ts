@@ -8,10 +8,9 @@ export default class Get extends FileBase {
         columns: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         filespath: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         allornothing: import("@oclif/core/interfaces").BooleanFlag<boolean>;
+        metadata: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         ext: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
     };
-    protected metadataName: string;
-    protected preRun(): any;
     protected parseFlags(): Promise<any>;
     protected doFileAction(recordRaw: object): Promise<RestResult>;
 }

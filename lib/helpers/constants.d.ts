@@ -20,6 +20,7 @@ export default class Constants {
     static readonly DEFAULT_PACKAGE_VERSION = "49.0";
     static readonly ENOENT = "ENOENT";
     static readonly CONTENT_TYPE_APPLICATION = "application/octetstream";
+    static readonly CONTENT_TYPE_IMAGE = "image/png";
     static readonly CONTENT_TYPE_CSV = "text/csv";
     static readonly CONTENT_TYPE_TEXT = "text/plain";
     static readonly HEADERS_CONTENT_TYPE = "content-type";
