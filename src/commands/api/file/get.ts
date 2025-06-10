@@ -11,8 +11,11 @@ export default class Get extends FileBase {
   
   public static examples = [
     `$ sf api file get -u myOrgAlias -r ContentVersions.csv  -f ./output/files
-    Downloads the ContentVersion records defined in ContentVersions.csv and writes them to './output/files/{Id}'.`,
-    'NOTE: the ContentVersion.csv file must have an Id column'
+    Downloads the ContentVersion file contents defined in ContentVersions.csv and writes them to './output/files/{Id}'.`,
+    'NOTE: the ContentVersion.csv file must have an Id column',
+    `$ sf api file get -u myOrgAlias -m Attachment -r attachments.csv  -f ./output/files
+    Downloads the Attachment file contents defined in attachments.csv and writes them to './output/files/{Id}'.`,
+    'NOTE: the attachments.csv file must have an Id column'
   ];
 
   public static readonly flags = {
@@ -24,19 +27,13 @@ export default class Get extends FileBase {
       ...FileBase.flags,
     };
 
-  protected metadataName: string = null;
-
-  protected override preRun(): any {
-    this.metadataName = `${FileBase.fileSObjectType}.${this.metadataInfo.DataName}`;  
-  }
-
   protected override async parseFlags(): Promise<any> {
     this.flags = (await this.parse(Get))?.flags;
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected async doFileAction(recordRaw: object): Promise<RestResult> {
-    this.debug(`GETting: ${FileBase.fileSObjectType} `);
+    this.debug(`GETting: ${this.metadataType} `);
     this.debug(`GETting: ${JSON.stringify(recordRaw)}`);
 
     const id = recordRaw[this.metadataInfo.Id] as string;

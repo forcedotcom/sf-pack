@@ -12,10 +12,12 @@ export default class Post extends FileBase {
   public static examples = [
     `$ sf api file post -u myOrgAlias -r ContentVersions.csv
     Uploads the ContentVersion records defined in ContentVersions.csv using the {id} named files in ./ContentVersion.`,
-    `$ sf api file post  -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
+    `$ sf api file post -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
     Uploads the ContentVersion records defined in ContentVersions.csv using only the columns: ContentDocumentId,VersionData,PathOnClient.`,
-    `$ sf api file post  -u myOrgAlias -r ContentVersions.csv -a
+    `$ sf api file post -u myOrgAlias -r ContentVersions.csv -a
     Uploads the ContentVersion records defined in ContentVersions.csv. The whole process will stop on the first failure.`,
+    `$ sf api file post -u myOrgAlias -m Attachment -r Attachments.csv
+    Uploads the Attachment records defined in Attachment.csv.`
   ];
 
   public static readonly flags = {
@@ -47,7 +49,7 @@ export default class Post extends FileBase {
     }
     const stats = await Utils.getPathStat(filePath);
 
-    this.debug(`POSTing: ${FileBase.fileSObjectType} `);
+    this.debug(`POSTing: ${this.metadataType} `);
     this.debug(`POSTing: ${JSON.stringify(record)}`);
 
     const base64Body = await Utils.readFile(filePath, Utils.ReadFileBase64EncodingOption);
@@ -56,9 +58,9 @@ export default class Post extends FileBase {
     // Do we need to use a multi-part POST?
     try {
       if (stats.size > Constants.CONTENT_VERSION_MAX_SIZE) {
-        result = await this.sfClient.postObjectMultipart(FileBase.fileSObjectType, record, fileName, filePath);
+        result = await this.sfClient.postObjectMultipart(this.metadataType, record, fileName, filePath);
       } else {
-        result = await this.postFile(FileBase.fileSObjectType, record, filePath);
+        result = await this.postFile(this.metadataType, record, filePath);
       }
     } catch (err) {
       result = new RestResult();

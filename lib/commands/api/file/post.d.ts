@@ -8,6 +8,7 @@ export default class Post extends FileBase {
         columns: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         filespath: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
         allornothing: import("@oclif/core/interfaces").BooleanFlag<boolean>;
+        metadata: import("@oclif/core/interfaces").OptionFlag<string, import("@oclif/core/interfaces").CustomOptions>;
     };
     protected doFileAction(recordRaw: object): Promise<RestResult>;
     protected postFile(objectName: string, objectRecord: any, filePath: string): Promise<any>;

@@ -1,4 +1,3 @@
-/// <reference types="node" resolution-mode="require"/>
 import { ExecOptions } from 'node:child_process';
 import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
@@ -84,6 +83,7 @@ export default class Utils {
     static writeFile(filePath: string, contents: any): Promise<void>;
     static chunkRecords(recordsToChunk: any[], chunkSize: number): any[];
     static getRestResult(action: RestAction, url: string, parameter?: any, headers?: any, validStatusCodes?: number[], isFollowRedirects?: boolean): Promise<RestResult | undefined>;
+    static getBinaryResponse(response: any): Promise<Buffer>;
     static normalizePath(filePath: string): string;
     static parseDelimitedLine(delimitedLine: string, delimiter?: string, wrapperChars?: string[], skipChars?: string[]): string[] | undefined;
     static parseCSVFile(csvFilePath: string, delimiter?: string, wrapperChars?: string[]): AsyncGenerator<any, void, void>;
