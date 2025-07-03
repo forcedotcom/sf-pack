@@ -1,5 +1,5 @@
 import { DescribeMetadataObject, FileProperties } from '@jsforce/jsforce-node/lib/api/metadata.js';
-import { DescribeSObjectResult } from '@jsforce/jsforce-node/lib/types';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node';
 import { Connection, Org, AuthFields } from '@salesforce/core';
 import { RestResult } from './utils.js';
 import { SfEntity } from './sf-query.js';
