@@ -5,7 +5,7 @@ import {
   ListMetadataQuery,
   FileProperties,
 } from '@jsforce/jsforce-node/lib/api/metadata.js';
-import { DescribeSObjectResult } from '@jsforce/jsforce-node/lib/types';
+import { DescribeSObjectResult } from '@jsforce/jsforce-node';
 import { ensureArray } from '@salesforce/ts-types';
 import { AuthInfo, Connection, Org, AuthFields } from '@salesforce/core';
 import { ConfigAggregator, ConfigInfo } from '@salesforce/core';
