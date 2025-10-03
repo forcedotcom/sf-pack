@@ -8,7 +8,6 @@ import { SfTasks } from '../../helpers/sf-tasks.js';
 import { OptionsFactory } from '../../helpers/options-factory.js';
 import Constants from '../../helpers/constants.js';
 import { DeltaProvider } from '../../helpers/delta-provider.js';
-import { DeltaCommandBase } from '../../helpers/delta-command.js';
 import SchemaUtils from '../../helpers/schema-utils.js';
 import { SfUI } from '../../helpers/sf-ui.js';
 
@@ -152,7 +151,7 @@ export default class Build extends CommandBase {
       // if not os.path.isdir(filePath) and xmlName in INST_PKG_REF_METADATA:
       // Common.removeInstPkgReference(filePath, Common.canRemoveAllPackageReferences(xmlName))
       if (isDir) {
-        const fullCopyPath = DeltaProvider.getFullCopyPath(filePath, DeltaCommandBase.defaultCopyDirList);
+        const fullCopyPath = DeltaProvider.getFullCopyPath(filePath, Constants.DEFAULT_COPY_DIR_LIST);
         if (fullCopyPath) {
           yield itemName;
         } else {

@@ -1,3 +1,17 @@
+# Update packages
+* remove packages: rm -rf node_modules
+* delete yarn.lock
+* yarn install
+
+* manual update: yarn upgrade-interactive --latest
+
+# Tests
+* yarn test:cover
+
+# readme
+* yarn readme
+
+
 # Error
 (node:7328) [MissingMessageError] Warning: MissingMessageError
 module: @oclif/core@4.2.2

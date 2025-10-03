@@ -394,9 +394,14 @@ DESCRIPTION
 
 EXAMPLES
   $ sf api file get -u myOrgAlias -r ContentVersions.csv  -f ./output/files
-      Downloads the ContentVersion records defined in ContentVersions.csv and writes them to './output/files/{Id}'.
+      Downloads the ContentVersion file contents defined in ContentVersions.csv and writes them to './output/files/{Id}'.
 
   NOTE: the ContentVersion.csv file must have an Id column
+
+  $ sf api file get -u myOrgAlias -m Attachment -r attachments.csv  -f ./output/files
+      Downloads the Attachment file contents defined in attachments.csv and writes them to './output/files/{Id}'.
+
+  NOTE: the attachments.csv file must have an Id column
 ```
 
 ## `sf api file post`
@@ -431,11 +436,14 @@ EXAMPLES
   $ sf api file post -u myOrgAlias -r ContentVersions.csv
       Uploads the ContentVersion records defined in ContentVersions.csv using the {id} named files in ./ContentVersion.
 
-  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
+  $ sf api file post -u myOrgAlias -r ContentVersions.csv -c ContentDocumentId,VersionData,PathOnClient
       Uploads the ContentVersion records defined in ContentVersions.csv using only the columns: ContentDocumentId,VersionData,PathOnClient.
 
-  $ sf api file post  -u myOrgAlias -r ContentVersions.csv -a
+  $ sf api file post -u myOrgAlias -r ContentVersions.csv -a
       Uploads the ContentVersion records defined in ContentVersions.csv. The whole process will stop on the first failure.
+
+  $ sf api file post -u myOrgAlias -m Attachment -r Attachments.csv
+      Uploads the Attachment records defined in Attachment.csv.
 ```
 
 ## `sf api get`
@@ -468,13 +476,13 @@ EXAMPLES
   $ sf api get -u myOrgAlias -m Account -i 068r0000003slVtAAI
       Performs the GET REST API action against the Account metadata type with an id of 068r0000003slVtAAI and writes the body to 068r0000003slVtAAI.json.
 
-  $ sf api get -u myOrgAlias -t true -m Account -i 068r0000003slVtAAI -o ./output/files/{Id}.json
+  $ sf api get -u myOrgAlias -t true -m Account -i 068r0000003slVtAAI -f ./output/files/{Id}.json
       Performs the GET REST API action against the Account metadata type with an id of 068r0000003slVtAAI and writes the body to ./output/files/068r0000003slVtAAI.json.
 
-  $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i 068r0000003slVtAAI -o ./output/files/{Id}.pdf
+  $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i 068r0000003slVtAAI -f ./output/files/{Id}.pdf
       Performs the GET REST API action against the ContentVersion metadata type with an id of 068r0000003slVtAAI and writes the VersionData field value body to 068r0000003slVtAAI.pdf.
 
-  $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i test/ContentVersionIds.txt -o ./output/files/{Id}.pdf
+  $ sf api get -u myOrgAlias -m ContentVersion.VersionData -i test/ContentVersionIds.txt -f ./output/files/{Id}.pdf
       Performs the GET REST API action against the ContentVersion metadata type for each of the ids contained in the test/ContentVersionIds.txt and writes the VersionData field value body to 068r0000003slVtAAI.pdf.
 
   NOTE: Not all metadata types support field data access.
@@ -748,7 +756,7 @@ USAGE
 FLAGS
   -a, --copyfulldir=<value>   Specifies a comma delimited list of directories where all files should be copied if one of
                               the files changed. The default list is:
-                              aura,lwc,experiences,territory2Models,waveTemplates
+                              aura,lwc,experiences,staticresources,territory2Models,waveTemplates,bots
   -c, --check                 Does a dry-run of a deployment. Inspect the log file for results. NOTE: This option is
                               ignored if no (d)estination option is provided.
   -d, --destination=<value>   The destination folder for the deltas.
@@ -788,7 +796,7 @@ USAGE
 FLAGS
   -a, --copyfulldir=<value>   Specifies a comma delimited list of directories where all files should be copied if one of
                               the files changed. The default list is:
-                              aura,lwc,experiences,territory2Models,waveTemplates
+                              aura,lwc,experiences,staticresources,territory2Models,waveTemplates,bots
   -c, --check                 Does a dry-run of a deployment. Inspect the log file for results. NOTE: This option is
                               ignored if no (d)estination option is provided.
   -d, --destination=<value>   The destination folder for the deltas.
