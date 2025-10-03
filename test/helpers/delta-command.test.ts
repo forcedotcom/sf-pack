@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { DeltaCommandBase } from '../../src/helpers/delta-command.js';
+import Constants from '../../src/helpers/constants.js';
 import Setup from './setup.js';
 
 const config = {
@@ -39,9 +40,9 @@ describe('DeltaCommand Tests', () => {
       expect(deltaOptions.destination).equals(config.destination);
       expect(deltaOptions.forceFile).equals(config.forceFile);
       expect(deltaOptions.ignoreFile).equals(config.ignoreFile);
-      expect(deltaOptions.fullCopyDirNames[0]).equals(DeltaCommandBase.defaultCopyDirList[0]);
-      expect(deltaOptions.fullCopyDirNames[1]).equals(DeltaCommandBase.defaultCopyDirList[1]);
-      expect(deltaOptions.fullCopyDirNames[2]).equals(DeltaCommandBase.defaultCopyDirList[2]);
+      expect(deltaOptions.fullCopyDirNames[0]).equals(Constants.DEFAULT_COPY_DIR_LIST[0]);
+      expect(deltaOptions.fullCopyDirNames[1]).equals(Constants.DEFAULT_COPY_DIR_LIST[1]);
+      expect(deltaOptions.fullCopyDirNames[2]).equals(Constants.DEFAULT_COPY_DIR_LIST[2]);
     });
 
     it('Can Load Options', async () => {
@@ -52,9 +53,9 @@ describe('DeltaCommand Tests', () => {
       expect(deltaOptions.destination).equals('');
       expect(deltaOptions.forceFile).equals('');
       expect(deltaOptions.ignoreFile).equals('');
-      expect(deltaOptions.fullCopyDirNames[0]).equals(DeltaCommandBase.defaultCopyDirList[0]);
-      expect(deltaOptions.fullCopyDirNames[1]).equals(DeltaCommandBase.defaultCopyDirList[1]);
-      expect(deltaOptions.fullCopyDirNames[2]).equals(DeltaCommandBase.defaultCopyDirList[2]);
+      expect(deltaOptions.fullCopyDirNames[0]).equals(Constants.DEFAULT_COPY_DIR_LIST[0]);
+      expect(deltaOptions.fullCopyDirNames[1]).equals(Constants.DEFAULT_COPY_DIR_LIST[1]);
+      expect(deltaOptions.fullCopyDirNames[2]).equals(Constants.DEFAULT_COPY_DIR_LIST[2]);
     });
     it('Can Parse fullCopyDirNames Config', async () => {
       config.options = null;
