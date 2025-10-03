@@ -39,4 +39,7 @@ export default class Constants {
   public static readonly CUSTOM_SUFFIX = '__c';
   public static readonly DEFAULT_XML_EOF = '\n';
   public static readonly DEFAULT_XML_ENCODING = 'utf-8';
+  public static readonly DEFAULT_COPY_DIR_LIST: string[] = [
+    'aura', 'lwc', 'experiences', 'staticresources', 'territory2Models', 'waveTemplates', 'bots'
+  ];
 }

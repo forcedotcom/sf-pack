@@ -8,6 +8,9 @@
 # Tests
 * yarn test:cover
 
+# readme
+* yarn readme
+
 
 # Error
 (node:7328) [MissingMessageError] Warning: MissingMessageError
