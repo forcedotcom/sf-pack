@@ -3,10 +3,9 @@ import { Flags } from '@salesforce/sf-plugins-core';
 import { CommandBase } from './command-base.js';
 import { DeltaOptions } from './delta-options.js';
 import { OptionsFactory } from './options-factory.js';
+import Constants from './constants.js';
 
 export abstract class DeltaCommandBase extends CommandBase {
-  public static defaultCopyDirList: string[] = ['aura', 'lwc', 'experiences', 'territory2Models', 'waveTemplates'];
-
   public static getFlagsConfig(flagsConfig: any): any {
     if (!flagsConfig) {
       flagsConfig = {};
@@ -56,7 +55,7 @@ export abstract class DeltaCommandBase extends CommandBase {
     if (!flagsConfig.copyfulldir) {
       flagsConfig.copyfulldir = Flags.string({
         char: 'a',
-        description: CommandBase.messages.getMessage('source.delta.copyFullDirFlagDescription', [DeltaCommandBase.defaultCopyDirList.join()])
+        description: CommandBase.messages.getMessage('source.delta.copyFullDirFlagDescription', [Constants.DEFAULT_COPY_DIR_LIST.join()])
       });
     }
     return flagsConfig;
@@ -80,7 +79,7 @@ export abstract class DeltaCommandBase extends CommandBase {
       if (flags.copyfulldir) {
         deltaOptions.fullCopyDirNames = flags.copyfulldir.split(',');
       } else {
-        deltaOptions.fullCopyDirNames = DeltaCommandBase.defaultCopyDirList;
+        deltaOptions.fullCopyDirNames = Constants.DEFAULT_COPY_DIR_LIST;
       }
     }
     return deltaOptions;

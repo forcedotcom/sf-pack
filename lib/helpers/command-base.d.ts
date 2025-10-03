@@ -8,7 +8,7 @@ export declare abstract class CommandBase extends SfCommand<void> {
     static messages: Messages<string>;
     static targetOrgFlagName: string;
     protected static commonFlags: {
-        [CommandBase.targetOrgFlagName]: import("@oclif/core/interfaces").OptionFlag<Org, import("@oclif/core/interfaces").CustomOptions>;
+        [x: string]: import("@oclif/core/interfaces").OptionFlag<Org, import("@oclif/core/interfaces").CustomOptions>;
     };
     private static uxInst;
     org: Org | undefined;

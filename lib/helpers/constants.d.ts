@@ -36,4 +36,5 @@ export default class Constants {
     static readonly CUSTOM_SUFFIX = "__c";
     static readonly DEFAULT_XML_EOF = "\n";
     static readonly DEFAULT_XML_ENCODING = "utf-8";
+    static readonly DEFAULT_COPY_DIR_LIST: string[];
 }

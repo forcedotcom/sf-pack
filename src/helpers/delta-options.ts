@@ -1,6 +1,6 @@
 import Utils from './utils.js';
-import { DeltaCommandBase } from './delta-command.js';
 import { OptionsBase } from './options.js';
+import Constants from './constants.js';
 
 export class DeltaOptions extends OptionsBase {
   private static CURRENT_VERSION = 1.0;
@@ -12,7 +12,7 @@ export class DeltaOptions extends OptionsBase {
   public forceFile: string = null as any;
   public ignoreFile: string = null as any;
   public isDryRun = false;
-  public fullCopyDirNames: string[] = DeltaCommandBase.defaultCopyDirList;
+  public fullCopyDirNames: string[] =  Constants.DEFAULT_COPY_DIR_LIST;
   public logAllMessagesToConsole = false;
 
   // Make sure we have a default ctor
@@ -56,7 +56,7 @@ export class DeltaOptions extends OptionsBase {
         this.forceFile = '';
         this.ignoreFile = '';
         this.isDryRun = false;
-        this.fullCopyDirNames = DeltaCommandBase.defaultCopyDirList;
+        this.fullCopyDirNames = Constants.DEFAULT_COPY_DIR_LIST;
         resolve();
       } catch (err) {
         reject(err);
