@@ -2,6 +2,7 @@ import os from 'node:os';
 
 export default class Constants {
   public static readonly DEFAULT_XML_NAMESPACE = 'http://soap.sforce.com/2006/04/metadata';
+  // curl -H "Accept: application/json" https://dx-extended-coverage.my.salesforce-sites.com/services/apexrest/report > metadata-coverage.json
   public static readonly METADATA_COVERAGE_REPORT_URL =
     'https://dx-extended-coverage.my.salesforce-sites.com/services/apexrest/report';
   public static readonly DEFAULT_PACKAGE_NAME = 'package.xml';
