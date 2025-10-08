@@ -920,4 +920,5 @@ EXAMPLES
   $ sf source xpath -o ./xpathOptions.json"
       Validates the project source from the x-path rules specified in 'xpath-options.json'
 ```
+
 <!-- commandsstop -->
