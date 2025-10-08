@@ -70,6 +70,10 @@ $ NODE_OPTIONS=--inspect-brk bin/run.cmd source xpath -o xpath-options.json
 
 # Installation
 
+```
+npm @salesforce\sf-pack
+```
+
 If you are contributing to this repo - you can just link the plugin to SF CLI:
 
 ```
@@ -920,4 +924,5 @@ EXAMPLES
   $ sf source xpath -o ./xpathOptions.json"
       Validates the project source from the x-path rules specified in 'xpath-options.json'
 ```
+
 <!-- commandsstop -->
