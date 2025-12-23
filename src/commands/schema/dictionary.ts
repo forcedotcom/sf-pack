@@ -75,7 +75,18 @@ export default class Dictionary extends CommandBase {
     for (const metaDataType of sortedTypeNames) {
       this.UX.log(`Gathering (${++counter}/${sortedTypeNames.length}) ${metaDataType} schema...`);
       try {
-        const schema: DescribeSObjectResult = await SfTasks.describeObject(this.org, metaDataType);
+        // const schema: DescribeSObjectResult = await SfTasks.describeObject(this.org, metaDataType);
+        let schema: DescribeSObjectResult = null;
+        try{
+          schema = await SfTasks.describeObject(this.org, metaDataType);
+        } catch (err) {
+          if (!schemas.has(metaDataType)) {
+            schemas.add(metaDataType);
+            fileStream.write(`*${this.options.outputDefMap.keys().next().value}${Constants.EOL}`);
+            fileStream.write(`${JSON.stringify([metaDataType, `ERROR: ${err.message}`])}${Constants.EOL}`);
+          }
+          continue;
+        }
         // Avoid duplicates (Account)
         if (schemas.has(schema.name)) {
           continue;
@@ -131,7 +142,8 @@ export default class Dictionary extends CommandBase {
         }
         schemas.add(schema.name);
       } catch (err) {
-        this.UX.log(`FAILED: ${err.message as string}.`);
+        // Handle errors gracefully
+        this.UX.log(`FAILED ${metaDataType}: ${err.message as string}.`);
       }
     }
     if (this.options.includeValidationRules) {

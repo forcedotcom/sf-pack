@@ -1,5 +1,3 @@
-/// <reference types="node" resolution-mode="require"/>
-/// <reference types="node" resolution-mode="require"/>
 import { ExecOptions } from 'node:child_process';
 import * as xml2js from 'xml2js';
 import { Logger } from '@salesforce/core';
