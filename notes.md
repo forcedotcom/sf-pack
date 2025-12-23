@@ -23,3 +23,9 @@ message: Missing message sf-pack:recordsFlagDescription for locale en_US.
 
 # Solution: 
 yarn build
+
+
+# demo org:
+https://cunning-bear-ez1ssf-dev-ed.trailblaze.my.salesforce.com/
+test.user@sf-pack-org.com
+ PW:*4!
