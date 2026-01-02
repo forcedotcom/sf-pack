@@ -33,3 +33,6 @@ test/tmp/**/*
 test/**/xml-merge.log
 DataDictionary-*.*
 ~*.*
+
+npm-shrinkwrap.json
+oclif.lock

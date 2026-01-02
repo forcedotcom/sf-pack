@@ -2,10 +2,11 @@
   "name": "@salesforce/sf-pack",
   "description": "ESM Plugin Extensions",
   "version": "2.0.0",
+  "author": "Salesforce",
   "dependencies": {
-    "@oclif/core": "^4.5.4",
-    "@salesforce/core": "^8.23.1",
-    "@salesforce/sf-plugins-core": "^12.2.4",
+    "@oclif/core": "^4",
+    "@salesforce/core": "^8.24.0",
+    "@salesforce/sf-plugins-core": "^12",
     "@types/mime-types": "^3.0.1",
     "@xmldom/xmldom": "0.9.8",
     "bent": "^7.3.12",
@@ -17,12 +18,13 @@
     "xpath": "^0.0.34"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^5.3.6",
+    "@oclif/plugin-command-snapshot": "^5.3.8",
     "@salesforce/dev-scripts": "^11.0.4",
+    "@salesforce/plugin-command-reference": "^3.1.79",
     "@types/xml2js": "^0.4.14",
     "c8": "^10.1.3",
     "eslint-plugin-sf-plugin": "^1.20.32",
-    "oclif": "^4.22.27",
+    "oclif": "^4.22.59",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
@@ -35,6 +37,7 @@
     "/oclif.manifest.json",
     "/oclif.lock"
   ],
+  "homepage": "https://github.com/forcedotcom/sf-pack",
   "keywords": [
     "force",
     "salesforce",
@@ -50,7 +53,9 @@
     "bin": "sf",
     "topicSeparator": " ",
     "devPlugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-command-snapshot",
+      "@salesforce/plugin-command-reference"
     ],
     "topics": {
       "hello": {
@@ -59,25 +64,28 @@
     },
     "flexibleTaxonomy": true
   },
+  "repository": "forcedotcom/sf-pack",
   "scripts": {
     "build": "wireit",
     "clean": "sf-clean",
     "clean-all": "sf-clean all",
     "compile": "wireit",
     "docs": "sf-docs",
+    "fix-license": "eslint src test --fix --rule \"header/header: [2]\"",
     "format": "wireit",
+    "licenses": "wireit",
     "link-check": "wireit",
     "lint": "wireit",
     "postpack": "sf-clean --ignore-signing-artifacts",
     "prepack": "sf-prepack",
+    "prepare": "sf-install",
+    "readme": "oclif readme",
     "test": "wireit",
+    "test:cover": "wireit",
     "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "test:only": "wireit",
-    "test:compile": "wireit",
-    "test:cover": "wireit",
     "version": "oclif readme",
-    "readme": "oclif readme",
-    "licenses": "wireit"
+    "test:compile": "wireit"
   },
   "publishConfig": {
     "access": "public"
@@ -199,7 +207,7 @@
       "output": []
     },
     "link-check": {
-      "command": "node -e \"process.exit(process.env.CI ? 0 : 1)\" || linkinator \"**/*.md\" --skip \"CHANGELOG.md|node_modules|test/|confluence.internal.salesforce.com|my.salesforce.com|%s\" --markdown --retry --directory-listing --verbosity error",
+      "command": "node -e \"process.exit(process.env.CI ? 0 : 1)\" || linkinator \"**/*.md\" --skip \"CHANGELOG.md|node_modules|test/|confluence.internal.salesforce.com|my.salesforce.com|localhost|%s\" --markdown --retry --directory-listing --verbosity error",
       "files": [
         "./*.md",
         "./!(CHANGELOG).md",
@@ -214,6 +222,5 @@
     }
   },
   "exports": "./lib/index.js",
-  "type": "module",
-  "author": "@salesforce"
+  "type": "module"
 }
