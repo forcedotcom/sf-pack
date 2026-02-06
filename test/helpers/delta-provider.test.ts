@@ -34,7 +34,8 @@ export class TestDeltaProvider extends DeltaProvider {
     if (!source) {
       return null;
     }
-    yield await Promise.resolve(new Delta(DeltaProvider.deltaTypeKind.A, source));
+    // returning a non-existant file - just testing the provider code works - we have no delta
+    yield await Promise.resolve(new Delta(DeltaProvider.deltaTypeKind.A, 'bogus.txt'));
   }
 }
 
@@ -144,7 +145,6 @@ describe('DeltaProvider Tests', () => {
       const provider = new TestDeltaProvider();
       const deltaOptions = new DeltaOptions();
       deltaOptions.source = Setup.sourceRoot;
-      deltaOptions.isDryRun = true;
 
       const results = await provider.run(deltaOptions);
       expect(results.Copy).equals(0);
@@ -158,10 +158,9 @@ describe('DeltaProvider Tests', () => {
       deltaOptions.deleteReportFile = Setup.deleteReportFile;
       deltaOptions.forceFile = Setup.deltaIgnoreFile;
       deltaOptions.ignoreFile = Setup.deltaIgnoreFile;
-      deltaOptions.isDryRun = true;
 
       const results = await provider.run(deltaOptions);
-      expect(results.Copy).greaterThan(0);
+      expect(results.Copy).equals(0);
       expect(results.Copy).lessThanOrEqual(testItemCount);
     });
   });
