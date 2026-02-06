@@ -1,9 +1,11 @@
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import { expect } from 'chai';
 import Setup from '../../../helpers/setup.js';
 import { DeltaOptions } from '../../../../src/helpers/delta-options.js';
 import Utils, { IOItem } from '../../../../src/helpers/utils.js';
 import Git from '../../../../src/commands/source/delta/git.js';
+import Constants from '../../../../src/helpers/constants.js';
 
 const bogusGitFilePath = 'bogus_' + Setup.gitFilePath;
 const gitProvider = new Git.gitDeltaProvider();
@@ -87,6 +89,20 @@ describe('GitDeltaProvider Tests', function () {
 
       expect(metrics.Copy).equals(testFilesCreated);
     });
+    it('Doesn`t over-copy', async function () {
+      // create NoCopy files which do NOT exist in the git file
+      await fs.appendFile(path.join(Setup.sourceRoot, `myfileNoCopy.1.txt`), `1${Constants.EOL}`);
+      await fs.appendFile(path.join(Setup.sourceRoot, `myfile.1NoCopy.txt`), `1${Constants.EOL}`);
+
+      const deltaOptions = new DeltaOptions();
+      deltaOptions.deltaFilePath = Setup.gitFilePath;
+      deltaOptions.source = Setup.sourceRoot;
+      deltaOptions.destination = Setup.destinationRoot;
+
+      const metrics = await gitProvider.run(deltaOptions);
+
+      expect(metrics.Copy).equals(testFilesCreated);
+    });
   });
   describe('validateDeltaOptions Tests', function () {
     it('Checks missing minimum required', async function () {
@@ -158,6 +174,36 @@ describe('GitDeltaProvider Tests', function () {
       }
 
       expect(19).equals(targetFilesCount);
+    });
+    it('Can Dry Run', async function () {
+      // Validate Delta File
+      await gitProvider.loadDeltaFile(Setup.gitFullDirFilePath);
+      expect(gitProvider.deltas.size).not.equals(0);
+
+      const deltaOptions = new DeltaOptions();
+      deltaOptions.deltaFilePath = Setup.gitFullDirFilePath;
+      deltaOptions.source = Setup.sourceForceAppRoot;
+      deltaOptions.destination = Setup.destinationRoot;
+      deltaOptions.isDryRun = true;
+
+      let sourceFilesCount = 0;
+      for await (const filePath of Utils.getFiles(Setup.sourceForceAppRoot)) {
+        if (filePath) {
+          sourceFilesCount++;
+        }
+      }
+      expect(sourceFilesCount).to.be.greaterThan(0);
+
+      await gitProvider.run(deltaOptions);
+
+      let targetFilesCount = 0;
+      for await (const filePath of Utils.getFiles(Setup.destinationRoot)) {
+        if (filePath) {
+          targetFilesCount++;
+        }
+      }
+
+      expect(0).equals(targetFilesCount);
     });
   });
 });
