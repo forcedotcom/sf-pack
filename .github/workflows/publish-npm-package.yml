@@ -15,6 +15,9 @@ jobs:
   publish:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # Required for OIDC authentication
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
@@ -37,5 +40,4 @@ jobs:
           
       - name: Publish npm package to registry
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
