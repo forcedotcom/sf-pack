@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/sf-pack",
   "description": "ESM Plugin Extensions",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": "Salesforce",
   "dependencies": {
     "@oclif/core": "^4",
@@ -29,7 +29,7 @@
     "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "files": [
     "/lib",
@@ -47,7 +47,7 @@
     "sfdx",
     "sfdx-plugin"
   ],
-  "license": "BSD-3-Clause",
+  "license": "Apache-2.0",
   "oclif": {
     "commands": "./lib/commands",
     "bin": "sf",
@@ -84,8 +84,7 @@
     "test:cover": "wireit",
     "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "test:only": "wireit",
-    "version": "oclif readme",
-    "test:compile": "wireit"
+    "version": "oclif readme"
   },
   "publishConfig": {
     "access": "public"
@@ -135,7 +134,7 @@
     "test:compile": {
       "command": "tsc -p \"./test\" --pretty",
       "files": [
-        "test/**/*.test.ts",
+        "test/**/*.ts",
         "**/tsconfig.json"
       ],
       "output": []
@@ -148,7 +147,7 @@
       ]
     },
     "test:only": {
-      "command": "c8 --reporter=html --reporter=text mocha --exit --timeout 7000  \"test/**/*.test.ts\"",
+      "command": "nyc mocha \"test/**/*.test.ts\"",
       "env": {
         "FORCE_COLOR": "2"
       },
