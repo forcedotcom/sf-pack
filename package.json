@@ -14,7 +14,7 @@
     "form-data": "^4.0.4",
     "glob": "10.5.0",
     "md5-file": "^5.0.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.8/xlsx-0.18.8.tgz",
+    "xlsx": "npm:@e965/xlsx@^0.20.3",
     "xpath": "^0.0.34"
   },
   "devDependencies": {
