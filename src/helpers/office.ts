@@ -1,4 +1,10 @@
-import { utils, writeFile } from 'xlsx';
+import * as fs from 'node:fs';
+import { set_fs as setFs, utils, writeFile } from 'xlsx';
+
+// The ESM build of SheetJS does not auto-load Node's fs module, so we inject it
+// explicitly; otherwise writeFile throws "cannot save file".
+setFs(fs);
+
 export class Office {
   public static writeXlxsWorkbook(workbookMap: Map<string, string[][]>, xlxsFilePath: string): void {
     if (!workbookMap) {
