@@ -1,6 +1,5 @@
 export declare class OptionsSettings {
     ignoreVersion: boolean;
-    blockExternalConnections: boolean;
 }
 export declare abstract class OptionsBase {
     version: number;

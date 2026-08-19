@@ -33,7 +33,7 @@ export declare class SfTasks {
     static getConfigValue(configName: string): Promise<string>;
     static getMaxQueryLimit(): Promise<number>;
     static getDefaultOrgAlias(): Promise<string>;
-    static getUnsupportedMetadataTypes(): Promise<string[]>;
+    static getSupportedMetadataTypes(): Promise<string[]>;
     static getConnection(username: string): Promise<Connection>;
     static executeAnonymousBlock(org: Org, apex: string): Promise<RestResult>;
     static getOrgLimits(org: Org): Promise<RestResult>;

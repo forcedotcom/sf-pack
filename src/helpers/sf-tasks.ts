@@ -380,7 +380,7 @@ export class SfTasks {
     return SfTasks.getConfigValue(Constants.SF_CONFIG_DEFAULT_USERNAME);
   }
 
-  public static async getUnsupportedMetadataTypes(): Promise<string[]> {
+  public static async getSupportedMetadataTypes(): Promise<string[]> {
     const result = await Utils.getRestResult(RestAction.GET, Constants.METADATA_COVERAGE_REPORT_URL);
     if (!result || result.isError === true) {
       return [] as string[];
@@ -389,7 +389,7 @@ export class SfTasks {
     const myMap = new Map<string, any>(Object.entries(memTypes));
     const types = [];
     for (const [key, value] of myMap) {
-      if (value.channels && !value.channels.metadataApi) {
+      if (value.channels?.managedPackaging) {
         types.push(key);
       }
     }

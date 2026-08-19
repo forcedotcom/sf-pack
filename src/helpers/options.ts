@@ -5,7 +5,6 @@ import { SfCore } from './sf-core.js';
 
 export class OptionsSettings {
   public ignoreVersion = false;
-  public blockExternalConnections = false;
 }
 
 export abstract class OptionsBase {

@@ -2,8 +2,6 @@ import { expect } from 'chai';
 import { OptionsFactory } from '../../src/helpers/options-factory.js';
 import SchemaOptions from '../../src/helpers/schema-options.js';
 import Utils from '../../src/helpers/utils.js';
-import { PackageOptions } from '../../src/helpers/package-options.js';
-import { OptionsSettings } from '../../src/helpers/options.js';
 import { TestOptions } from './options.test.js';
 import Setup from './setup.js';
 
@@ -44,12 +42,5 @@ describe('OptionsFactory Tests', () => {
 
     const fileExists = await Utils.pathExists(optionsPath);
     expect(fileExists).to.be.true;
-  });
-  it('Uses OptionSettings correctly', async () => {
-    const optionsSettings = new OptionsSettings();
-    optionsSettings.blockExternalConnections = true;
-    const packageOptions = await OptionsFactory.get(PackageOptions, optionsPath, optionsSettings);
-    expect(packageOptions.excludeMetadataTypes).is.not.null;
-    expect(packageOptions.excludeMetadataTypes.length).equals(0);
   });
 });

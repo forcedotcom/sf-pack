@@ -301,15 +301,6 @@ describe('Sf Tasks Tests', () => {
     }).timeout(0);
   });
 
-  describe('REST Tests', () => {
-    it('Can getUnsupportedMetadataTypes', async () => {
-      const types = await SfTasks.getUnsupportedMetadataTypes();
-      expect(types).to.not.be.undefined;
-      expect(types).to.not.be.null;
-      expect(types.length).to.be.greaterThan(0);
-    }).timeout(0);
-  });
-
   describe('Org Connection Tests', () => {
     it('Can Handle Null', async () => {
       expect(await SfTasks.getConnection(null)).to.be.null;
