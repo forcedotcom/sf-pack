@@ -43,9 +43,6 @@ $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r ./test/fil
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r test/ContentVersionIds.csv -f ./Files
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file get -u ORG_ALIAS -r test/ContentVersionIds.csv -e FileExtension -f ./Files
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd api file post -u ORG_ALIAS -r test/files/api/ContentVersion.csv -f test/files/api/ContentVersion
-$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -o package-options.json
-$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -u ORG_ALIAS -s -a
-$ NODE_OPTIONS=--inspect-brk bin/run.cmd package build -f deploy
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package merge -s ./test/commands/merge/package-a.xml -d ./test/commands/merge/package-b.xml
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd package permissions -u ORG_ALIAS -x manifest/package-profile.xml
 $ NODE_OPTIONS=--inspect-brk bin/run.cmd schema dictionary -u ORG_ALIAS
@@ -153,6 +150,8 @@ EXAMPLES
       Creates a report UserAccess-myOrgAlias.xlsx on User access to the specified Apps based on PermissionSets and Profiles.
 ```
 
+_See code: [src/commands/admin/user/access.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/admin/user/access.ts)_
+
 ## `sf admin user unmask`
 
 Removes the .invalid extension from a User's email address. This extension is automatically added when a sandbox is refreshed.
@@ -184,6 +183,8 @@ EXAMPLES
       Removes the .invalid extension from the email address associated to the list of users in the specified file in the specified Org.
 ```
 
+_See code: [src/commands/admin/user/unmask.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/admin/user/unmask.ts)_
+
 ## `sf admin workspace delete`
 
 Deletes the Developer Console IDEWorkspace object for the specified user(s).
@@ -213,6 +214,8 @@ EXAMPLES
       Deletes the Developer Console IDEWorkspace objects for the specified list of users (-l).
 ```
 
+_See code: [src/commands/admin/workspace/delete.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/admin/workspace/delete.ts)_
+
 ## `sf apex coverage clear`
 
 Clears the Apex Code Coverage data from the specified Org.
@@ -240,6 +243,8 @@ EXAMPLES
   $ sf apex coverage clear -u myOrgAlias
       Deletes the existing instances of ApexCodeCoverageAggregate from the specific Org.
 ```
+
+_See code: [src/commands/apex/coverage/clear.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/apex/coverage/clear.ts)_
 
 ## `sf apex coverage execute`
 
@@ -274,6 +279,8 @@ EXAMPLES
       Enqueues Apex Tests to be run in myOrgAlias with Code Coverage metrics and returns immediately.
 ```
 
+_See code: [src/commands/apex/coverage/execute.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/apex/coverage/execute.ts)_
+
 ## `sf apex coverage report`
 
 Pull Code Coverage metrics and generates a report.
@@ -301,6 +308,8 @@ EXAMPLES
   $ sf apex coverage report -u myOrgAlias -r myCodeCoverageReport.xlsx
       Pulls the Code Coverage metrics from myOrgAlias and generates a CodeCoverageReport-myOrgAlias.xlsx report.
 ```
+
+_See code: [src/commands/apex/coverage/report.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/apex/coverage/report.ts)_
 
 ## `sf apex scaffold`
 
@@ -334,6 +343,8 @@ EXAMPLES
       Generates Apex test classes (and cls-meta files) for specified CustomObjects. The specified options file is used.
 ```
 
+_See code: [src/commands/apex/scaffold.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/apex/scaffold.ts)_
+
 ## `sf api eventlog`
 
 Retrieves EventLog files from a Salesforce org based on the SOQL query pulled from the options file.
@@ -362,6 +373,8 @@ EXAMPLES
       $ sf api eventlog -o options/eventlog-options.json
       Retrieves the EventLog files from the default Org for the option specified in the options/eventlog-options.json file.
 ```
+
+_See code: [src/commands/api/eventlog.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/api/eventlog.ts)_
 
 ## `sf api file get`
 
@@ -403,6 +416,8 @@ EXAMPLES
 
   NOTE: the attachments.csv file must have an Id column
 ```
+
+_See code: [src/commands/api/file/get.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/api/file/get.ts)_
 
 ## `sf api file post`
 
@@ -446,6 +461,8 @@ EXAMPLES
       Uploads the Attachment records defined in Attachment.csv.
 ```
 
+_See code: [src/commands/api/file/post.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/api/file/post.ts)_
+
 ## `sf api get`
 
 Performs the GET REST action against the specified URL/URI.
@@ -488,6 +505,8 @@ EXAMPLES
   NOTE: Not all metadata types support field data access.
 ```
 
+_See code: [src/commands/api/get.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/api/get.ts)_
+
 ## `sf api query`
 
 Send the specified SOQL query to the Salesforce query API.
@@ -514,28 +533,19 @@ EXAMPLES
       Performs the specified SOQL query against the query API endpoint and writes the JSON result to the console.
 ```
 
+_See code: [src/commands/api/query.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/api/query.ts)_
+
 ## `sf package build`
 
-Builds a standard SF source format package file from the specified org's existing metadata.
+This command is OBE. Use the 'sf project generate manifest' command instead
 
 ```
 USAGE
-  $ sf package build -o <value> [--json] [--flags-dir <value>] [-x <value>] [-m <value>] [-o <value>] [-n <value>]
-    [-f <value>] [-a]
+  $ sf package build -o <value> [--json] [--flags-dir <value>]
 
 FLAGS
-  -a, --append              Set this flag to 'true' if you wish to append to the existing package.xml file. The default
-                            (false) overwrites the existing file.
-  -f, --folder=<value>      The path to the folder containing the MDAPI formatted files to create the package for.
-  -m, --metadata=<value>    A comma separated list of metadata to include. This list overrides any exclude list in the
-                            options file.
-  -n, --namespaces=<value>  A comma separated list of namespaces to include when retrieving metadata. By default
-                            namespaces are excluded.
-  -o, --options=<value>     A file containing the package build options. Specifying this option will create the file if
-                            it doesn't exist already.
   -o, --target-org=<value>  (required) Username or alias of the target org. Not required if the `target-org`
                             configuration variable is already set.
-  -x, --package=<value>     The path to the package file to be generated. By default the path is 'package.xml'
 
 GLOBAL FLAGS
   --flags-dir=<value>  Import flag values from a directory.
@@ -543,16 +553,13 @@ GLOBAL FLAGS
 
 DESCRIPTION
 
-  Builds a standard SF source format package file from the specified org's existing metadata.
+  This command is OBE. Use the 'sf project generate manifest' command instead
 
 EXAMPLES
-  $ sf package build -o options/package-options.json -x manifest/package-acu.xml -u myOrgAlias
-      Builds a SF package file (./manifest/package.xml) which contains all the metadata from the myOrgAlias.
-      The options defined (options/package-options.json) are honored when building the package.
-
-  $ sf package build -f deploy
-      Builds a SF package file (./manifest/package.xml) from the MDAPI formatted data in the deploy folder .
+  This command is OBE. Use the 'sf project generate manifest' command instead
 ```
+
+_See code: [src/commands/package/build.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/package/build.ts)_
 
 ## `sf package merge`
 
@@ -586,6 +593,8 @@ EXAMPLES
   $ sf package merge -s manifest/package-a.xml -d manifest/package-b.xml -c
       Compares package-a.xml to package-b.xml and removes common elements from BOTH packages - leaving only the differences.
 ```
+
+_See code: [src/commands/package/merge.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/package/merge.ts)_
 
 ## `sf package permissions`
 
@@ -624,6 +633,8 @@ EXAMPLES
       Profile & PermissionSet metadata related to CustomObject & CustomApplication permissions.
 ```
 
+_See code: [src/commands/package/permissions.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/package/permissions.ts)_
+
 ## `sf schema dictionary`
 
 Generates a DataDictionary-[Org].xlsx file from an Org's Object & Field metadata.
@@ -656,6 +667,8 @@ EXAMPLES
       Generates a DataDictionary-myOrgAlias.xlsx file from an Org's configured Object & Field metadata.
 ```
 
+_See code: [src/commands/schema/dictionary.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/schema/dictionary.ts)_
+
 ## `sf schema profile retrieve`
 
 Retries Profiles from Org without need to generate package.xml
@@ -682,6 +695,8 @@ EXAMPLES
       $ sf schema profile retrieve -u myOrgAlias -n "Admin,Support"
       Retrieves 5 profiles at a time. Default Path - force-app/main/default/profile
 ```
+
+_See code: [src/commands/schema/profile/retrieve.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/schema/profile/retrieve.ts)_
 
 ## `sf schema template`
 
@@ -714,6 +729,8 @@ EXAMPLES
       Generates one or more DataTemplate-myOrgAlias.csv CSV import files for an Org's configured metadata.
 ```
 
+_See code: [src/commands/schema/template.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/schema/template.ts)_
+
 ## `sf schema usage`
 
 Generates a custom field usage report for specified Objects.
@@ -743,6 +760,8 @@ EXAMPLES
   $ sf schema usage -u myOrgAlias
       Generates a CustomFieldUsage-myOrgAlias.xlsx report detailing the CustomField usage for the specified objects.
 ```
+
+_See code: [src/commands/schema/usage.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/schema/usage.ts)_
 
 ## `sf source delta git`
 
@@ -784,6 +803,8 @@ EXAMPLES
       -(s)ource 'force-app' and copies them to -(d)estination 'deploy'
 ```
 
+_See code: [src/commands/source/delta/git.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/source/delta/git.ts)_
+
 ## `sf source delta md5`
 
 Uses an MD5 hash file to detect deltas.
@@ -823,6 +844,8 @@ EXAMPLES
       -(s)ource 'force-app' and copies them to -(d)estination 'deploy'
 ```
 
+_See code: [src/commands/source/delta/md5.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/source/delta/md5.ts)_
+
 ## `sf source permissions`
 
 Generate a security report based on configured permissions.
@@ -857,6 +880,8 @@ EXAMPLES
   $ sf source permissions -u myOrgAlias
       Reads security information from source-formatted configuration files (**/objects/*/*.object-meta.xml, **/objects/*/fields/*.field-meta.xml, **/permissionsets/*.permissionset-meta.xml, **/profiles/*.profile-meta.xml) located in default project source location and writes the 'PermissionsReport.xlsx' report file.
 ```
+
+_See code: [src/commands/source/permissions.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/source/permissions.ts)_
 
 ## `sf source profile`
 
@@ -894,6 +919,8 @@ EXAMPLES
       Compares the profile metadata files in **/profiles/*.profile-meta.xml,**/permissionsets/*.permissionset-meta.xml to the specified Org to and updates the metadata files to ensure deployment compatibility.
 ```
 
+_See code: [src/commands/source/profile.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/source/profile.ts)_
+
 ## `sf source xpath`
 
 Validates XML against xpath selects and known bad values.
@@ -921,4 +948,5 @@ EXAMPLES
       Validates the project source from the x-path rules specified in 'xpath-options.json'
 ```
 
+_See code: [src/commands/source/xpath.ts](https://github.com/forcedotcom/sf-pack/blob/v2.0.2/src/commands/source/xpath.ts)_
 <!-- commandsstop -->
