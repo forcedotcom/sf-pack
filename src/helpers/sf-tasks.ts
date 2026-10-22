@@ -380,20 +380,26 @@ export class SfTasks {
     return SfTasks.getConfigValue(Constants.SF_CONFIG_DEFAULT_USERNAME);
   }
 
+  public static getUnsupportedMetadataTypesFromReport(reportTypes: Record<string, any> | null | undefined): string[] {
+    if (!reportTypes || typeof reportTypes !== 'object') {
+      return [];
+    }
+    const types: string[] = [];
+    for (const [key, value] of Object.entries(reportTypes)) {
+      if (value?.channels && !value.channels.metadataApi) {
+        types.push(key);
+      }
+    }
+    return Utils.sortArray(types) as string[];
+  }
+
   public static async getUnsupportedMetadataTypes(): Promise<string[]> {
     const result = await Utils.getRestResult(RestAction.GET, Constants.METADATA_COVERAGE_REPORT_URL);
     if (!result || result.isError === true) {
       return [] as string[];
     }
-    const memTypes: string[] = result.getContent().types;
-    const myMap = new Map<string, any>(Object.entries(memTypes));
-    const types = [];
-    for (const [key, value] of myMap) {
-      if (value.channels && !value.channels.metadataApi) {
-        types.push(key);
-      }
-    }
-    return Utils.sortArray(types) as string[];
+    const reportTypes: Record<string, any> | null | undefined = result.getContent()?.types;
+    return SfTasks.getUnsupportedMetadataTypesFromReport(reportTypes);
   }
 
   public static async getConnection(username: string): Promise<Connection> {
