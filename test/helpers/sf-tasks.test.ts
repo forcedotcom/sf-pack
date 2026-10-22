@@ -304,10 +304,18 @@ describe('Sf Tasks Tests', () => {
   describe('REST Tests', () => {
     it('Can getUnsupportedMetadataTypes', async () => {
       const types = await SfTasks.getUnsupportedMetadataTypes();
-      expect(types).to.not.be.undefined;
-      expect(types).to.not.be.null;
-      expect(types.length).to.be.greaterThan(0);
+      expect(types).to.be.an('array');
     }).timeout(0);
+
+    it('Collects types that are not exposed in Metadata API', () => {
+      const types = SfTasks.getUnsupportedMetadataTypesFromReport({
+        ApexClass: { channels: { metadataApi: true } },
+        Portal: { channels: { metadataApi: false } },
+        Scontrol: { channels: { metadataApi: false } },
+        MissingChannels: {},
+      });
+      expect(types).to.deep.equal(['Portal', 'Scontrol']);
+    });
   });
 
   describe('Org Connection Tests', () => {
