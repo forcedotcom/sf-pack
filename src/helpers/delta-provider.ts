@@ -23,6 +23,20 @@ export abstract class DeltaProvider {
     D: 'D',
   };
 
+  // Exact Name.suffix + Name.suffix-meta.xml pairs for Apex and CRM Analytics.
+  // Longest suffixes first so a shorter suffix cannot match the tail of a longer one.
+  public static readonly PAIRED_METADATA_SUFFIXES: string[] = [
+    'component',
+    'trigger',
+    'wcomp',
+    'wdash',
+    'wlens',
+    'page',
+    'wdpr',
+    'cls',
+    'wdf',
+  ];
+
   public deltaOptions = new DeltaOptions();
   public logFilePath: string;
 
@@ -59,18 +73,20 @@ export abstract class DeltaProvider {
     return gotFullCopyPath && (allowFullCopyPathWithExt || !path.extname(fullCopyPath)) ? fullCopyPath : null;
   }
 
-  // Apex classes deploy as a pair: ClassName.cls and ClassName.cls-meta.xml.
-  public static getApexClassPair(filePath: string): string[] | null {
+  public static getMetadataPair(filePath: string): string[] | null {
     if (!filePath) {
       return null;
     }
     const normalized = Utils.normalizePath(filePath);
-    if (normalized.endsWith(`.cls${Constants.METADATA_FILE_SUFFIX}`)) {
-      const clsPath = normalized.slice(0, -Constants.METADATA_FILE_SUFFIX.length);
-      return [clsPath, normalized];
-    }
-    if (normalized.endsWith('.cls')) {
-      return [normalized, `${normalized}${Constants.METADATA_FILE_SUFFIX}`];
+    for (const suffix of DeltaProvider.PAIRED_METADATA_SUFFIXES) {
+      const extension = `.${suffix}`;
+      const metaSuffix = `${extension}${Constants.METADATA_FILE_SUFFIX}`;
+      if (normalized.endsWith(metaSuffix)) {
+        return [normalized.slice(0, -Constants.METADATA_FILE_SUFFIX.length), normalized];
+      }
+      if (normalized.endsWith(extension)) {
+        return [normalized, `${normalized}${Constants.METADATA_FILE_SUFFIX}`];
+      }
     }
     return null;
   }
@@ -188,28 +204,28 @@ export abstract class DeltaProvider {
           case DeltaProvider.deltaTypeKind.A:
           case DeltaProvider.deltaTypeKind.M: {
             
-            // A change to either Apex class file includes the .cls and its .cls-meta.xml.
-            const apexClassPair = DeltaProvider.getApexClassPair(deltaFile);
-            if (apexClassPair) {
-              for (const apexFile of apexClassPair) {
-                if (copiedSet.has(apexFile)) {
+            // A change to either file includes the exact content file and its -meta.xml.
+            const metadataPair = DeltaProvider.getMetadataPair(deltaFile);
+            if (metadataPair) {
+              for (const pairedFile of metadataPair) {
+                if (copiedSet.has(pairedFile)) {
                   continue;
                 }
-                if (ignoreSet.has(apexFile)) {
-                  await this.logMessage(`Delta (${deltaKind}) ignored Apex class file: ${apexFile}`, true);
+                if (ignoreSet.has(pairedFile)) {
+                  await this.logMessage(`Delta (${deltaKind}) ignored metadata pair file: ${pairedFile}`, true);
                   metrics.Ign++;
                   continue;
                 }
-                if (!(await Utils.pathExists(apexFile))) {
+                if (!(await Utils.pathExists(pairedFile))) {
                   continue;
                 }
-                const apexDest = apexFile.replace(source, destination);
+                const pairedDest = pairedFile.replace(source, destination);
                 if (!isDryRun) {
-                  await Utils.copyFile(apexFile, apexDest);
+                  await Utils.copyFile(pairedFile, pairedDest);
                 }
-                await this.logMessage(`Delta (${deltaKind}) auto-included Apex class file: ${apexDest}`);
+                await this.logMessage(`Delta (${deltaKind}) auto-included metadata pair file: ${pairedDest}`);
                 metrics.Copy++;
-                copiedSet.add(apexFile);
+                copiedSet.add(pairedFile);
               }
             }
 
