@@ -23,6 +23,20 @@ export abstract class DeltaProvider {
     D: 'D',
   };
 
+  // Exact Name.suffix + Name.suffix-meta.xml pairs for Apex and CRM Analytics.
+  // Longest suffixes first so a shorter suffix cannot match the tail of a longer one.
+  public static readonly PAIRED_METADATA_SUFFIXES: string[] = [
+    'component',
+    'trigger',
+    'wcomp',
+    'wdash',
+    'wlens',
+    'page',
+    'wdpr',
+    'cls',
+    'wdf',
+  ];
+
   public deltaOptions = new DeltaOptions();
   public logFilePath: string;
 
@@ -57,6 +71,24 @@ export abstract class DeltaProvider {
     // A full copy path should not have a file ext - its a directory
     // NOTE: a directory *could* be names with an ext so we provide the argument switch
     return gotFullCopyPath && (allowFullCopyPathWithExt || !path.extname(fullCopyPath)) ? fullCopyPath : null;
+  }
+
+  public static getMetadataPair(filePath: string): string[] | null {
+    if (!filePath) {
+      return null;
+    }
+    const normalized = Utils.normalizePath(filePath);
+    for (const suffix of DeltaProvider.PAIRED_METADATA_SUFFIXES) {
+      const extension = `.${suffix}`;
+      const metaSuffix = `${extension}${Constants.METADATA_FILE_SUFFIX}`;
+      if (normalized.endsWith(metaSuffix)) {
+        return [normalized.slice(0, -Constants.METADATA_FILE_SUFFIX.length), normalized];
+      }
+      if (normalized.endsWith(extension)) {
+        return [normalized, `${normalized}${Constants.METADATA_FILE_SUFFIX}`];
+      }
+    }
+    return null;
   }
 
   public async run(deltaOptions: DeltaOptions): Promise<any> {
@@ -172,6 +204,31 @@ export abstract class DeltaProvider {
           case DeltaProvider.deltaTypeKind.A:
           case DeltaProvider.deltaTypeKind.M: {
             
+            // A change to either file includes the exact content file and its -meta.xml.
+            const metadataPair = DeltaProvider.getMetadataPair(deltaFile);
+            if (metadataPair) {
+              for (const pairedFile of metadataPair) {
+                if (copiedSet.has(pairedFile)) {
+                  continue;
+                }
+                if (ignoreSet.has(pairedFile)) {
+                  await this.logMessage(`Delta (${deltaKind}) ignored metadata pair file: ${pairedFile}`, true);
+                  metrics.Ign++;
+                  continue;
+                }
+                if (!(await Utils.pathExists(pairedFile))) {
+                  continue;
+                }
+                const pairedDest = pairedFile.replace(source, destination);
+                if (!isDryRun) {
+                  await Utils.copyFile(pairedFile, pairedDest);
+                }
+                await this.logMessage(`Delta (${deltaKind}) auto-included metadata pair file: ${pairedDest}`);
+                metrics.Copy++;
+                copiedSet.add(pairedFile);
+              }
+            }
+
             // If the file is a botVersion, we must ensure the parent bot file is included
             if (deltaFile.endsWith('.botVersion-meta.xml')) {
               const botDir = path.dirname(deltaFile);
