@@ -59,6 +59,22 @@ export abstract class DeltaProvider {
     return gotFullCopyPath && (allowFullCopyPathWithExt || !path.extname(fullCopyPath)) ? fullCopyPath : null;
   }
 
+  // Apex classes deploy as a pair: ClassName.cls and ClassName.cls-meta.xml.
+  public static getApexClassPair(filePath: string): string[] | null {
+    if (!filePath) {
+      return null;
+    }
+    const normalized = Utils.normalizePath(filePath);
+    if (normalized.endsWith(`.cls${Constants.METADATA_FILE_SUFFIX}`)) {
+      const clsPath = normalized.slice(0, -Constants.METADATA_FILE_SUFFIX.length);
+      return [clsPath, normalized];
+    }
+    if (normalized.endsWith('.cls')) {
+      return [normalized, `${normalized}${Constants.METADATA_FILE_SUFFIX}`];
+    }
+    return null;
+  }
+
   public async run(deltaOptions: DeltaOptions): Promise<any> {
     if (!deltaOptions) {
       throw new Error('No DeltaOptions specified.');
@@ -172,6 +188,31 @@ export abstract class DeltaProvider {
           case DeltaProvider.deltaTypeKind.A:
           case DeltaProvider.deltaTypeKind.M: {
             
+            // A change to either Apex class file includes the .cls and its .cls-meta.xml.
+            const apexClassPair = DeltaProvider.getApexClassPair(deltaFile);
+            if (apexClassPair) {
+              for (const apexFile of apexClassPair) {
+                if (copiedSet.has(apexFile)) {
+                  continue;
+                }
+                if (ignoreSet.has(apexFile)) {
+                  await this.logMessage(`Delta (${deltaKind}) ignored Apex class file: ${apexFile}`, true);
+                  metrics.Ign++;
+                  continue;
+                }
+                if (!(await Utils.pathExists(apexFile))) {
+                  continue;
+                }
+                const apexDest = apexFile.replace(source, destination);
+                if (!isDryRun) {
+                  await Utils.copyFile(apexFile, apexDest);
+                }
+                await this.logMessage(`Delta (${deltaKind}) auto-included Apex class file: ${apexDest}`);
+                metrics.Copy++;
+                copiedSet.add(apexFile);
+              }
+            }
+
             // If the file is a botVersion, we must ensure the parent bot file is included
             if (deltaFile.endsWith('.botVersion-meta.xml')) {
               const botDir = path.dirname(deltaFile);

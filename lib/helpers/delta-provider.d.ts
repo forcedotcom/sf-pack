@@ -17,6 +17,7 @@ export declare abstract class DeltaProvider {
     abstract deltaLineToken: string;
     abstract deltas: Map<string, any>;
     static getFullCopyPath(filePath: string, fullCopyDirNames: string[], allowFullCopyPathWithExt?: boolean): string | null;
+    static getApexClassPair(filePath: string): string[] | null;
     run(deltaOptions: DeltaOptions): Promise<any>;
     loadDeltaFile(deltaFilePath?: string): Promise<void>;
     logMessage(message: string, includeConsole?: boolean): Promise<void>;

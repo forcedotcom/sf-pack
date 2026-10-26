@@ -206,4 +206,66 @@ describe('GitDeltaProvider Tests', function () {
       expect(0).equals(targetFilesCount);
     });
   });
+
+  describe('Apex Class Pair Tests', function () {
+    const className = 'MyClass';
+    const otherClassName = 'OtherClass';
+    let classesDir: string;
+    let clsPath: string;
+    let metaPath: string;
+    let otherClsPath: string;
+    let otherMetaPath: string;
+
+    beforeEach(async () => {
+      if (await Utils.pathExists(Setup.destinationRoot)) {
+        await fs.rm(Setup.destinationRoot, { recursive: true });
+      }
+      await Utils.mkDirPath(Setup.destinationRoot);
+
+      classesDir = path.join(Setup.sourceRoot, 'classes');
+      await Utils.mkDirPath(classesDir);
+      clsPath = path.join(classesDir, `${className}.cls`);
+      metaPath = path.join(classesDir, `${className}.cls-meta.xml`);
+      otherClsPath = path.join(classesDir, `${otherClassName}.cls`);
+      otherMetaPath = path.join(classesDir, `${otherClassName}.cls-meta.xml`);
+      await fs.writeFile(clsPath, 'public class MyClass {}');
+      await fs.writeFile(metaPath, '<ApexClass></ApexClass>');
+      await fs.writeFile(otherClsPath, 'public class OtherClass {}');
+      await fs.writeFile(otherMetaPath, '<ApexClass></ApexClass>');
+      gitProvider.deltas.clear();
+    });
+
+    async function copyChangedClassFile(changedFile: string): Promise<void> {
+      const gitPath = Setup.getTmpPath('git-apex.txt');
+      await fs.writeFile(gitPath, `M\t${changedFile}${Constants.EOL}`);
+
+      const deltaOptions = new DeltaOptions();
+      deltaOptions.deltaFilePath = gitPath;
+      deltaOptions.source = Setup.sourceRoot;
+      deltaOptions.destination = Setup.destinationRoot;
+      await gitProvider.run(deltaOptions);
+    }
+
+    function destinationPath(sourceFile: string): string {
+      return sourceFile.replace(Setup.sourceRoot, Setup.destinationRoot);
+    }
+
+    it('Copies the meta file when the class is modified', async function () {
+      await copyChangedClassFile(clsPath);
+
+      expect(await Utils.pathExists(destinationPath(clsPath))).to.equal(true);
+      expect(await Utils.pathExists(destinationPath(metaPath))).to.equal(true);
+      expect(await Utils.pathExists(destinationPath(otherClsPath))).to.equal(false);
+      expect(await Utils.pathExists(destinationPath(otherMetaPath))).to.equal(false);
+    });
+
+    it('Copies the class file when the meta is modified', async function () {
+      await copyChangedClassFile(metaPath);
+
+      expect(await Utils.pathExists(destinationPath(clsPath))).to.equal(true);
+      expect(await Utils.pathExists(destinationPath(metaPath))).to.equal(true);
+      expect(await Utils.pathExists(destinationPath(otherClsPath))).to.equal(false);
+      expect(await Utils.pathExists(destinationPath(otherMetaPath))).to.equal(false);
+    });
+  });
 });
